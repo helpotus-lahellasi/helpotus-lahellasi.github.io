@@ -1,9 +1,9 @@
-import { getCurrentPosition } from '../location/index.js'
+import { getCurrentLocation } from '../location/index.js'
 import { fromTo } from '../api/hsl/routing.js'
 
 // Outputs HSL route from current location to Lauttasaari
 
-getCurrentPosition()
+getCurrentLocation()
     .then((position) =>
         fromTo({
             from: { lat: position.coords.latitude, lon: position.coords.longitude },
