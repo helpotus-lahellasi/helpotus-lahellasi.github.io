@@ -11,6 +11,7 @@
 
         <!-- Page specific -->
         <title>Sovellus | Helpotus lähelläsi</title>
+        <link rel="stylesheet" href="vendor/leaflet/leaflet.css" />
     </head>
     <body>
         <header class="site-header">
@@ -21,11 +22,13 @@
             </nav>
         </header>
 
-        <main class="site-main"></main>
+        <main class="site-main">
+            <div id="map"></div>
+        </main>
 
         <footer class="site-footer">
             <div class="copyright">&copy; 2022</div>
         </footer>
-        <script src="modules/tests/getRouteFromCurrentPosition.js" type="module"></script>
     </body>
+    <script src="modules/tests/createRestroomMap.js" type="module"></script>
 </html>

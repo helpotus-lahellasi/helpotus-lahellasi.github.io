@@ -19,6 +19,10 @@ Kaikki css tiedostot `/style` kansioon
 Kaikki js tiedostot `/modules` kansioon
 - api
     - rajapintojen kanssa keskustelu
+- location
+    - paikkatietojen haku ja käsittely
+- map
+    - kartat, leaflet.js kanssa keskustelu
 - tests
     - paikka kaikille random testifunktioille
 
