@@ -40,3 +40,52 @@ b {
     font-weight: 600;
     color: var(--text-colored1);
 }
+
+img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+.site-header {
+    background: var(--surface-colored1);
+    box-shadow: inset var(--shadow);
+}
+
+.site-navigation {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    gap: 1.5em;
+    padding: 1em;
+}
+
+.site-navigation .link {
+    color: var(--text-contrary1);
+    text-decoration: none;
+}
+
+.site-navigation :first-child {
+    margin-right: 1em;
+    margin-left: 0.5em;
+}
+
+.site-navigation .link:hover {
+    text-decoration: underline;
+}
+
+.site-footer {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+
+    padding: 2em;
+
+    color: var(--text2);
+    font-weight: 300;
+    font-size: 1em;
+}
