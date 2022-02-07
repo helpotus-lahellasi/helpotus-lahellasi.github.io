@@ -1,0 +1,16 @@
+:root {
+    color-scheme: light;
+    --hue-color1: 43;
+    --hue-color2: 207;
+    --hue-accent: 295;
+    --text1: hsl(var(--hue-color2), 86%, 10%);
+    --text2: hsl(var(--hue-color2), 86%, 20%);
+    --text-contrary1: hsl(var(--hue-color1), 42%, 87%);
+    --text-colored1: hsl(var(--hue-color2), 96%, 54%);
+    --text-accent1: hsl(var(--hue-accent), 100%, 90%);
+    --surface1: hsl(var(--hue-color1), 42%, 87%);
+    --surface2: hsl(var(--hue-color1), 41%, 90%);
+    --surface-colored1: hsl(var(--hue-color2), 100%, 18%);
+    --surface-colored2: hsl(var(--hue-color2), 100%, 19%);
+    --shadow: 0 1px 3px 0 hsla(var(--hue-color2), 0%, 0%, 0.1), 0 1px 2px 0 hsla(var(--hue-color2), 0%, 0%, 0.04);
+}

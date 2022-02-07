@@ -1,0 +1,42 @@
+/* Import Google fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap');
+
+/* Import theme variables */
+@import 'theme.css';
+
+*,
+::before,
+::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    color: var(--text1);
+    background: var(--surface-colored1);
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: 'Inter', serif;
+    font-weight: 700;
+    color: var(--text-colored1);
+}
+
+h1 {
+    letter-spacing: -0.05em;
+    font-size: 5em;
+    text-align: center;
+}
+
+p {
+    line-height: 1.5;
+}
+
+b {
+    font-weight: 600;
+    color: var(--text-colored1);
+}
