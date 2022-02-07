@@ -5,6 +5,15 @@ import { getMap } from '../map/index.js'
 
 // Creates a map around the device location
 
+const redIcon = new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+});
+
 async function test() {
     console.log('fetching location')
     const location = await getCurrentLocation()
@@ -17,6 +26,7 @@ async function test() {
         if (!restroom.lat || !restroom.lon) return
         L.marker({ lat: restroom.lat, lon: restroom.lon }).addTo(map)
     })
+    L.marker({ lat: location.coords.latitude, lon: location.coords.longitude }, { icon: redIcon }).addTo(map) // punaisen markkerin lisäys käyttäjän sijainnin kohdalle
 }
 
 test()
