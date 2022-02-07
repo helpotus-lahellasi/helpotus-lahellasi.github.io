@@ -27,6 +27,7 @@ function getGraphQLRouteQueryBody(from, to) {
     itineraries {
       walkDistance
       duration
+      endTime
       legs {
         startTime
         endTime
@@ -61,9 +62,10 @@ async function apiPost(body) {
  * @param {Coordinates} to Coordinates to get the routes to
  * @returns {Object} GraphQL data from hsl
  */
-async function getRoute({ from, to }) {
+async function getHSLRoute({ from, to }) {
     const body = getGraphQLRouteQueryBody(from, to)
-    return await apiPost(body)
+    const data = await apiPost(body)
+    return data.data.plan.itineraries[0]
 }
 
-export { getRoute }
+export { getHSLRoute }
