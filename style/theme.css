@@ -1,7 +1,7 @@
 :root {
     color-scheme: light;
     --hue-color1: 43;
-    --hue-color2: 207;
+    --hue-color2: 172;
     --hue-accent: 295;
     --text1: hsl(var(--hue-color2), 86%, 10%);
     --text2: hsl(var(--hue-color2), 86%, 20%);
