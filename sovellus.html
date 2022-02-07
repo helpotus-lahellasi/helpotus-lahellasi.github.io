@@ -12,6 +12,7 @@
         <!-- Page specific -->
         <title>Sovellus | Helpotus lähelläsi</title>
         <link rel="stylesheet" href="vendor/leaflet/leaflet.css" />
+        <link rel="stylesheet" href="style/app.css" />
     </head>
     <body>
         <header class="site-header">
@@ -23,7 +24,32 @@
         </header>
 
         <main class="site-main">
+            <div class="app">
+                <section class="app-settings">
+                    <form>
+                        <div>
+                            <label>Max-etäisyys</label>
+                            <input type="number" />
+                        </div>
+                        <div>
+                            <label>Maksullisia vessoja</label>
+                            <input type="checkbox" />
+                        </div>
+                    </form>
+                </section>
+                <section class="app-main">
+                    <aside>
+                        <div class="app-restroom-info"></div>
+                        <div class="app-route-info"></div>
+                    </aside>
+
             <div id="map"></div>
+                    <div id="loading-spinner">
+                        <div></div>
+                    </div>
+                </section>
+                <section></section>
+            </div>
         </main>
 
         <footer class="site-footer">
