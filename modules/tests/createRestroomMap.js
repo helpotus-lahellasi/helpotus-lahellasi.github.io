@@ -23,8 +23,7 @@ async function test() {
     const restrooms = await getRestrooms({ lat: location.coords.latitude, lon: location.coords.longitude })
     console.info('outputting restrooms with restroom length of', restrooms.length)
     restrooms.forEach((restroom) => {
-        if (!restroom.lat || !restroom.lon) return
-        L.marker({ lat: restroom.lat, lon: restroom.lon }).addTo(map)
+        L.marker(restroom.location).addTo(map)
     })
     L.marker({ lat: location.coords.latitude, lon: location.coords.longitude }, { icon: redIcon }).addTo(map) // punaisen markkerin lisäys käyttäjän sijainnin kohdalle
 }

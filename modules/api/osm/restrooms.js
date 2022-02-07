@@ -18,5 +18,14 @@ export async function getRestrooms(coordinates) {
     const url = `${baseUrl}?data=${encodeURIComponent(params)}`
     const res = await fetch(url)
     const data = await res.json()
-    return data.elements
+    const restrooms = data.elements
+    return restrooms.map((restroom) => ({
+        id: restroom.id,
+        timestamp: restroom.timestamp,
+        location: {
+            lat: restroom.lat,
+            lon: restroom.lon
+        },
+        tags: restroom.tags
+    }))
 }
