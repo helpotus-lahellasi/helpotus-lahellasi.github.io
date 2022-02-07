@@ -1,0 +1,104 @@
+.landing-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.landing-header h1 {
+    max-width: 260px;
+    letter-spacing: -0.05em;
+    font-size: min(max(3.5em, 6vw), 4em);
+    text-align: center;
+    margin: 5rem 0;
+    color: var(--text-contrary1);
+    line-height: 0.8;
+}
+
+.landing-header h1 span:last-of-type {
+    color: var(--text-accent1);
+}
+
+.landing-section {
+    --angle: 5deg;
+    position: relative;
+    overflow-x: clip;
+
+    min-height: 22em;
+
+    padding: max(5vw, 1.5rem);
+    padding-top: 5rem;
+    padding-bottom: 12rem;
+
+    color: var(--text1);
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+}
+
+.landing-section::before,
+.landing-section::after {
+    background-color: var(--surface1);
+    background-image: linear-gradient(rgba(254, 143, 24, 0) 0%, var(--surface2) 100%);
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    content: '';
+}
+
+.landing-section::before {
+    transform: skew(0deg, var(--angle)) translateX(-49.9%);
+}
+
+.landing-section::after {
+    transform: skew(0deg, calc(var(--angle) * -1)) translateX(50%);
+}
+
+.landing-section:first-of-type {
+    margin-top: min(6vw, 5rem);
+}
+
+.landing-section b,
+.landing-section h2 {
+    color: var(--text2);
+}
+
+.landing-section h2 {
+    margin-top: 0;
+}
+
+.divided {
+    display: grid;
+    grid-auto-flow: row;
+    gap: 1em;
+    justify-content: center;
+}
+
+.divided > div {
+    max-width: 400px;
+    justify-self: center;
+}
+
+@media screen and (min-width: 700px) {
+    .landing-section {
+        --angle: 3deg;
+    }
+    .divided {
+        grid-auto-flow: column;
+        grid-auto-columns: 1fr;
+        gap: 3em;
+    }
+    .divided > div {
+        justify-self: flex-end;
+        text-align: justify;
+        align-self: flex-start;
+    }
+
+    .divided > div:nth-child(even) {
+        justify-self: flex-start;
+        text-align: start;
+    }
+}
