@@ -1,3 +1,7 @@
+.landing-main {
+    overflow: hidden;
+}
+
 .landing-header {
     display: flex;
     justify-content: center;
@@ -21,7 +25,6 @@
 .landing-section {
     --angle: 5deg;
     position: relative;
-    overflow-x: clip;
 
     min-height: 22em;
 
@@ -38,7 +41,7 @@
 .landing-section::before,
 .landing-section::after {
     background-color: var(--surface1);
-    background-image: linear-gradient(rgba(254, 143, 24, 0) 0%, var(--surface2) 100%);
+    background-image: linear-gradient(var(--surface1) 0%, var(--surface2) 100%);
     position: absolute;
     z-index: -1;
     top: 0;
