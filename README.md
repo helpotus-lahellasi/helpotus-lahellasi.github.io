@@ -2,6 +2,12 @@
 
 Vessat listattuna lähelläsi
 
+### CSS tiedostojen hierarkia
+
+Kaikki css tiedostot `/style` kansioon
+- `global.css` tyylit kaikille sivuille
+    - `theme.css` teeman värit
+- muut `css` tiedostot sivukohtaisia
 
 ### JS tiedostojen hierarkia
 
