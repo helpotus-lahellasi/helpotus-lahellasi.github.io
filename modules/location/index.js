@@ -6,7 +6,7 @@ function getCurrentLocation() {
     console.info('trying to get the current location')
     return new Promise((resolve, reject) => {
         function onSuccess(position) {
-            console.info('got location', position.coords.latitude, position.coords.lontitude)
+            console.info('got location', position.coords.latitude, position.coords.longitude)
             resolve(position)
         }
         function onError(error) {

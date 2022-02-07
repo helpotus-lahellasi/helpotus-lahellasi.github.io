@@ -1,13 +1,13 @@
 import { getCurrentLocation } from '../location/index.js'
-import { fromTo } from '../api/hsl/routing.js'
+import { getRoute } from '../api/hsl/routing.js'
 
 // Outputs HSL route from current location to Lauttasaari
 
 getCurrentLocation()
     .then((position) =>
-        fromTo({
+        getRoute({
             from: { lat: position.coords.latitude, lon: position.coords.longitude },
             to: { lat: 60.1884, lon: 25.00744 }
         })
     )
-    .then((graphQl) => console.log(graphQl))
+    .then((route) => console.log(route))
