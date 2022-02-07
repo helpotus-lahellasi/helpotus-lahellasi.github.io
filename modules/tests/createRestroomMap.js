@@ -12,16 +12,16 @@ const redIcon = new L.Icon({
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
     shadowSize: [41, 41]
-});
+})
 
 async function test() {
-    console.log('fetching location')
+    console.info('fetching location')
     const location = await getCurrentLocation()
-    console.log('creating map')
+    console.info('creating map')
     const map = getMap({ lat: location.coords.latitude, lon: location.coords.longitude })
-    console.log('fetching restrooms')
+    console.info('fetching restrooms')
     const restrooms = await getRestrooms({ lat: location.coords.latitude, lon: location.coords.longitude })
-    console.log('outputting restrooms with restroom length of', restrooms.length)
+    console.info('outputting restrooms with restroom length of', restrooms.length)
     restrooms.forEach((restroom) => {
         if (!restroom.lat || !restroom.lon) return
         L.marker({ lat: restroom.lat, lon: restroom.lon }).addTo(map)

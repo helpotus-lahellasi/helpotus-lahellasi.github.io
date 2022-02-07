@@ -5,4 +5,4 @@ import { getMap } from '../map/index.js'
 
 getCurrentLocation()
     .then((location) => getMap({ lat: location.coords.latitude, lon: location.coords.longitude }))
-    .then((map) => console.log(map))
+    .then((map) => console.info(map))

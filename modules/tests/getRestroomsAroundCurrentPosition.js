@@ -5,4 +5,4 @@ import { getRestrooms } from '../api/osm/restrooms.js'
 
 getCurrentLocation()
     .then((location) => getRestrooms({ lat: location.coords.latitude, lon: location.coords.longitude }))
-    .then((restrooms) => console.log(restrooms))
+    .then((restrooms) => console.info(restrooms))

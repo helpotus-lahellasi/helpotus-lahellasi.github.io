@@ -10,4 +10,4 @@ getCurrentLocation()
             to: { lat: 60.1884, lon: 25.00744 }
         })
     )
-    .then((route) => console.log(route))
+    .then((route) => console.info(route))
