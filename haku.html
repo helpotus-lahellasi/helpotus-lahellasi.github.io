@@ -1,30 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <!-- Default meta -->
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <!-- Global assets -->
-        <link rel="stylesheet" href="style/global.css" />
+<head>
+    <!-- Default meta -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <!-- Page specific -->
-        <title>Haku | Helpotus lähelläsi</title>
-    </head>
-    <body>
-        <header class="site-header">
-            <nav class="site-navigation" role="navigation">
-                <a class="link home" href="index.html">koti</a>
-                <a class="link" href="sovellus.html">sovellus</a>
-                <a class="link" href="haku.html">haku</a>
-            </nav>
-        </header>
+    <!-- Global assets -->
+    <link rel="stylesheet" href="style/global.css" />
 
-        <main class="site-main"></main>
+    <!-- Page specific -->
+    <title>Haku | Helpotus lähelläsi</title>
+</head>
 
-        <footer class="site-footer">
-            <div class="copyright">&copy; 2022</div>
-        </footer>
-    </body>
+<body>
+    <header class="site-header">
+        <nav class="site-navigation" role="navigation">
+            <a class="link home" href="index.html">koti</a>
+            <a class="link" href="sovellus.html">sovellus</a>
+            <a class="link" href="haku.html">haku</a>
+        </nav>
+    </header>
+
+    <main class="site-main">
+        <section class="app-settings">
+            <form>
+                <div>
+                    <label>Syötä osoite/koordinaait</label>
+                    <input type="text" />
+                </div>
+                <div>
+                    <label>Max-etäisyys</label>
+                    <input type="number" />
+                </div>
+                <div>
+                    <label>Maksullisia vessoja</label>
+                    <input type="checkbox" />
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="copyright">&copy; 2022</div>
+    </footer>
+</body>
+
 </html>
