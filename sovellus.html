@@ -1,50 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <!-- Default meta -->
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-    <!-- Default meta -->
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- Global assets -->
+        <link rel="stylesheet" href="style/global.css" />
 
-    <!-- Global assets -->
-    <link rel="stylesheet" href="style/global.css" />
+        <!-- Page specific -->
+        <title>Sovellus | Helpotus lähelläsi</title>
+        <link rel="stylesheet" href="vendor/leaflet/leaflet.css" />
+        <link rel="stylesheet" href="style/app.css" />
+    </head>
 
-    <!-- Page specific -->
-    <title>Sovellus | Helpotus lähelläsi</title>
-    <link rel="stylesheet" href="vendor/leaflet/leaflet.css" />
-    <link rel="stylesheet" href="style/app.css" />
-</head>
+    <body>
+        <header class="site-header">
+            <nav class="site-navigation" role="navigation">
+                <a class="link home" href="index.html">koti</a>
+                <a class="link" href="sovellus.html">sovellus</a>
+                <a class="link" href="haku.html">haku</a>
+            </nav>
+        </header>
 
-<body>
-    <header class="site-header">
-        <nav class="site-navigation" role="navigation">
-            <a class="link home" href="index.html">koti</a>
-            <a class="link" href="sovellus.html">sovellus</a>
-            <a class="link" href="haku.html">haku</a>
-        </nav>
-    </header>
+        <main class="site-main app-site-main">
+            <div class="app">
+                <section class="app-main">
+                    <div id="map"></div>
+                    <aside>
+                        <div class="app-restroom-info"></div>
+                        <div class="app-route-info"></div>
+                    </aside>
+                    <div id="loading-spinner">
+                        <div></div>
+                    </div>
+                </section>
+                <section></section>
+            </div>
+        </main>
 
-    <main class="site-main">
-        <div class="app">
-            <section class="app-main">
-                <div id="map"></div>
-                <aside>
-                    <div class="app-restroom-info"></div>
-                    <div class="app-route-info"></div>
-                </aside>
-                <div id="loading-spinner">
-                    <div></div>
-                </div>
-            </section>
-            <section></section>
-        </div>
-    </main>
-
-    <footer class="site-footer">
-        <div class="copyright">&copy; 2022</div>
-    </footer>
-</body>
-<script src="modules/tests/createApp.js" type="module"></script>
-
+        <footer class="site-footer">
+            <div class="copyright">&copy; 2022</div>
+        </footer>
+    </body>
+    <script src="modules/tests/createApp.js" type="module"></script>
 </html>
