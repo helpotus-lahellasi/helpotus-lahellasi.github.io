@@ -6,7 +6,6 @@ import { getHSLRoute } from '../api/hsl/routing.js'
 import { getStreetName } from '../tests/streetNameFromPosition.js'
 import { icons } from '../map/markers.js'
 
-
 export class App {
     constructor({ location: { lat, lon }, restrooms }) {
         if (!document.getElementById('map')) throw new Error('Page does not have an element with the id of "map"')
@@ -18,14 +17,22 @@ export class App {
         this.addRestrooms(restrooms)
 
         this.map = L.map('map').setView({ lat, lon }, 13)
-        this.locationMarker = L.marker(this.location, { icon: icons.red }).addTo(this.map).addTo(this.map)
+        this.locationMarker = L.marker(this.location, { icon: icons.red }).addTo(this.map)
         this.currentRoute
+
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(this.map)
     }
 
-    static calculateDistance(a, b) {
+    static pointBetween(a, b) {
+        return {
+            lat: (a.lat + b.lat) / 2,
+            lon: (a.lon + b.lon) / 2
+        }
+    }
+
+    static distanceBetween(a, b) {
         return Math.sqrt(Math.pow(b.lat - a.lat, 2) + Math.pow(b.lon - a.lon, 2))
     }
 
@@ -68,6 +75,8 @@ export class App {
             }
             this.restrooms.set(id, restroom)
         }
+        const bounds = L.latLngBounds(this.location, restroom.location)
+        this.map.fitBounds(bounds)
 
         setRestroomElement(document.querySelector('.app-restroom-info'), restroom)
         const route = await this.getRoute(id)
@@ -103,7 +112,7 @@ export class App {
                 ...restroom,
                 distance: {
                     from: this.location,
-                    value: App.calculateDistance(this.location, restroom.location)
+                    value: App.distanceBetween(this.location, restroom.location)
                 }
             })
         }
@@ -120,7 +129,7 @@ export class App {
             ...restroom,
             distance: {
                 from: this.location,
-                value: App.calculateDistance(this.location, restroom.location)
+                value: App.distanceBetween(this.location, restroom.location)
             }
         }
         this.restrooms.set(id, updatedRestroom)
