@@ -18,7 +18,10 @@ export class App {
         this.addRestrooms(restrooms)
 
         this.map = L.map('map').setView({ lat, lon }, 13)
-        this.locationMarker = L.marker(this.location, { icon: icons.red }).addTo(this.map).addTo(this.map)
+        this.locationMarker = L.marker(this.location, { icon: icons.red })
+            .bindPopup(`Olet tässä`)
+            .openPopup(this.map)
+            .addTo(this.map)
         this.currentRoute
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
