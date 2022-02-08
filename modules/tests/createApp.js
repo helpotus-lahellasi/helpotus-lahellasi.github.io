@@ -5,10 +5,10 @@ import { fakeLocation, fakeRestrooms } from '../util/fakedata.js'
 
 async function test() {
     if (!document.getElementById('map')) throw new Error('Page does not have an element with the id of "map"')
-        //    const location = await getCurrentLocation()
-    const location = fakeLocation
-        //    const restrooms = await getRestrooms({ lat: location.coords.latitude, lon: location.coords.longitude })
-    const restrooms = fakeRestrooms
+    const location = await getCurrentLocation()
+        //  const location = fakeLocation
+    const restrooms = await getRestrooms({ lat: location.coords.latitude, lon: location.coords.longitude })
+        //const restrooms = fakeRestrooms
 
     document.getElementById('loading-spinner').classList.add('hidden')
 
