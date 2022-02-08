@@ -5,7 +5,7 @@ async function test() {
     if (!document.getElementById('map')) throw new Error('Page does not have an element with the id of "map"')
     const location = await App.fetchLocation()
     // const location = fakeAppTypeLocation
-    const restrooms = await App.fetchRestroomsFromLocation(l)
+    const restrooms = await App.fetchRestroomsFromLocation(location)
     // const restrooms = fakeRestrooms
 
     document.getElementById('loading-spinner').classList.add('hidden')
