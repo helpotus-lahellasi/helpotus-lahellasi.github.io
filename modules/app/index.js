@@ -3,15 +3,9 @@ import Polyline from '../../vendor/polyline/index.js'
 import { setRouteInfoElement } from '../layout/routeInfo.js'
 import { setRestroomElement } from '../layout/restroomInfo.js'
 import { getHSLRoute } from '../api/hsl/routing.js'
+import { getStreetName } from '../tests/streetNameFromPosition.js'
+import { icons } from '../map/markers.js'
 
-const redIcon = new L.Icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
-})
 
 export class App {
     constructor({ location: { lat, lon }, restrooms }) {
@@ -24,7 +18,7 @@ export class App {
         this.addRestrooms(restrooms)
 
         this.map = L.map('map').setView({ lat, lon }, 13)
-        this.locationMarker = L.marker(this.location, { icon: redIcon }).addTo(this.map).addTo(this.map)
+        this.locationMarker = L.marker(this.location, { icon: icons.red }).addTo(this.map).addTo(this.map)
         this.currentRoute
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -65,7 +59,16 @@ export class App {
     }
 
     async showRoute(id) {
-        const restroom = this.restrooms.get(id)
+        let restroom = this.restrooms.get(id)
+
+        if (!restroom.streetName) {
+            restroom = {
+                ...restroom,
+                streetName: await getStreetName(restroom.location.lat, restroom.location.lon)
+            }
+            this.restrooms.set(id, restroom)
+        }
+
         setRestroomElement(document.querySelector('.app-restroom-info'), restroom)
         const route = await this.getRoute(id)
         setRouteInfoElement(document.querySelector('.app-route-info'), route)
