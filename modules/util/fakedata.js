@@ -1,4 +1,5 @@
 export const fakeLocation = { coords: { latitude: 60.1884, longitude: 25.00744 } }
+export const fakeAppTypeLocation = { lat: 60.1884, lon: 25.00744 }
 export const fakeRestrooms = [
     {
         id: 103678074,

@@ -1,31 +1,44 @@
 import * as L from '../../vendor/leaflet/leaflet-src.esm.js'
 import Polyline from '../../vendor/polyline/index.js'
+import { getRestrooms } from '../api/osm/restrooms.js'
 import { setRouteInfoElement } from '../layout/routeInfo.js'
 import { setRestroomElement } from '../layout/restroomInfo.js'
 import { getHSLRoute } from '../api/hsl/routing.js'
 import { getStreetName } from '../tests/streetNameFromPosition.js'
+import { getCurrentLocation } from '../location/index.js'
 import { icons } from '../map/markers.js'
+import { clearElement } from '../util/index.js'
 
 export class App {
-    constructor({ location: { lat, lon }, restrooms }) {
+    constructor({ location: { lat, lon } }) {
         if (!document.getElementById('map')) throw new Error('Page does not have an element with the id of "map"')
+        this.map
+        this.locationMarker
+        this.selectedRestroom
+        this.routePolyline
 
-        this.location = { lat, lon }
         this.routes = new Map()
         this.restrooms = new Map()
 
-        this.addRestrooms(restrooms)
+        this.visible = false
 
-        this.map = L.map('map').setView({ lat, lon }, 13)
+        this.location = { lat, lon }
+
+        this.restroomLayerGroup = L.layerGroup()
+    }
+
+    setVisible() {
+        this.visible = true
+        this.map = L.map('map').setView(this.location, 13)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(this.map)
         this.locationMarker = L.marker(this.location, { icon: icons.red })
             .bindPopup(`Olet tässä`)
             .openPopup(this.map)
             .addTo(this.map)
-        this.currentRoute
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(this.map)
+        this.showAllCurrent()
     }
 
     static pointBetween(a, b) {
@@ -46,6 +59,37 @@ export class App {
         return false
     }
 
+    static async fetchLocation() {
+        const locationObject = await getCurrentLocation()
+        return await {
+            lat: locationObject.coords.latitude,
+            lon: locationObject.coords.longitude
+        }
+    }
+
+    static async fetchRestroomsFromLocation(location) {
+        return await getRestrooms(location)
+    }
+
+    async updateApp() {
+        console.info('updating app')
+        const location = await App.fetchLocation()
+        const latDelta = Math.abs(location.lat - this.location.lat)
+        const lonDelta = Math.abs(location.lon - this.location.lon)
+        if (latDelta < 0.0001 && lonDelta < 0.0001) return console.info('rejected update - too minor change')
+        const restrooms = await App.fetchRestroomsFromLocation(location)
+
+        this.location = location
+
+        this.addRestrooms(restrooms)
+
+        if (!this.visible) return
+
+        this.showAllCurrent()
+
+        console.info('app update finished')
+    }
+
     async getRoute(id) {
         const restroom = this.restrooms.get(id)
         if (!restroom) throw new Error('Restroom was not stored in memory')
@@ -60,6 +104,12 @@ export class App {
             to: restroom.location
         })
 
+        if (!updatedRoute) {
+            if (this.routePolyline) this.map.removeLayer(this.routePolyline)
+
+            return
+        }
+
         this.routes.set(id, {
             from: this.location,
             value: updatedRoute
@@ -68,7 +118,15 @@ export class App {
         return updatedRoute
     }
 
-    async showRoute(id) {
+    showLocation(location) {
+        if (!this.visible) return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')
+        const newLatLng = new L.LatLng(location.lat, location.lon)
+        this.locationMarker.setLatLng(newLatLng)
+    }
+
+    async showRouteToRestroom(id) {
+        if (!this.visible) return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')
+
         let restroom = this.restrooms.get(id)
 
         if (!restroom.streetName) {
@@ -83,16 +141,23 @@ export class App {
 
         setRestroomElement(document.querySelector('.app-restroom-info'), restroom)
         const route = await this.getRoute(id)
+        if (!route) {
+            clearElement(document.querySelector('.app-route-info'))
+            return
+        }
         setRouteInfoElement(document.querySelector('.app-route-info'), route)
+
+        this.selectedRestroom = restroom
 
         for (const leg of route.legs) {
             const points = leg.legGeometry.points
             const decoded = Polyline.decode(points)
 
-            if (this.currentRoute) {
-                this.map.removeLayer(this.currentRoute)
+            if (this.routePolyline) {
+                this.map.removeLayer(this.routePolyline)
             }
-            this.currentRoute = L.polyline(decoded)
+
+            this.routePolyline = L.polyline(decoded)
                 .setStyle({
                     color: 'blue'
                 })
@@ -101,10 +166,25 @@ export class App {
         return route
     }
 
-    showRestrooms() {
-        for (const restroom of this.restrooms.values()) {
-            const marker = L.marker(restroom.location).addTo(this.map)
-            marker.on('click', () => this.showRoute(restroom.id))
+    showRestrooms(restrooms) {
+        if (!this.visible) return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')
+
+        this.restroomLayerGroup.clearLayers()
+        for (const restroom of restrooms.values()) {
+            const marker = L.marker(restroom.location)
+                .addTo(this.map)
+                .on('click', () => this.showRouteToRestroom(restroom.id))
+            this.restroomLayerGroup.addLayer(marker)
+        }
+        this.restroomLayerGroup.addTo(this.map)
+    }
+
+    showAllCurrent() {
+        if (!this.visible) return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')
+        this.showRestrooms(this.restrooms)
+        this.showLocation(this.location)
+        if (this.selectedRestroom) {
+            this.showRouteToRestroom(this.selectedRestroom.id)
         }
     }
 
@@ -119,9 +199,12 @@ export class App {
                 }
             })
         }
+        if (this.visible) {
+            this.showRestrooms(this.restrooms)
+        }
     }
 
-    findDistance(id) {
+    getDistanceToRestroom(id) {
         const restroom = this.restrooms.get(id)
         if (!restroom) throw new Error('Restroom was not stored in memory')
         if (App.locationsEqual(restroom.distance.from, this.location)) {
@@ -139,12 +222,12 @@ export class App {
         return updatedRestroom.distance.value
     }
 
-    findClosest() {
+    getClosestRestroom() {
         let closestRestroom
         let closestDistance
 
         this.restrooms.forEach((restroom) => {
-            const restroomDistance = this.findDistance(restroom.id)
+            const restroomDistance = this.getDistanceToRestroom(restroom.id)
             if (!closestRestroom || restroomDistance < closestDistance) {
                 closestRestroom = restroom
                 closestDistance = restroomDistance
@@ -155,17 +238,3 @@ export class App {
         return closestRestroom
     }
 }
-
-// export async function appPollingFunction(app) {
-//     const newLocation = await getCurrentLocation()
-//     const lat = newLocation.coords.latitude
-//     const lon = newLocation.coords.longitude
-//     const latChange = Math.abs(lat - app.location.lat)
-//     const lonChange = Math.abs(lon - app.location.lon)
-//     if (latChange > 0.0001 || lonChange > 0.0001) {
-//         console.log('updating')
-//         app.updateLocation({ lat: newLocation.coords.latitude, lon: newLocation.coords.longitude })
-//     } else {
-//         console.log('change too litle')
-//     }
-// }
