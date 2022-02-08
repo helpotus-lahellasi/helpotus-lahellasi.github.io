@@ -1,9 +1,8 @@
 import { dateToFinnishLocale, createPart } from '../util/index.js'
 
 export function setRouteInfoElement(target, data) {
-    const previousContainer = target.querySelector('.container')
-    if (previousContainer) {
-        target.removeChild(previousContainer)
+    while (target.firstChild) {
+        target.removeChild(target.firstChild)
     }
 
     const container = document.createElement('div')
