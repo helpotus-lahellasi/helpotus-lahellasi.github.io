@@ -6,6 +6,12 @@ export const dateToFinnishLocale = (date) => {
     })
 }
 
+export function clearElement(target) {
+    while (target.firstChild) {
+        target.removeChild(target.firstChild)
+    }
+}
+
 export function createPart({ text, heading, inline }) {
     const container = document.createElement('div')
     container.className = inline ? 'part-container inline' : 'part-container'
