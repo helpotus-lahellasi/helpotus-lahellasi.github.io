@@ -22,12 +22,11 @@ async function test() {
     const map = getMap({ lat: location.coords.latitude, lon: location.coords.longitude })
     console.info('fetching restrooms')
     const restrooms = await getRestrooms({ lat: location.coords.latitude, lon: location.coords.longitude })
-    console.log('outputting restrooms with restroom length of', restrooms.length)
-    console.log(restrooms)
+    console.info('outputting restrooms with restroom length of', restrooms.length)
+    console.info(restrooms)
     for (const restroom of restrooms) {
-        if (!restroom.lat || !restroom.lon) return
-        L.marker({ lat: restroom.lat, lon: restroom.lon })
-            .bindPopup(`${await getStreetName(restroom.lat, restroom.lon)}`)
+        L.marker(restroom.location)
+            .bindPopup(`${await getStreetName(restroom.location.lat, restroom.location.lon)}`)
             .openPopup()
             .addTo(map)
     }
