@@ -1,18 +1,32 @@
 import { App } from '../app/index.js'
-import { fakeAppTypeLocation, fakeRestrooms } from '../util/fakedata.js'
 
 async function test() {
     if (!document.getElementById('map')) throw new Error('Page does not have an element with the id of "map"')
-    const location = await App.fetchLocation()
-    // const location = fakeAppTypeLocation
-    const restrooms = await App.fetchRestroomsFromLocation(location)
-    // const restrooms = fakeRestrooms
+
+    let location
+
+    const cachedLocation = App.getStoredLocation()
+    if (cachedLocation) {
+        location = cachedLocation
+    } else {
+        location = await App.fetchLocation()
+    }
 
     document.getElementById('loading-spinner').classList.add('hidden')
-
     const app = new App({ location })
-    app.addRestrooms(restrooms)
+
     app.setVisible()
+
+    let restrooms
+
+    const cachedRestrooms = App.getStoredRestrooms()
+    if (cachedRestrooms) {
+        restrooms = cachedRestrooms
+    } else {
+        restrooms = await App.fetchRestroomsFromLocation(location)
+    }
+
+    app.addRestrooms(restrooms)
 
     const closest = app.getClosestRestroom()
     app.showRouteToRestroom(closest.id)
@@ -21,6 +35,8 @@ async function test() {
     setInterval(() => {
         app.updateApp()
     }, 1000 * 35)
+
+    app.updateApp()
 
     window.app = app
     window.App = App

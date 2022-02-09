@@ -8,6 +8,7 @@ import { getStreetName } from '../tests/streetNameFromPosition.js'
 import { getCurrentLocation } from '../location/index.js'
 import { icons } from '../map/markers.js'
 import { clearElement } from '../util/index.js'
+import { LOCATION_EXPIRATION_TIME, RESTROOM_EXPIRATION_TIME } from '../config.js'
 
 export class App {
     constructor({ location: { lat, lon } }) {
@@ -23,6 +24,7 @@ export class App {
         this.visible = false
 
         this.location = { lat, lon }
+        App.setStoredLocation(this.location)
 
         this.restroomLayerGroup = L.layerGroup()
     }
@@ -71,6 +73,41 @@ export class App {
         return await getRestrooms(location)
     }
 
+    static setStoredLocation(location) {
+        localStorage.setItem('restroom-app-location', JSON.stringify({ value: location, modified: Date.now() }))
+    }
+    static setStoredRestrooms(restrooms) {
+        if (Array.isArray(restrooms)) {
+            localStorage.setItem('restroom-app-restrooms', JSON.stringify({ value: restrooms, modified: Date.now() }))
+        } else {
+            localStorage.setItem(
+                'restroom-app-restrooms',
+                JSON.stringify({ value: [...restrooms.values()], modified: Date.now() })
+            )
+        }
+    }
+    static getStoredLocation() {
+        const location = JSON.parse(localStorage.getItem('restroom-app-location'))
+        const isInvalid =
+            !location ||
+            !location.value?.lat ||
+            !location.value?.lon ||
+            location.modified < Date.now() - LOCATION_EXPIRATION_TIME
+
+        if (isInvalid) return null
+
+        return location.value
+    }
+    static getStoredRestrooms() {
+        const restrooms = JSON.parse(localStorage.getItem('restroom-app-restrooms'))
+        const isInvalid =
+            !restrooms || !Array.isArray(restrooms.value) || location.modified < Date.now() - RESTROOM_EXPIRATION_TIME
+
+        if (isInvalid) return null
+
+        return restrooms.value
+    }
+
     async updateApp() {
         console.info('updating app')
         const location = await App.fetchLocation()
@@ -80,6 +117,7 @@ export class App {
         const restrooms = await App.fetchRestroomsFromLocation(location)
 
         this.location = location
+        App.setStoredLocation(location)
 
         this.addRestrooms(restrooms)
 
@@ -199,6 +237,7 @@ export class App {
                 }
             })
         }
+        App.setStoredRestrooms(this.restrooms)
         if (this.visible) {
             this.showRestrooms(this.restrooms)
         }
