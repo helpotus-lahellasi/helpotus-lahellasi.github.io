@@ -1,6 +1,7 @@
 import * as L from '../../vendor/leaflet/leaflet-src.esm.js'
 import Polyline from '../../vendor/polyline/index.js'
 import { getRestrooms } from '../api/osm/restrooms.js'
+import { getOprRoute } from '../api/osm/routing.js'
 import { setRouteInfoElement } from '../layout/routeInfo.js'
 import { setRestroomElement } from '../layout/restroomInfo.js'
 import { getHSLRoute } from '../api/hsl/routing.js'
@@ -88,12 +89,11 @@ export class App {
     }
     static getStoredLocation() {
         const location = JSON.parse(sessionStorage.getItem('restroom-app-location'))
-        const isInvalid =
-            !location ||
+        const isInvalid = (!location ||
             !location.value ||
             !location.value.lat ||
             !location.value.lon ||
-            location.modified < Date.now() - LOCATION_EXPIRATION_TIME
+            location.modified < Date.now() - LOCATION_EXPIRATION_TIME)
 
         if (isInvalid) return null
 
@@ -101,8 +101,7 @@ export class App {
     }
     static getStoredRestrooms() {
         const restrooms = JSON.parse(sessionStorage.getItem('restroom-app-restrooms'))
-        const isInvalid =
-            !restrooms || !Array.isArray(restrooms.value) || location.modified < Date.now() - RESTROOM_EXPIRATION_TIME
+        const isInvalid = !restrooms || !Array.isArray(restrooms.value) || location.modified < Date.now() - RESTROOM_EXPIRATION_TIME
 
         if (isInvalid) return null
 
@@ -133,28 +132,30 @@ export class App {
         const restroom = this.restrooms.get(id)
         if (!restroom) throw new Error('Restroom was not stored in memory')
         const storedRoute = this.routes.get(id)
-
         if (storedRoute && App.locationsEqual(storedRoute.from, this.location)) {
             return storedRoute.value
         }
 
-        const updatedRoute = await getHSLRoute({
+        const updatedHslRoute = await getHSLRoute({
             from: this.location,
             to: restroom.location
         })
 
-        if (!updatedRoute) {
-            if (this.routePolyline) this.map.removeLayer(this.routePolyline)
+        let updatedOprRoute
 
-            return
+        if (!updatedHslRoute) {
+            updatedOprRoute = await getOprRoute({ from: this.location, to: restroom.location })
+        }
+        if (!updatedHslRoute && !updatedOprRoute && !updatedOprRoute.features && !updatedOprRoute.features[0]) {
+            return this.map.removeLayer(this.routePolyline)
         }
 
         this.routes.set(id, {
             from: this.location,
-            value: updatedRoute
+            value: updatedHslRoute || { updatedOprRoute, oprRoute: true }
         })
 
-        return updatedRoute
+        return updatedHslRoute || { updatedOprRoute, oprRoute: true }
     }
 
     showLocation(location) {
@@ -167,6 +168,7 @@ export class App {
         if (!this.visible) return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')
 
         let restroom = this.restrooms.get(id)
+
 
         if (!restroom.streetName) {
             restroom = {
@@ -189,13 +191,25 @@ export class App {
 
         this.selectedRestroom = restroom
 
+        if (this.routePolyline) {
+            this.map.removeLayer(this.routePolyline)
+        }
+
+        if (route.oprRoute) {
+            const points = route.updatedOprRoute.features[0].geometry.coordinates.map(point => point.reverse())
+
+            this.routePolyline = L.polyline(points)
+                .setStyle({
+                    color: 'blue'
+                })
+                .addTo(this.map)
+            return route
+        }
+
         for (const leg of route.legs) {
             const points = leg.legGeometry.points
             const decoded = Polyline.decode(points)
 
-            if (this.routePolyline) {
-                this.map.removeLayer(this.routePolyline)
-            }
 
             this.routePolyline = L.polyline(decoded)
                 .setStyle({
