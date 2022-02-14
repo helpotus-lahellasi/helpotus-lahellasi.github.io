@@ -49,6 +49,10 @@ async function test() {
     document.querySelector('#focusroute').addEventListener('click', () => {
         app.fitMapToLocations(app.location, app.selectedRestroom.location)
     })
+
+    document.querySelector('#routenearest').addEventListener('click', () => {
+        app.getRoute(app.getClosestRestroom().id)
+    })
 }
 
 test()
