@@ -51,7 +51,7 @@ async function test() {
     })
 
     document.querySelector('#routenearest').addEventListener('click', () => {
-        app.getRoute(app.getClosestRestroom().id)
+        app.showRouteToRestroom(app.getClosestRestroom().id)
     })
 }
 
