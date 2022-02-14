@@ -1,60 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <!-- Default meta -->
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png" />
+        <link rel="manifest" href="./site.webmanifest" />
+        <link rel="mask-icon" href="./safari-pinned-tab.svg" color="#015c50" />
+        <meta name="msapplication-TileColor" content="#fbccff" />
+        <meta name="theme-color" content="#fbccff" />
 
-<head>
-    <!-- Default meta -->
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png" />
-    <link rel="manifest" href="./site.webmanifest" />
-    <link rel="mask-icon" href="./safari-pinned-tab.svg" color="#015c50" />
-    <meta name="msapplication-TileColor" content="#fbccff" />
-    <meta name="theme-color" content="#fbccff" />
+        <!-- Global assets -->
+        <link rel="stylesheet" href="style/global.css" />
 
-    <!-- Global assets -->
-    <link rel="stylesheet" href="style/global.css" />
+        <!-- Page specific -->
+        <title>Sovellus | Helpotus lähelläsi</title>
+        <link rel="stylesheet" href="vendor/leaflet/leaflet.css" />
+        <link rel="stylesheet" href="style/app.css" />
+    </head>
 
-    <!-- Page specific -->
-    <title>Sovellus | Helpotus lähelläsi</title>
-    <link rel="stylesheet" href="vendor/leaflet/leaflet.css" />
-    <link rel="stylesheet" href="style/app.css" />
-</head>
+    <body>
+        <header class="site-header">
+            <nav class="site-navigation" role="navigation">
+                <a class="link home" href="index.html">koti</a>
+                <a class="link" href="sovellus.html">sovellus</a>
+                <a class="link" href="haku.html">haku</a>
+            </nav>
+        </header>
 
-<body>
-    <header class="site-header">
-        <nav class="site-navigation" role="navigation">
-            <a class="link home" href="index.html">koti</a>
-            <a class="link" href="sovellus.html">sovellus</a>
-            <a class="link" href="haku.html">haku</a>
-        </nav>
-    </header>
+        <main class="site-main app-site-main">
+            <div class="app">
+                <button type="button" id="focususer">Paluta</button>
+                <button type="button" id="focusroute">Keskitä reittiin</button>
+                <button type="button" id="routenearest">Reitti lähimpään vessaan</button>
+                <section class="app-main">
+                    <div id="map"></div>
+                    <aside>
+                        <div class="app-restroom-info"></div>
+                        <div class="app-route-info"></div>
+                    </aside>
+                    <div id="loading-spinner">
+                        <div></div>
+                    </div>
+                </section>
+                <section></section>
+            </div>
+        </main>
 
-    <main class="site-main app-site-main">
-        <div class="app">
-            <button type="button" id="focususer">Paluta</button>
-            <button type="button" id="focusroute">Keskitä reittiin</button>
-            <button type="button" id="routenearest">Reitti lähimpään vessaan</button>
-            <section class="app-main">
-                <div id="map"></div>
-                <aside>
-                    <div class="app-restroom-info"></div>
-                    <div class="app-route-info"></div>
-                </aside>
-                <div id="loading-spinner">
-                    <div></div>
-                </div>
-            </section>
-            <section></section>
-        </div>
-    </main>
-
-    <footer class="site-footer">
-        <div class="copyright">&copy; 2022</div>
-    </footer>
-</body>
-<script src="modules/tests/createSelfUpdatingApp.js" type="module"></script>
-
+        <footer class="site-footer">
+            <div class="copyright">&copy; 2022</div>
+        </footer>
+    </body>
+    <script src="modules/index.js" type="module"></script>
 </html>
