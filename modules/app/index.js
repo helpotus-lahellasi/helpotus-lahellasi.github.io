@@ -74,33 +74,35 @@ export class App {
     }
 
     static setStoredLocation(location) {
-        localStorage.setItem('restroom-app-location', JSON.stringify({ value: location, modified: Date.now() }))
+        sessionStorage.setItem('restroom-app-location', JSON.stringify({ value: location, modified: Date.now() }))
     }
     static setStoredRestrooms(restrooms) {
         if (Array.isArray(restrooms)) {
-            localStorage.setItem('restroom-app-restrooms', JSON.stringify({ value: restrooms, modified: Date.now() }))
+            sessionStorage.setItem('restroom-app-restrooms', JSON.stringify({ value: restrooms, modified: Date.now() }))
         } else {
-            localStorage.setItem(
+            sessionStorage.setItem(
                 'restroom-app-restrooms',
                 JSON.stringify({ value: [...restrooms.values()], modified: Date.now() })
             )
         }
     }
     static getStoredLocation() {
-        const location = JSON.parse(localStorage.getItem('restroom-app-location'))
-        const isInvalid = (!location ||
+        const location = JSON.parse(sessionStorage.getItem('restroom-app-location'))
+        const isInvalid =
+            !location ||
             !location.value ||
             !location.value.lat ||
             !location.value.lon ||
-            location.modified < Date.now() - LOCATION_EXPIRATION_TIME)
+            location.modified < Date.now() - LOCATION_EXPIRATION_TIME
 
         if (isInvalid) return null
 
         return location.value
     }
     static getStoredRestrooms() {
-        const restrooms = JSON.parse(localStorage.getItem('restroom-app-restrooms'))
-        const isInvalid = !restrooms || !Array.isArray(restrooms.value) || location.modified < Date.now() - RESTROOM_EXPIRATION_TIME
+        const restrooms = JSON.parse(sessionStorage.getItem('restroom-app-restrooms'))
+        const isInvalid =
+            !restrooms || !Array.isArray(restrooms.value) || location.modified < Date.now() - RESTROOM_EXPIRATION_TIME
 
         if (isInvalid) return null
 
