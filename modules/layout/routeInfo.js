@@ -1,6 +1,7 @@
 import { dateToFinnishLocale, createPart, clearElement } from '../util/index.js'
 
-export function setRouteInfoElement(target, data) {
+export function setRouteInfoElement(target, route) {
+    const data = route.data
     clearElement(target)
 
     const container = document.createElement('div')

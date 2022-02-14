@@ -63,9 +63,17 @@ async function apiPost(body) {
  * @returns {Object} GraphQL data from hsl
  */
 async function getHSLRoute({ from, to }) {
+    try {
     const body = getGraphQLRouteQueryBody(from, to)
     const data = await apiPost(body)
-    return data.data.plan.itineraries[0]
+        if (!data.data.plan.itineraries[0]) return null
+        return {
+            data: data.data.plan.itineraries[0],
+            type: 'hsl'
+        }
+    } catch {
+        return null
+    }
 }
 
 export { getHSLRoute }

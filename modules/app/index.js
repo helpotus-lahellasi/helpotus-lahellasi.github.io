@@ -1,7 +1,7 @@
 import * as L from '../../vendor/leaflet/leaflet-src.esm.js'
 import Polyline from '../../vendor/polyline/index.js'
 import { getRestrooms } from '../api/osm/restrooms.js'
-import { getOprRoute } from '../api/osm/routing.js'
+import { getOrsRoute } from '../api/osm/routing.js'
 import { setRouteInfoElement } from '../layout/routeInfo.js'
 import { setRestroomElement } from '../layout/restroomInfo.js'
 import { getHSLRoute } from '../api/hsl/routing.js'
@@ -136,26 +136,23 @@ export class App {
             return storedRoute.value
         }
 
-        const updatedHslRoute = await getHSLRoute({
-            from: this.location,
-            to: restroom.location
-        })
+        const updatedRoute =
+            (await getHSLRoute({
+                from: this.location,
+                to: restroom.location
+            })) || (await getOrsRoute({ from: this.location, to: restroom.location }))
 
-        let updatedOprRoute
-
-        if (!updatedHslRoute) {
-            updatedOprRoute = await getOprRoute({ from: this.location, to: restroom.location })
-        }
-        if (!updatedHslRoute && !updatedOprRoute && !updatedOprRoute.features && !updatedOprRoute.features[0]) {
-            return this.map.removeLayer(this.routePolyline)
+        if (!updatedRoute) {
+            this.map.removeLayer(this.routePolyline)
+            return null
         }
 
         this.routes.set(id, {
             from: this.location,
-            value: updatedHslRoute || { updatedOprRoute, oprRoute: true }
+            value: updatedRoute
         })
 
-        return updatedHslRoute || { updatedOprRoute, oprRoute: true }
+        return updatedRoute
     }
 
     showLocation(location) {
@@ -169,7 +166,6 @@ export class App {
 
         let restroom = this.restrooms.get(id)
 
-
         if (!restroom.streetName) {
             restroom = {
                 ...restroom,
@@ -177,11 +173,12 @@ export class App {
             }
             this.restrooms.set(id, restroom)
         }
-        const bounds = L.latLngBounds(this.location, restroom.location)
-        this.map.fitBounds(bounds)
+
+        this.fitMapToLocations(this.location, restroom.location)
 
         setRestroomElement(document.querySelector('.app-restroom-info'), restroom)
         const route = await this.getRoute(id)
+
         if (!route) {
             clearElement(document.querySelector('.app-route-info'))
             this.selectedRestroom = restroom
@@ -195,27 +192,25 @@ export class App {
             this.map.removeLayer(this.routePolyline)
         }
 
-        if (route.oprRoute) {
-            const points = route.updatedOprRoute.features[0].geometry.coordinates.map(point => point.reverse())
+        if (route.type === 'ors') {
+            const points = route.data.geometry.coordinates.map((point) => point.reverse())
 
             this.routePolyline = L.polyline(points)
                 .setStyle({
                     color: 'blue'
                 })
                 .addTo(this.map)
-            return route
-        }
+        } else if (route.type === 'hsl') {
+            for (const leg of route.data.legs) {
+                const points = leg.legGeometry.points
+                const decoded = Polyline.decode(points)
 
-        for (const leg of route.legs) {
-            const points = leg.legGeometry.points
-            const decoded = Polyline.decode(points)
-
-
-            this.routePolyline = L.polyline(decoded)
-                .setStyle({
-                    color: 'blue'
-                })
-                .addTo(this.map)
+                this.routePolyline = L.polyline(decoded)
+                    .setStyle({
+                        color: 'blue'
+                    })
+                    .addTo(this.map)
+            }
         }
         return route
     }
