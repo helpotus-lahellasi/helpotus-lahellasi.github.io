@@ -93,227 +93,231 @@ export class App {
             !location.value ||
             !location.value.lat ||
             !location.value.lon ||
-            location.modified < Date.now() - LOCATION_EXPIRATION_TIME)
+            location.modified < Date.now() - LOCATION_EXPIRATION_TIME
 
-        if (isInvalid) return null
+            if (isInvalid) return null
 
-        return location.value
-    }
-    static getStoredRestrooms() {
-        const restrooms = JSON.parse(sessionStorage.getItem('restroom-app-restrooms'))
-        const isInvalid = !restrooms || !Array.isArray(restrooms.value) || location.modified < Date.now() - RESTROOM_EXPIRATION_TIME
+            return location.value
+        }
+        static getStoredRestrooms() {
+            const restrooms = JSON.parse(sessionStorage.getItem('restroom-app-restrooms')) <<
+                << << < HEAD
+            const isInvalid = !restrooms || !Array.isArray(restrooms.value) || location.modified < Date.now() - RESTROOM_EXPIRATION_TIME ===
+                === =
+                const isInvalid = !restrooms || !Array.isArray(restrooms.value) || location.modified < Date.now() - RESTROOM_EXPIRATION_TIME >>>
+                    >>> > 261 ae26b41799bdb5eb3a826dd903f1d81a12933
 
-        if (isInvalid) return null
+            if (isInvalid) return null
 
-        return restrooms.value
-    }
-
-    async updateApp() {
-        console.info('updating app')
-        const location = await App.fetchLocation()
-        const latDelta = Math.abs(location.lat - this.location.lat)
-        const lonDelta = Math.abs(location.lon - this.location.lon)
-        if (latDelta < 0.0001 && lonDelta < 0.0001) return console.info('rejected update - too minor change')
-        const restrooms = await App.fetchRestroomsFromLocation(location)
-
-        this.location = location
-        App.setStoredLocation(location)
-
-        this.addRestrooms(restrooms)
-
-        if (!this.visible) return
-
-        this.showAllCurrent()
-
-        console.info('app update finished')
-    }
-
-    async getRoute(id) {
-        const restroom = this.restrooms.get(id)
-        if (!restroom) throw new Error('Restroom was not stored in memory')
-        const storedRoute = this.routes.get(id)
-
-        if (storedRoute && App.locationsEqual(storedRoute.from, this.location)) {
-            return storedRoute.value
+            return restrooms.value
         }
 
-        const updatedHslRoute = await getHSLRoute({
-            from: this.location,
-            to: restroom.location
-        })
+        async updateApp() {
+            console.info('updating app')
+            const location = await App.fetchLocation()
+            const latDelta = Math.abs(location.lat - this.location.lat)
+            const lonDelta = Math.abs(location.lon - this.location.lon)
+            if (latDelta < 0.0001 && lonDelta < 0.0001) return console.info('rejected update - too minor change')
+            const restrooms = await App.fetchRestroomsFromLocation(location)
 
-        let updatedOprRoute
+            this.location = location
+            App.setStoredLocation(location)
 
-        if (!updatedHslRoute) {
-            updatedOprRoute = await getOprRoute({ from: this.location, to: restroom.location })
+            this.addRestrooms(restrooms)
+
+            if (!this.visible) return
+
+            this.showAllCurrent()
+
+            console.info('app update finished')
         }
 
-        if (!updatedHslRoute && !updatedOprRoute) {
-            return this.map.removeLayer(this.routePolyline)
-        }
+        async getRoute(id) {
+            const restroom = this.restrooms.get(id)
+            if (!restroom) throw new Error('Restroom was not stored in memory')
+            const storedRoute = this.routes.get(id)
 
-        this.routes.set(id, {
-            from: this.location,
-            value: updatedHslRoute || { updatedOprRoute, oprRoute: true }
-        })
-
-        return updatedHslRoute || { updatedOprRoute, oprRoute: true }
-    }
-
-    showLocation(location) {
-        if (!this.visible) return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')
-        const newLatLng = new L.LatLng(location.lat, location.lon)
-        this.locationMarker.setLatLng(newLatLng)
-    }
-
-    async showRouteToRestroom(id) {
-        if (!this.visible) return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')
-
-        let restroom = this.restrooms.get(id)
-
-
-        if (!restroom.streetName) {
-            restroom = {
-                ...restroom,
-                streetName: await getStreetName(restroom.location.lat, restroom.location.lon)
+            if (storedRoute && App.locationsEqual(storedRoute.from, this.location)) {
+                return storedRoute.value
             }
-            this.restrooms.set(id, restroom)
-        }
-        const bounds = L.latLngBounds(this.location, restroom.location)
-        this.map.fitBounds(bounds)
 
-        setRestroomElement(document.querySelector('.app-restroom-info'), restroom)
-        const route = await this.getRoute(id)
-        if (!route) {
-            clearElement(document.querySelector('.app-route-info'))
+            const updatedHslRoute = await getHSLRoute({
+                from: this.location,
+                to: restroom.location
+            })
+
+            let updatedOprRoute
+
+            if (!updatedHslRoute) {
+                updatedOprRoute = await getOprRoute({ from: this.location, to: restroom.location })
+            }
+
+            if (!updatedHslRoute && !updatedOprRoute) {
+                return this.map.removeLayer(this.routePolyline)
+            }
+
+            this.routes.set(id, {
+                from: this.location,
+                value: updatedHslRoute || { updatedOprRoute, oprRoute: true }
+            })
+
+            return updatedHslRoute || { updatedOprRoute, oprRoute: true }
+        }
+
+        showLocation(location) {
+            if (!this.visible) return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')
+            const newLatLng = new L.LatLng(location.lat, location.lon)
+            this.locationMarker.setLatLng(newLatLng)
+        }
+
+        async showRouteToRestroom(id) {
+            if (!this.visible) return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')
+
+            let restroom = this.restrooms.get(id)
+
+
+            if (!restroom.streetName) {
+                restroom = {
+                    ...restroom,
+                    streetName: await getStreetName(restroom.location.lat, restroom.location.lon)
+                }
+                this.restrooms.set(id, restroom)
+            }
+            const bounds = L.latLngBounds(this.location, restroom.location)
+            this.map.fitBounds(bounds)
+
+            setRestroomElement(document.querySelector('.app-restroom-info'), restroom)
+            const route = await this.getRoute(id)
+            if (!route) {
+                clearElement(document.querySelector('.app-route-info'))
+                this.selectedRestroom = restroom
+                return
+            }
+            setRouteInfoElement(document.querySelector('.app-route-info'), route)
+
             this.selectedRestroom = restroom
-            return
-        }
-        setRouteInfoElement(document.querySelector('.app-route-info'), route)
 
-        this.selectedRestroom = restroom
+            if (route.oprRoute) {
+                const a = [];
 
-        if (route.oprRoute) {
-            const a = [];
+                if (this.routePolyline) {
+                    this.map.removeLayer(this.routePolyline)
+                }
 
-            if (this.routePolyline) {
-                this.map.removeLayer(this.routePolyline)
+                for (const point of route.updatedOprRoute.features[0].geometry.coordinates) {
+                    point.reverse()
+                    a.push(point)
+                }
+
+                this.routePolyline = L.polyline(a)
+                    .setStyle({
+                        color: 'blue'
+                    })
+                    .addTo(this.map)
+                return route
             }
 
-            for (const point of route.updatedOprRoute.features[0].geometry.coordinates) {
-                point.reverse()
-                a.push(point)
-            }
 
-            this.routePolyline = L.polyline(a)
-                .setStyle({
-                    color: 'blue'
-                })
-                .addTo(this.map)
+            for (const leg of route.legs) {
+                const points = leg.legGeometry.points
+                const decoded = Polyline.decode(points)
+
+                if (this.routePolyline) {
+                    this.map.removeLayer(this.routePolyline)
+                }
+
+                this.routePolyline = L.polyline(decoded)
+                    .setStyle({
+                        color: 'blue'
+                    })
+                    .addTo(this.map)
+            }
             return route
         }
 
+        showRestrooms(restrooms) {
+            if (!this.visible) return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')
 
-        for (const leg of route.legs) {
-            const points = leg.legGeometry.points
-            const decoded = Polyline.decode(points)
+            this.restroomLayerGroup.clearLayers()
+            for (const restroom of restrooms.values()) {
+                const marker = L.marker(restroom.location)
+                    .addTo(this.map)
+                    .on('click', () => this.showRouteToRestroom(restroom.id))
+                this.restroomLayerGroup.addLayer(marker)
+            }
+            this.restroomLayerGroup.addTo(this.map)
+        }
 
-            if (this.routePolyline) {
-                this.map.removeLayer(this.routePolyline)
+        showAllCurrent() {
+            if (!this.visible) return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')
+            this.showRestrooms(this.restrooms)
+            this.showLocation(this.location)
+            if (this.selectedRestroom) {
+                this.showRouteToRestroom(this.selectedRestroom.id)
+            }
+        }
+
+        addRestrooms(restrooms) {
+            for (const restroom of restrooms) {
+                if (this.restrooms.has(restroom.id)) continue
+                this.restrooms.set(restroom.id, {
+                    ...restroom,
+                    distance: {
+                        from: this.location,
+                        value: App.distanceBetween(this.location, restroom.location)
+                    }
+                })
+            }
+            App.setStoredRestrooms(this.restrooms)
+            if (this.visible) {
+                this.showRestrooms(this.restrooms)
+            }
+        }
+
+        getDistanceToRestroom(id) {
+            const restroom = this.restrooms.get(id)
+            if (!restroom) throw new Error('Restroom was not stored in memory')
+            if (App.locationsEqual(restroom.distance.from, this.location)) {
+                return restroom.distance.value
             }
 
-            this.routePolyline = L.polyline(decoded)
-                .setStyle({
-                    color: 'blue'
-                })
-                .addTo(this.map)
-        }
-        return route
-    }
-
-    showRestrooms(restrooms) {
-        if (!this.visible) return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')
-
-        this.restroomLayerGroup.clearLayers()
-        for (const restroom of restrooms.values()) {
-            const marker = L.marker(restroom.location)
-                .addTo(this.map)
-                .on('click', () => this.showRouteToRestroom(restroom.id))
-            this.restroomLayerGroup.addLayer(marker)
-        }
-        this.restroomLayerGroup.addTo(this.map)
-    }
-
-    showAllCurrent() {
-        if (!this.visible) return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')
-        this.showRestrooms(this.restrooms)
-        this.showLocation(this.location)
-        if (this.selectedRestroom) {
-            this.showRouteToRestroom(this.selectedRestroom.id)
-        }
-    }
-
-    addRestrooms(restrooms) {
-        for (const restroom of restrooms) {
-            if (this.restrooms.has(restroom.id)) continue
-            this.restrooms.set(restroom.id, {
+            const updatedRestroom = {
                 ...restroom,
                 distance: {
                     from: this.location,
                     value: App.distanceBetween(this.location, restroom.location)
                 }
-            })
-        }
-        App.setStoredRestrooms(this.restrooms)
-        if (this.visible) {
-            this.showRestrooms(this.restrooms)
-        }
-    }
-
-    getDistanceToRestroom(id) {
-        const restroom = this.restrooms.get(id)
-        if (!restroom) throw new Error('Restroom was not stored in memory')
-        if (App.locationsEqual(restroom.distance.from, this.location)) {
-            return restroom.distance.value
-        }
-
-        const updatedRestroom = {
-            ...restroom,
-            distance: {
-                from: this.location,
-                value: App.distanceBetween(this.location, restroom.location)
             }
+            this.restrooms.set(id, updatedRestroom)
+            return updatedRestroom.distance.value
         }
-        this.restrooms.set(id, updatedRestroom)
-        return updatedRestroom.distance.value
-    }
 
-    getClosestRestroom() {
-        let closestRestroom
-        let closestDistance
+        getClosestRestroom() {
+            let closestRestroom
+            let closestDistance
 
-        this.restrooms.forEach((restroom) => {
-            const restroomDistance = this.getDistanceToRestroom(restroom.id)
-            if (!closestRestroom || restroomDistance < closestDistance) {
-                closestRestroom = restroom
-                closestDistance = restroomDistance
+            this.restrooms.forEach((restroom) => {
+                const restroomDistance = this.getDistanceToRestroom(restroom.id)
+                if (!closestRestroom || restroomDistance < closestDistance) {
+                    closestRestroom = restroom
+                    closestDistance = restroomDistance
+                    return
+                }
+            })
+
+            return closestRestroom
+        }
+
+        setViewUserLocation() {
+            this.map.setView(this.location, 13);
+        }
+
+        fitMapToLocations(a, b) {
+            if (!a || !b) {
+                this.setViewUserLocation()
                 return
             }
-        })
-
-        return closestRestroom
-    }
-
-    setViewUserLocation() {
-        this.map.setView(this.location, 13);
-    }
-
-    fitMapToLocations(a, b) {
-        if (!a || !b) {
-            this.setViewUserLocation()
-            return
+            const bounds = L.latLngBounds(a, b)
+            this.map.fitBounds(bounds)
         }
-        const bounds = L.latLngBounds(a, b)
-        this.map.fitBounds(bounds)
     }
-}
