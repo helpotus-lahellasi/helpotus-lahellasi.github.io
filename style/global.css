@@ -60,18 +60,28 @@ img {
     flex-direction: row;
     flex-wrap: wrap;
 
-    gap: 1.5em;
+    gap: 1.75em;
     padding: 1em;
 }
 
 .site-navigation .link {
     color: var(--text-contrary1);
     text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: capitalize;
+    font-weight: 300;
 }
 
-.site-navigation :first-child {
-    margin-right: 1em;
+.site-navigation .link:first-of-type {
     margin-left: 0.5em;
+    gap: 0.75rem;
+}
+
+.site-navigation .link:first-of-type img {
+    width: 1.5rem;
+    height: 1.5rem;
 }
 
 .site-navigation .link:hover {
