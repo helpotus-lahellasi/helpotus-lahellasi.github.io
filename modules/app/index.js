@@ -88,11 +88,11 @@ export class App {
     }
     static getStoredLocation() {
         const location = JSON.parse(localStorage.getItem('restroom-app-location'))
-        const isInvalid =
-            !location ||
-            !location.value?.lat ||
-            !location.value?.lon ||
-            location.modified < Date.now() - LOCATION_EXPIRATION_TIME
+        const isInvalid = (!location ||
+            !location.value ||
+            !location.value.lat ||
+            !location.value.lon ||
+            location.modified < Date.now() - LOCATION_EXPIRATION_TIME)
 
         if (isInvalid) return null
 
@@ -100,8 +100,7 @@ export class App {
     }
     static getStoredRestrooms() {
         const restrooms = JSON.parse(localStorage.getItem('restroom-app-restrooms'))
-        const isInvalid =
-            !restrooms || !Array.isArray(restrooms.value) || location.modified < Date.now() - RESTROOM_EXPIRATION_TIME
+        const isInvalid = !restrooms || !Array.isArray(restrooms.value) || location.modified < Date.now() - RESTROOM_EXPIRATION_TIME
 
         if (isInvalid) return null
 
@@ -181,6 +180,7 @@ export class App {
         const route = await this.getRoute(id)
         if (!route) {
             clearElement(document.querySelector('.app-route-info'))
+            this.selectedRestroom = restroom
             return
         }
         setRouteInfoElement(document.querySelector('.app-route-info'), route)
@@ -275,5 +275,18 @@ export class App {
         })
 
         return closestRestroom
+    }
+
+    setViewUserLocation() {
+        this.map.setView(this.location, 13);
+    }
+
+    fitMapToLocations(a, b) {
+        if (!a || !b) {
+            this.setViewUserLocation()
+            return
+        }
+        const bounds = L.latLngBounds(a, b)
+        this.map.fitBounds(bounds)
     }
 }

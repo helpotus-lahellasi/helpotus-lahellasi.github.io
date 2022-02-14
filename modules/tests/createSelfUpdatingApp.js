@@ -38,8 +38,17 @@ async function test() {
 
     app.updateApp()
 
-    window.app = app
-    window.App = App
+    // window.app = app
+    // window.App = App
+
+
+    document.querySelector('#focususer').addEventListener('click', () => {
+        app.setViewUserLocation();
+    })
+
+    document.querySelector('#focusroute').addEventListener('click', () => {
+        app.fitMapToLocations(app.location, app.selectedRestroom.location)
+    })
 }
 
 test()
