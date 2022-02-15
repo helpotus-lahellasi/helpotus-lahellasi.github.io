@@ -37,26 +37,33 @@
         </header>
 
         <main class="site-main">
-            <section class="app-settings">
-                <form>
+            <section class="search-settings">
+                <form id="search-form">
                     <div>
                         <label>Syötä osoite/koordinaait</label>
-                        <input type="text" />
+                        <input type="text" id="searchbar" />
                     </div>
-                    <div>
-                        <label>Max-etäisyys</label>
-                        <input type="number" />
-                    </div>
-                    <div>
-                        <label>Maksullisia vessoja</label>
-                        <input type="checkbox" />
-                    </div>
+                    <!--   <div>
+                    <label>Max-etäisyys</label>
+                    <input type="number" />
+                </div>
+                <div>
+                    <label>Maksullisia vessoja</label>
+                    <input type="checkbox" />
+                </div> -->
                 </form>
             </section>
+
+            <section class="search-results"></section>
         </main>
 
         <footer class="site-footer">
-            <div class="copyright">Helpotus Lähelläsi ei vastaa <a href="https://www.openstreetmap.org/copyright">© OpenStreetMapin</a> tekijät  johtuvista väärän tiedon levityksestä, datan manipuloinnista tai datan väärinkäytöstä.&copy;2022 </div>
+            <div class="copyright">
+                Helpotus Lähelläsi ei vastaa
+                <a href="https://www.openstreetmap.org/copyright">© OpenStreetMapin</a> tekijät johtuvista väärän tiedon
+                levityksestä, datan manipuloinnista tai datan väärinkäytöstä.&copy;2022
+            </div>
         </footer>
     </body>
+    <script src="modules/search.js" type="module"></script>
 </html>
