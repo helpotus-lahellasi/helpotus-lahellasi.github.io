@@ -3,14 +3,7 @@ import { App } from './app/index.js'
 async function test() {
     if (!document.getElementById('map')) throw new Error('Page does not have an element with the id of "map"')
 
-    let location
-
-    const cachedLocation = App.getStoredLocation()
-    if (cachedLocation) {
-        location = cachedLocation
-    } else {
-        location = await App.fetchLocation()
-    }
+    const location = await App.fetchLocation()
 
     document.getElementById('loading-spinner').classList.add('hidden')
     const app = new App({ location })
