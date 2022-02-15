@@ -22,70 +22,10 @@
     padding: 0.5em;
 }
 
-.app-main > aside {
+.app-main>aside {
     display: flex;
     flex-direction: column;
     gap: 0.5em;
-}
-
-.info-container {
-    outline: 1px solid black;
-    padding: 0.5em;
-}
-
-.part-container {
-    margin: 0.5em;
-    color: var(--text-colored1);
-    font-weight: 300;
-}
-
-.part-heading {
-    font-weight: 600;
-    color: var(--text-accent1);
-    margin-right: 0.4em;
-}
-
-.inline {
-    display: inline-block;
-}
-
-#map {
-    max-height: 50vh;
-    width: 100%;
-    height: 400px;
-    background: var(--surface-colored2);
-}
-
-#loading-spinner {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    pointer-events: none;
-}
-
-#loading-spinner > div {
-    display: block;
-    height: 4em;
-    width: 4em;
-    border: 0.5em solid var(--surface-colored2);
-    border-top: 0.5em solid var(--text-accent1);
-    border-radius: 100%;
-    animation-name: spin;
-    animation-timing-function: linear;
-    animation-duration: 0.6s;
-    animation-fill-mode: both;
-    animation-iteration-count: infinite;
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
 }
 
 @media screen and (min-width: 600px) {
@@ -95,10 +35,6 @@
     #map {
         grid-column: 1;
     }
-}
-
-.hidden {
-    display: none !important;
 }
 
 img.leaflet-tile {
