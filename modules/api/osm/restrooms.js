@@ -26,8 +26,8 @@ export async function getRestrooms(coordinates) {
             lat: restroom.lat,
             lon: restroom.lon
         },
-        tags: Object.entries(restroom.tags).map((key, value) => {
-            return getTranslation(key, value)
+        tags: Object.entries(restroom.tags).map((pair) => {
+            return getTranslation(pair)
         }).filter(Boolean)
     }))
 }
