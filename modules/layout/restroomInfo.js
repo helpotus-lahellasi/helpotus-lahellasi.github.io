@@ -8,10 +8,14 @@ export async function setRestroomElement(target, data) {
 
     data.tags.name && container.appendChild(createPart({ heading: data.tags.name }))
     container.appendChild(createPart({ heading: 'Osoite:', text: data.streetName }))
-    container.appendChild(createPart({ heading: 'Lisätty:', text: dateToFinnishLocale(new Date(data.timestamp)) }))
-    for (const [key, value] of Object.entries(data.tags)) {
-        container.appendChild(createPart({ heading: key + ':', text: value }))
+
+    for (const { heading, text }
+        of data.tags) {
+        if (!heading && !text) continue
+        container.appendChild(createPart({ heading, text }))
     }
+
+    container.appendChild(createPart({ heading: 'Lisätty:', text: dateToFinnishLocale(new Date(data.timestamp)) }))
 
     target.appendChild(container)
 }

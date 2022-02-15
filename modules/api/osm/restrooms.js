@@ -26,6 +26,42 @@ export async function getRestrooms(coordinates) {
             lat: restroom.lat,
             lon: restroom.lon
         },
-        tags: restroom.tags
+        tags: Object.entries(restroom.tags).map((key, value) => {
+            return getTranslation(key, value)
+        }).filter(Boolean)
     }))
+}
+
+
+function getTranslation([originalKey, originalValue]) {
+    if (!originalKey || !originalValue) return null
+    const key = originalKey.toLowerCase()
+    const value = originalValue.toLowerCase()
+
+
+
+    console.log('getting translation for', key, value);
+
+    switch (key) {
+        case "fee":
+            {
+                if (value === "no") {
+                    return {
+                        heading: "Maksuton"
+                    }
+                } else if (value === "yes") {
+                    return {
+                        heading: "Maksullinen"
+                    }
+
+                } else {
+                    return {
+                        heading: "Maksu:",
+                        text: originalValue
+                    }
+                }
+
+            }
+    }
+
 }
