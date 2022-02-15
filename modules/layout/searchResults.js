@@ -2,7 +2,7 @@ import { dateToFinnishLocale, createPart, clearElement } from '../util/index.js'
 
 export async function setSearchResultsElement(target, data, onClickHandler) {
     clearElement(target)
-    console.log(data);
+    console.log('yes tämä', target, data);
 
     const container = document.createElement('div')
     container.className = 'info-container'

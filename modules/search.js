@@ -2,35 +2,44 @@ import { getSearch } from './api/osm/search.js'
 import { App } from './app/index.js'
 import { setSearchResultsElement } from './layout/searchResults.js'
 
+const searchBar = document.getElementById('searchbar')
+const searchForm = document.getElementById("search-form")
+const resultsTarget = document.querySelector('.search-results')
 
 async function getRestrooms(location) {
     return await App.fetchRestroomsFromLocation(location)
 }
 
 async function main() {
-
     function onClick(event, data) {
         ///
         console.log(data)
 
     }
 
+    async function onSearch(event) {
+        event.preventDefault()
+        console.log(searchBar.value)
+        const data = await getSearch(searchBar.value);
+        setSearchResultsElement(resultsTarget, data, onClick)
+    }
+
     let timeout
 
-    function onSearch(event) {
+    function debouncedOnSearch(event) {
+        event.preventDefault()
         clearTimeout(timeout)
         timeout = setTimeout(async() => {
-            console.log(event.target.value)
-            const data = await getSearch(event.target.value);
-            setSearchResultsElement(document.querySelector('.search-results'), data, onClick)
+            await onSearch(event)
         }, 500)
 
     }
 
 
 
-    document.querySelector('#searchbar').addEventListener('change', onSearch);
-    document.querySelector('#searchbar').addEventListener('keyup', onSearch);
+    searchBar.addEventListener('change', debouncedOnSearch);
+    searchBar.addEventListener('keyup', debouncedOnSearch);
+    searchForm.addEventListener('submit', onSearch)
 }
 
 main()
