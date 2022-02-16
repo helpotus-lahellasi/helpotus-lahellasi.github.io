@@ -338,6 +338,7 @@ export class App {
      * @returns {void}
      */
     showRestrooms(restrooms) {
+
         if (!this.visible) return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')
 
         this.restroomLayerGroup.clearLayers()
@@ -345,6 +346,16 @@ export class App {
             const fee = restroom.tags.find(tag =>
                 tag.heading.toLowerCase() === "maksu:"
             )
+
+            if (!restrooms || restrooms.length === 0) {
+                const container = document.createElement('div')
+                container.className = 'info-container'
+                container.appendChild(
+                    createPart({ heading: 'Hakemaltasi alueelta ei löytynyt vessoja!' })
+                )
+                resultsTarget.appendChild(container)
+                return;
+            }
 
             let icon
 

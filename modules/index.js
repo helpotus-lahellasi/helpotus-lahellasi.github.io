@@ -1,4 +1,5 @@
 import { App } from './app/index.js'
+import { createPart } from './util/index.js'
 
 async function test() {
     if (!document.getElementById('map')) throw new Error('Page does not have an element with the id of "map"')
@@ -18,10 +19,21 @@ async function test() {
         restrooms = await App.fetchRestroomsFromLocation(location)
     }
 
-    app.addRestrooms(restrooms)
 
-    const closest = app.getClosestRestroom()
-    app.showRouteToRestroom(closest.id)
+    if (restrooms && restrooms.length > 0) {
+        app.addRestrooms(restrooms)
+
+        const closest = app.getClosestRestroom()
+        app.showRouteToRestroom(closest.id)
+    } else {
+        const container = document.createElement('div')
+        const resultsTarget = document.querySelector('.app-restroom-info')
+        container.className = 'info-container'
+        container.appendChild(
+            createPart({ heading: 'Lähialueeltasi ei löydy vessoja!' })
+        )
+        resultsTarget.appendChild(container)
+    }
 
     // Update app every 35 seconds
     setInterval(() => {
