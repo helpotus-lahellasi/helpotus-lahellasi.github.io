@@ -134,6 +134,10 @@ img {
     display: inline-block;
 }
 
+.first-row {
+    grid-row: 1;
+}
+
 #map {
     max-height: 50vh;
     width: 100%;
