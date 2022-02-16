@@ -12,5 +12,7 @@
     --surface2: hsl(var(--hue-color1), 41%, 90%);
     --surface-colored1: hsl(var(--hue-color2), 100%, 18%);
     --surface-colored2: hsl(var(--hue-color2), 100%, 19%);
+    --surface-colored3: hsl(var(--hue-color2), 100%, 30%);
+    --surface-colored4: hsl(var(--hue-color2), 100%, 37%);
     --shadow: 0 1px 3px 0 hsla(var(--hue-color2), 0%, 0%, 0.1), 0 1px 2px 0 hsla(var(--hue-color2), 0%, 0%, 0.04);
 }

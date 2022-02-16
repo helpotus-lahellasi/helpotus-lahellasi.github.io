@@ -56,7 +56,7 @@ img {
 }
 
 .site-header {
-    background: var(--surface-colored1);
+    background: var(--surface-colored2);
     box-shadow: inset var(--shadow);
 }
 

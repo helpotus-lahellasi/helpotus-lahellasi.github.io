@@ -7,10 +7,10 @@
 .app {
     display: flex;
     flex-direction: column;
-    gap: 1em;
     max-width: 700px;
     flex: 1;
     margin-top: 0.5em;
+    gap: 0.5em;
 }
 
 .app-main {
@@ -22,13 +22,54 @@
     padding: 0.5em;
 }
 
-.app-main>aside {
+.app-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+}
+
+.app-buttons button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    background: var(--surface-colored3);
+    padding: 0.7rem;
+    border-radius: 100%;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.app-buttons button:hover {
+    background: transparent;
+    background: hsl(172, 100%, 36%);
+}
+
+.app-buttons button:focus {
+    border-color: var(--text-accent1);
+}
+
+.app-buttons button img {
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+}
+
+.app-main > aside {
     display: flex;
     flex-direction: column;
     gap: 0.5em;
 }
 
 @media screen and (min-width: 600px) {
+    .app {
+        margin-top: 2rem;
+    }
+
+    .app-buttons {
+        justify-content: flex-start;
+        padding: 0 0.5em;
+        gap: 1em;
+    }
+
     .app-main {
         grid-auto-flow: column;
     }
@@ -39,4 +80,22 @@
 
 img.leaflet-tile {
     filter: hue-rotate(67deg) saturate(1.2) contrast(1.1) brightness(0.9);
+}
+
+.leaflet-bar a {
+    color: var(--text-colored1);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    background-color: var(--surface-colored3);
+    border: none;
+}
+
+.leaflet-bar a:first-of-type {
+    border-bottom: 1px solid var(--surface-colored4);
+}
+
+.leaflet-bar a:hover {
+    background-color: var(--surface-colored4);
+    color: var(--text-colored1);
 }
