@@ -5,6 +5,5 @@ export async function getSearch(searchString) {
     const url = `${baseUrl}${encodeURIComponent(searchString)}?${params}`
     const res = await fetch(url)
     const data = await res.json()
-    console.log(data)
     return data
 }

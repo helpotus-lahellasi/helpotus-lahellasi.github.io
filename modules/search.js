@@ -34,6 +34,15 @@ async function main() {
 
         clearElement(resultsTarget)
 
+        if (!restrooms || restrooms.length === 0) {
+            const container = document.createElement('div')
+            container.className = 'info-container'
+            container.appendChild(
+                createPart({ heading: 'Hakemaltasi alueelta ei löytynyt vessoja!' })
+            )
+            resultsTarget.appendChild(container)
+        }
+
         for (const restroom of restroomsWithRoutes) {
             const container = document.createElement('div')
             container.className = 'info-container'
