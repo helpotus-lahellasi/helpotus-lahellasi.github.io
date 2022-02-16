@@ -11,7 +11,37 @@ import { icons } from '../map/markers.js'
 import { clearElement } from '../util/index.js'
 import { LOCATION_EXPIRATION_TIME, RESTROOM_EXPIRATION_TIME } from '../config.js'
 
+/**
+ * @typedef {Object} Coordinates
+ * @property {number} lat The latitude of the coordinates
+ * @property {number} lon The longtitude of the coordinates
+ */
+
+/**
+ * @typedef {Object} Tag
+ * @property {string} heading
+ * @property {string} text
+ */
+
+/**
+ * @typedef {Object} Restroom
+ * @property {number} id
+ * @property {Date} timestamp
+ * @property {Coordinates} location
+ * @property {Tag[]} tags
+ */
+
+/**
+ * @typedef {Object} AppOptions
+ * @property {Coordinates} location Location to initiate the app with
+ */
+
+// Class for combining app functionality
 export class App {
+    /**
+     *
+     * @param {AppOptions}
+     */
     constructor({ location: { lat, lon } }) {
         if (!document.getElementById('map')) throw new Error('Page does not have an element with the id of "map"')
         this.map
@@ -30,11 +60,16 @@ export class App {
         this.restroomLayerGroup = L.layerGroup()
     }
 
+    /**
+     * Set the current app visible instance visible
+     *
+     * This method has to be called before using any functionality that requires the leaflet map
+     */
     setVisible() {
         this.visible = true
         this.map = L.map('map').setView(this.location, 13)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         }).addTo(this.map)
         this.locationMarker = L.marker(this.location, { icon: icons.red })
             .bindPopup(`Olet tässä`)
@@ -44,17 +79,35 @@ export class App {
         this.showAllCurrent()
     }
 
+    /**
+     *
+     * @param {Coordinates} a
+     * @param {Coordinates} b
+     * @returns {Coordinates} location between the two given coordinates
+     */
     static pointBetween(a, b) {
         return {
             lat: (a.lat + b.lat) / 2,
-            lon: (a.lon + b.lon) / 2
+            lon: (a.lon + b.lon) / 2,
         }
     }
 
+    /**
+     *
+     * @param {Coordinates} a
+     * @param {Coordinates} b
+     * @returns {number} distance between the coordinates
+     */
     static distanceBetween(a, b) {
         return Math.sqrt(Math.pow(b.lat - a.lat, 2) + Math.pow(b.lon - a.lon, 2))
     }
 
+    /**
+     * Check if locations equal
+     * @param {Coordinates} a
+     * @param {Coordinates} b
+     * @returns {boolean}
+     */
     static locationsEqual(a, b) {
         if (a.lat === b.lat && b.lon === a.lon) {
             return true
@@ -62,21 +115,39 @@ export class App {
         return false
     }
 
+    /**
+     * Fetches the current user location
+     * @returns {Coordinates}
+     */
     static async fetchLocation() {
         const locationObject = await getCurrentLocation()
         return await {
             lat: locationObject.coords.latitude,
-            lon: locationObject.coords.longitude
+            lon: locationObject.coords.longitude,
         }
     }
 
+    /**
+     * Fetches restrooms around location
+     * @param {Coordinates} location
+     * @returns {Restroom[]}
+     */
     static async fetchRestroomsFromLocation(location) {
         return await getRestrooms(location)
     }
 
+    /**
+     * Store location into session storage
+     * @param {Coordinates} location
+     */
     static setStoredLocation(location) {
         sessionStorage.setItem('restroom-app-location', JSON.stringify({ value: location, modified: Date.now() }))
     }
+
+    /**
+     * Set restrooms into session storage
+     * @param {Restrooms[]|Map<number,Restroom>} restrooms
+     */
     static setStoredRestrooms(restrooms) {
         if (Array.isArray(restrooms)) {
             sessionStorage.setItem('restroom-app-restrooms', JSON.stringify({ value: restrooms, modified: Date.now() }))
@@ -87,27 +158,44 @@ export class App {
             )
         }
     }
+
+    /**
+     *  Get location from session storage
+     * @returns {Coordinates} location
+     */
     static getStoredLocation() {
         const location = JSON.parse(sessionStorage.getItem('restroom-app-location'))
-        const isInvalid = (!location ||
+        const isInvalid =
+            !location ||
             !location.value ||
             !location.value.lat ||
             !location.value.lon ||
-            location.modified < Date.now() - LOCATION_EXPIRATION_TIME)
+            location.modified < Date.now() - LOCATION_EXPIRATION_TIME
 
         if (isInvalid) return null
 
         return location.value
     }
+
+    /**
+     * Get restrooms from session storage
+     * @returns {Restroom[]}
+     */
     static getStoredRestrooms() {
         const restrooms = JSON.parse(sessionStorage.getItem('restroom-app-restrooms'))
-        const isInvalid = !restrooms || !Array.isArray(restrooms.value) || location.modified < Date.now() - RESTROOM_EXPIRATION_TIME
+        const isInvalid =
+            !restrooms || !Array.isArray(restrooms.value) || location.modified < Date.now() - RESTROOM_EXPIRATION_TIME
 
         if (isInvalid) return null
 
         return restrooms.value
     }
 
+    /**
+     * Update app
+     * updates location, restrooms, and visible map
+     * @returns {void}
+     */
     async updateApp() {
         console.info('updating app')
         const location = await App.fetchLocation()
@@ -128,6 +216,11 @@ export class App {
         console.info('app update finished')
     }
 
+    /**
+     * Get and display route to given restroom
+     * @param {number} id
+     * @returns {HSLRoute|ORSRoute|null}
+     */
     async getRoute(id) {
         const restroom = this.restrooms.get(id)
         if (!restroom) throw new Error('Restroom was not stored in memory')
@@ -139,7 +232,7 @@ export class App {
         const updatedRoute =
             (await getHSLRoute({
                 from: this.location,
-                to: restroom.location
+                to: restroom.location,
             })) || (await getOrsRoute({ from: this.location, to: restroom.location }))
 
         if (!updatedRoute) {
@@ -149,18 +242,28 @@ export class App {
 
         this.routes.set(id, {
             from: this.location,
-            value: updatedRoute
+            value: updatedRoute,
         })
 
         return updatedRoute
     }
 
+    /**
+     * Display location on map
+     * @param {Coordinates} location
+     * @returns {void}
+     */
     showLocation(location) {
         if (!this.visible) return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')
         const newLatLng = new L.LatLng(location.lat, location.lon)
         this.locationMarker.setLatLng(newLatLng)
     }
 
+    /**
+     * Show route to restroom
+     * @param {number} id
+     * @returns {HSLRoute|ORSRoute|void}
+     */
     async showRouteToRestroom(id) {
         if (!this.visible) return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')
 
@@ -169,7 +272,7 @@ export class App {
         if (!restroom.streetName) {
             restroom = {
                 ...restroom,
-                streetName: await getStreetName(restroom.location.lat, restroom.location.lon)
+                streetName: await getStreetName(restroom.location.lat, restroom.location.lon),
             }
             this.restrooms.set(id, restroom)
         }
@@ -197,7 +300,7 @@ export class App {
 
             this.routePolyline = L.polyline(points)
                 .setStyle({
-                    color: 'blue'
+                    color: 'blue',
                 })
                 .addTo(this.map)
         } else if (route.type === 'hsl') {
@@ -207,7 +310,7 @@ export class App {
 
                 this.routePolyline = L.polyline(decoded)
                     .setStyle({
-                        color: 'blue'
+                        color: 'blue',
                     })
                     .addTo(this.map)
             }
@@ -215,6 +318,11 @@ export class App {
         return route
     }
 
+    /**
+     * Display restroom on map
+     * @param {Map<number,Restroom>} restrooms
+     * @returns {void}
+     */
     showRestrooms(restrooms) {
         if (!this.visible) return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')
 
@@ -228,6 +336,10 @@ export class App {
         this.restroomLayerGroup.addTo(this.map)
     }
 
+    /**
+     * Display everything
+     * @returns {void}
+     */
     showAllCurrent() {
         if (!this.visible) return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')
         this.showRestrooms(this.restrooms)
@@ -237,6 +349,11 @@ export class App {
         }
     }
 
+    /**
+     * Add new restrooms to App
+     * @param {Restroom[]} restrooms
+     * @returns {void}
+     */
     addRestrooms(restrooms) {
         for (const restroom of restrooms) {
             if (this.restrooms.has(restroom.id)) continue
@@ -244,8 +361,8 @@ export class App {
                 ...restroom,
                 distance: {
                     from: this.location,
-                    value: App.distanceBetween(this.location, restroom.location)
-                }
+                    value: App.distanceBetween(this.location, restroom.location),
+                },
             })
         }
         App.setStoredRestrooms(this.restrooms)
@@ -254,6 +371,12 @@ export class App {
         }
     }
 
+    /**
+     * Get distance to restroom
+     * !!! NOT IN METERS
+     * @param {number} id
+     * @returns {number} as coordinate points
+     */
     getDistanceToRestroom(id) {
         const restroom = this.restrooms.get(id)
         if (!restroom) throw new Error('Restroom was not stored in memory')
@@ -265,13 +388,17 @@ export class App {
             ...restroom,
             distance: {
                 from: this.location,
-                value: App.distanceBetween(this.location, restroom.location)
-            }
+                value: App.distanceBetween(this.location, restroom.location),
+            },
         }
         this.restrooms.set(id, updatedRestroom)
         return updatedRestroom.distance.value
     }
 
+    /**
+     * Get closest restroom from stored restrooms
+     * @returns {Restroom}
+     */
     getClosestRestroom() {
         let closestRestroom
         let closestDistance
@@ -288,10 +415,20 @@ export class App {
         return closestRestroom
     }
 
+    /**
+     * Focus map on user location
+     * @returns {void}
+     */
     setViewUserLocation() {
-        this.map.setView(this.location, 13);
+        this.map.setView(this.location, 13)
     }
 
+    /**
+     * Focus map between two locations
+     * @param {Coordinates} a
+     * @param {Coordinates} b
+     * @returns {void}
+     */
     fitMapToLocations(a, b) {
         if (!a || !b) {
             this.setViewUserLocation()

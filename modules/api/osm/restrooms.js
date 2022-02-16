@@ -9,9 +9,23 @@ const baseUrl = 'https://overpass-api.de/api/interpreter/'
  */
 
 /**
+ * @typedef {Object} Tag
+ * @property {string} heading
+ * @property {string} text
+ */
+
+/**
+ * @typedef {Object} Restroom
+ * @property {number} id
+ * @property {Date} timestamp
+ * @property {Coordinates} location
+ * @property {Tag[]} tags
+ */
+
+/**
  *
  * @param {Coordinates} coordinates Coordinates to get the toilets around
- * @returns List of restrooms bro
+ * @returns {Restroom[]} List of restrooms bro
  */
 export async function getRestrooms(coordinates) {
     const params = `[out:json];node["amenity"="toilets"](around:${RESTROOM_FETCH_DISTANCE},${coordinates.lat}, ${coordinates.lon}); out meta;`
@@ -24,44 +38,39 @@ export async function getRestrooms(coordinates) {
         timestamp: restroom.timestamp,
         location: {
             lat: restroom.lat,
-            lon: restroom.lon
+            lon: restroom.lon,
         },
-        tags: Object.entries(restroom.tags).map((pair) => {
-            return getTranslation(pair)
-        }).filter(Boolean)
+        tags: Object.entries(restroom.tags)
+            .map((pair) => {
+                return getTranslation(pair)
+            })
+            .filter(Boolean),
     }))
 }
-
 
 function getTranslation([originalKey, originalValue]) {
     if (!originalKey || !originalValue) return null
     const key = originalKey.toLowerCase()
     const value = originalValue.toLowerCase()
 
-
-
-    console.log('getting translation for', key, value);
+    console.log('getting translation for', key, value)
 
     switch (key) {
-        case "fee":
-            {
-                if (value === "no") {
-                    return {
-                        heading: "Maksuton"
-                    }
-                } else if (value === "yes") {
-                    return {
-                        heading: "Maksullinen"
-                    }
-
-                } else {
-                    return {
-                        heading: "Maksu:",
-                        text: originalValue
-                    }
+        case 'fee': {
+            if (value === 'no') {
+                return {
+                    heading: 'Maksuton',
                 }
-
+            } else if (value === 'yes') {
+                return {
+                    heading: 'Maksullinen',
+                }
+            } else {
+                return {
+                    heading: 'Maksu:',
+                    text: originalValue,
+                }
             }
+        }
     }
-
 }

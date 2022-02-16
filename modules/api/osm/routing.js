@@ -2,14 +2,14 @@ const baseUrl =
     'https://api.openrouteservice.org/v2/directions/foot-walking?api_key=5b3ce3597851110001cf62489ed94340f9f94cd7986b548f20950a89&'
 
 /**
- * @typedef {Object} FuckedUpCoordinates
- * @property {number} lon The latitude of the coordinates
- * @property {number} lat The longtitude of the coordinates
+ * @typedef {Object} Coordinates
+ * @property {number} lat The latitude of the coordinates
+ * @property {number} lon The longtitude of the coordinates
  */
 
 /**
  *
- * @param {FuckedUpCoordinates} coordinates Coordinates to get the toilets around
+ * @param {Coordinates} coordinates Coordinates to get the toilets around
  * @returns List of restrooms bro
  */
 export async function getOrsRoute({ from, to }) {
@@ -42,9 +42,9 @@ export async function getOrsRoute({ from, to }) {
                 duration: features.properties.summary.duration,
                 endTime: Date.now() + features.properties.summary.duration * 1000,
                 walkDistance: features.properties.summary.distance,
-                geometry: features.geometry
+                geometry: features.geometry,
             },
-            type: 'ors'
+            type: 'ors',
         }
     } catch {
         return null
