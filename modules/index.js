@@ -5,7 +5,6 @@ async function test() {
 
     const location = await App.fetchLocation()
 
-    document.getElementById('loading-spinner').classList.add('hidden')
     const app = new App({ location })
 
     app.setVisible()
@@ -45,6 +44,8 @@ async function test() {
     document.querySelector('#routenearest').addEventListener('click', () => {
         app.showRouteToRestroom(app.getClosestRestroom().id)
     })
+
+    document.getElementById('loading-spinner').classList.add('hidden')
 }
 
 test()
