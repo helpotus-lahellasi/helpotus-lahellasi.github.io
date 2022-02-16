@@ -9,6 +9,8 @@ const searchForm = document.getElementById('search-form')
 const resultsTarget = document.querySelector('.search-results')
 const loadingSpinner = document.getElementById('loading-spinner')
 
+let oldSearch
+
 async function getRestrooms(location) {
     return await App.fetchRestroomsFromLocation(location)
 }
@@ -75,8 +77,12 @@ async function main() {
     }
 
     async function onSearch(event) {
-        clearTimeout(timeout)
         event.preventDefault()
+        clearTimeout(timeout)
+
+        if (searchBar.value === oldSearch) return
+        oldSearch = searchBar.value
+
         const data = await getSearch(searchBar.value)
         setSearchResultsElement(resultsTarget, data, onClick)
     }
