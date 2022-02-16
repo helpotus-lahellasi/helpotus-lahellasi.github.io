@@ -1,5 +1,6 @@
 import { App } from './app/index.js'
 import { createPart } from './util/index.js'
+import { LOCATION_REFRESH_TIME } from './config.js'
 
 async function test() {
     if (!document.getElementById('map')) throw new Error('Page does not have an element with the id of "map"')
@@ -19,7 +20,6 @@ async function test() {
         restrooms = await App.fetchRestroomsFromLocation(location)
     }
 
-
     if (restrooms && restrooms.length > 0) {
         app.addRestrooms(restrooms)
 
@@ -29,16 +29,13 @@ async function test() {
         const container = document.createElement('div')
         const resultsTarget = document.querySelector('.app-restroom-info')
         container.className = 'info-container'
-        container.appendChild(
-            createPart({ heading: 'Lähialueeltasi ei löydy vessoja!' })
-        )
+        container.appendChild(createPart({ heading: 'Lähialueeltasi ei löydy vessoja!' }))
         resultsTarget.appendChild(container)
     }
 
-    // Update app every 35 seconds
     setInterval(() => {
         app.updateApp()
-    }, 1000 * 35)
+    }, LOCATION_REFRESH_TIME)
 
     app.updateApp()
 
