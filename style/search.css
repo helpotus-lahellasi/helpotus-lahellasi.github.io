@@ -16,9 +16,15 @@
     gap: 1rem;
 }
 
-.search > section {
+.search section {
     background: var(--surface-colored2);
     padding: 1rem;
+}
+
+.upper {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
 }
 
 .search-result-button {
@@ -87,4 +93,18 @@
     padding: 0.4rem;
     padding-left: 0.6rem;
     border-radius: 0.3rem;
+}
+
+@media screen and (min-width: 700px) {
+    .upper {
+        flex-direction: row;
+    }
+
+    .upper .search-settings {
+        flex: 0 1 38%;
+    }
+
+    .upper .search-results {
+        flex: 1 0 62%;
+    }
 }
