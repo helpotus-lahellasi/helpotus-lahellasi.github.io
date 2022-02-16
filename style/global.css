@@ -50,6 +50,7 @@ img {
     height: auto;
     object-fit: contain;
 }
+
 .landing-section img {
     border-style: groove;
     border-color: var(--surface2);
@@ -93,6 +94,7 @@ img {
 .site-navigation .link:hover {
     text-decoration: underline;
 }
+
 .sticky {
     position: sticky;
     top: 0;
@@ -100,9 +102,10 @@ img {
     z-index: 10;
 }
 
-.sticky + .content {
+.sticky+.content {
     padding-top: 60px;
 }
+
 .site-footer {
     display: grid;
     justify-content: center;
@@ -152,9 +155,10 @@ img {
     justify-content: center;
     align-items: center;
     pointer-events: none;
+    z-index: 1000;
 }
 
-#loading-spinner > div {
+#loading-spinner>div {
     display: block;
     height: 4em;
     width: 4em;
@@ -180,6 +184,7 @@ img {
 .hidden {
     display: none !important;
 }
+
 .rainbow {
     animation-name: hue;
     animation-duration: 1s;
