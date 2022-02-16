@@ -34,22 +34,18 @@ async function main() {
 
         clearElement(resultsTarget)
 
-
-
-
         for (const restroom of restroomsWithRoutes) {
             const container = document.createElement('div')
             container.className = 'info-container'
 
             const route = restroom.route.data
+
+            restroom.name && container.appendChild(createPart({ heading: restroom.name }))
+
             container.appendChild(
                 createPart({ heading: 'Osoite:', text: await getStreetName(restroom.location.lat, restroom.location.lon) })
-
             )
-
             container.appendChild(createPart({ heading: 'Etäisyys:', text: Math.round(route.walkDistance) + ' m' }))
-            container.appendChild(createPart({ heading: 'Kesto:', text: Math.round(route.duration / 60) + ' minuuttia' }))
-
 
             // Loop through restroom tags
             for (const { heading, text }

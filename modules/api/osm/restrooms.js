@@ -40,6 +40,7 @@ export async function getRestrooms(coordinates) {
             lat: restroom.lat,
             lon: restroom.lon,
         },
+        name: restroom.tags["name"] || undefined,
         tags: Object.entries(restroom.tags)
             .map((pair) => {
                 return getTranslation(pair)
@@ -53,24 +54,57 @@ function getTranslation([originalKey, originalValue]) {
     const key = originalKey.toLowerCase()
     const value = originalValue.toLowerCase()
 
-    console.log('getting translation for', key, value)
-
     switch (key) {
-        case 'fee': {
-            if (value === 'no') {
-                return {
-                    heading: 'Maksuton',
-                }
-            } else if (value === 'yes') {
-                return {
-                    heading: 'Maksullinen',
-                }
-            } else {
-                return {
-                    heading: 'Maksu:',
-                    text: originalValue,
+        case 'fee':
+            {
+                if (value === 'no') {
+                    return {
+                        heading: 'Maksu:',
+                        text: "Ei"
+                    }
+                } else if (value === 'yes') {
+                    return {
+                        heading: 'Maksu:',
+                        text: "Kyllä"
+                    }
+                } else {
+                    return {
+                        heading: 'Maksu:',
+                        text: originalValue,
+                    }
                 }
             }
-        }
+        case 'access':
+            {
+                if (value === "customers") {
+                    return {
+                        heading: 'Pääsy:',
+                        text: 'asiakkaille'
+                    }
+                } else {
+                    return null
+                }
+            }
+        case 'wheelchair':
+            {
+                if (value === "yes") {
+                    return {
+                        heading: 'Pääsy pyörätuolilla:',
+                        text: 'Kyllä'
+                    }
+                } else if (value === "no") {
+                    return {
+                        heading: 'Pääsy pyörätuolilla:',
+                        text: 'Ei'
+                    }
+                } else {
+                    return null
+                }
+            }
+        default:
+            {
+                return null
+            }
+
     }
 }

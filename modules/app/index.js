@@ -67,11 +67,11 @@ export class App {
      */
     setVisible() {
         this.visible = true
-        this.map = L.map('map').setView(this.location, 13)
+        this.map = L.map('map').setView(this.location, 14)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         }).addTo(this.map)
-        this.locationMarker = L.marker(this.location, { icon: icons.red })
+        this.locationMarker = L.marker(this.location, { icon: icons.black })
             .bindPopup(`Olet tässä`)
             .openPopup(this.map)
             .addTo(this.map)
@@ -165,8 +165,7 @@ export class App {
      */
     static getStoredLocation() {
         const location = JSON.parse(sessionStorage.getItem('restroom-app-location'))
-        const isInvalid =
-            !location ||
+        const isInvalid = !location ||
             !location.value ||
             !location.value.lat ||
             !location.value.lon ||
@@ -183,8 +182,7 @@ export class App {
      */
     static getStoredRestrooms() {
         const restrooms = JSON.parse(sessionStorage.getItem('restroom-app-restrooms'))
-        const isInvalid =
-            !restrooms || !Array.isArray(restrooms.value) || location.modified < Date.now() - RESTROOM_EXPIRATION_TIME
+        const isInvalid = !restrooms || !Array.isArray(restrooms.value) || location.modified < Date.now() - RESTROOM_EXPIRATION_TIME
 
         if (isInvalid) return null
 
@@ -344,7 +342,23 @@ export class App {
 
         this.restroomLayerGroup.clearLayers()
         for (const restroom of restrooms.values()) {
-            const marker = L.marker(restroom.location)
+            const fee = restroom.tags.find(tag =>
+                tag.heading.toLowerCase() === "maksu:"
+            )
+
+            let icon
+
+            if (!fee || !fee.text) {
+                icon = icons.gold
+            } else if (fee.text.toLowerCase() === "kyllä") {
+                icon = icons.red
+            } else if (fee.text.toLowerCase() === "ei") {
+                icon = icons.green
+            } else {
+                icon = icons.gold
+            }
+
+            const marker = L.marker(restroom.location, { icon })
                 .addTo(this.map)
                 .on('click', () => this.showRouteToRestroom(restroom.id))
             this.restroomLayerGroup.addLayer(marker)
@@ -436,7 +450,7 @@ export class App {
      * @returns {void}
      */
     setViewUserLocation() {
-        this.map.setView(this.location, 13)
+        this.map.setView(this.location, 14)
     }
 
     /**

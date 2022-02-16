@@ -6,7 +6,7 @@ export async function setRestroomElement(target, data) {
     const container = document.createElement('div')
     container.className = 'info-container'
 
-    data.tags.name && container.appendChild(createPart({ heading: data.tags.name }))
+    data.name && container.appendChild(createPart({ heading: data.name }))
     container.appendChild(createPart({ heading: 'Osoite:', text: data.streetName }))
 
     for (const { heading, text }
