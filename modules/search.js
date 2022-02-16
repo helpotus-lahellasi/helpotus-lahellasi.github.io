@@ -1,4 +1,3 @@
-import { getSearch } from './api/osm/search.js'
 import { App } from './app/index.js'
 import { setSearchResultsElement } from './layout/searchResults.js'
 import { setRestroomList } from './layout/searchRestroomlist.js'
@@ -11,30 +10,36 @@ const restroomList = document.querySelector('.restroomlist')
 
 let oldSearch
 
-async function getRestrooms(location) {
-    return await App.fetchRestroomsFromLocation(location)
-}
-
 async function main() {
-    function onClick(event, data) {
-        listRestRooms(data.lat, data.lon)
+    const app = new App()
+    const cachedSearches = App.getStoredSearches()
+
+    if (cachedSearches) {
+        app.addSearches(cachedSearches)
     }
 
-    async function listRestRooms(lat, lon) {
+    async function listRestrooms(_event, data) {
+        const { lat, lon } = data
+        app.location = { lat, lon }
         loadingSpinner.classList.toggle('hidden', false)
 
-        const restrooms = await getRestrooms({ lat: lat, lon: lon })
+        const restrooms = await App.fetchRestroomsFromLocation({ lat, lon })
+
+        app.addRestrooms(restrooms)
+
         const restroomsWithDistance = restrooms.map((restroom) => ({
             ...restroom,
-            distance: App.distanceBetween({ lat: lat, lon: lon }, restroom.location),
+            distance: App.distanceBetween(app.location, restroom.location),
         }))
+
         const sortedRestrooms = [...restroomsWithDistance]
             .sort((vessaA, vessaB) => vessaA.distance - vessaB.distance)
             .slice(0, 4)
+
         const restroomsWithRoutes = await Promise.all(
             [...sortedRestrooms].map(async (restroom) => ({
                 ...restroom,
-                route: await App.getRouteBetweenLocations({ lat, lon }, restroom.location),
+                route: await app.getRoute(restroom.id),
             }))
         )
 
@@ -50,9 +55,9 @@ async function main() {
         if (searchBar.value === oldSearch) return
         oldSearch = searchBar.value
 
-        const data = await getSearch(searchBar.value)
+        const data = await app.getSearchResult(searchBar.value)
 
-        setSearchResultsElement(resultsTarget, data, onClick)
+        setSearchResultsElement(resultsTarget, data.results, listRestrooms)
     }
 
     let timeout

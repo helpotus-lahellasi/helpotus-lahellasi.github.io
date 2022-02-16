@@ -9,7 +9,8 @@ import { getStreetName } from '../api/routereverse/streetNameFromPosition.js'
 import { getCurrentLocation } from '../location/index.js'
 import { icons } from '../map/markers.js'
 import { clearElement } from '../util/index.js'
-import { LOCATION_EXPIRATION_TIME, RESTROOM_EXPIRATION_TIME } from '../config.js'
+import { LOCATION_EXPIRATION_TIME, RESTROOM_EXPIRATION_TIME, SEARCH_EXPIRATION_TIME } from '../config.js'
+import { getSearch } from '../api/osm/search.js'
 
 /**
  * @typedef {Object} Coordinates
@@ -40,22 +41,25 @@ import { LOCATION_EXPIRATION_TIME, RESTROOM_EXPIRATION_TIME } from '../config.js
 export class App {
     /**
      *
-     * @param {AppOptions}
+     * @param {AppOptions} options
      */
-    constructor({ location: { lat, lon } }) {
-        if (!document.getElementById('map')) throw new Error('Page does not have an element with the id of "map"')
-        this.map
-        this.locationMarker
-        this.selectedRestroom
-        this.routePolyline
+    constructor(options) {
+        this.map = null
+        this.locationMarker = null
+        this.selectedRestroom = null
+        this.routePolyline = null
+        this.restroomLayerGroup = null
 
         this.routes = new Map()
         this.restrooms = new Map()
+        this.searches = new Map()
 
         this.visible = false
 
-        this.location = { lat, lon }
-        App.setStoredLocation(this.location)
+        if (options && options.location) {
+            this.location = options.location
+            App.setStoredLocation(this.location)
+        }
 
         this.restroomLayerGroup = L.layerGroup()
     }
@@ -160,12 +164,21 @@ export class App {
     }
 
     /**
+     * Store location into session storage
+     * @param {Coordinates} location
+     */
+    static setStoredSearches(searches) {
+        sessionStorage.setItem('restroom-app-searches', JSON.stringify({ value: searches, modified: Date.now() }))
+    }
+
+    /**
      *  Get location from session storage
      * @returns {Coordinates} location
      */
     static getStoredLocation() {
         const location = JSON.parse(sessionStorage.getItem('restroom-app-location'))
-        const isInvalid = !location ||
+        const isInvalid =
+            !location ||
             !location.value ||
             !location.value.lat ||
             !location.value.lon ||
@@ -182,11 +195,26 @@ export class App {
      */
     static getStoredRestrooms() {
         const restrooms = JSON.parse(sessionStorage.getItem('restroom-app-restrooms'))
-        const isInvalid = !restrooms || !Array.isArray(restrooms.value) || location.modified < Date.now() - RESTROOM_EXPIRATION_TIME
+        const isInvalid =
+            !restrooms || !Array.isArray(restrooms.value) || location.modified < Date.now() - RESTROOM_EXPIRATION_TIME
 
         if (isInvalid) return null
 
         return restrooms.value
+    }
+
+    /**
+     * Get restrooms from session storage
+     * @returns {Restroom[]}
+     */
+    static getStoredSearches() {
+        const searches = JSON.parse(sessionStorage.getItem('restroom-app-searches'))
+        const isInvalid =
+            !searches || !Array.isArray(searches.value) || searches.modified < Date.now() - SEARCH_EXPIRATION_TIME
+
+        if (isInvalid) return null
+
+        return searches.value
     }
 
     /**
@@ -228,6 +256,28 @@ export class App {
                 to: b,
             })) || (await getOrsRoute({ from: a, to: b }))
         )
+    }
+
+    /**
+     * Get searchresults from string
+     * @param {string} text
+     * @returns {SearchResult[]|null}
+     */
+    async getSearchResult(text) {
+        const query = text.toLowerCase()
+        const storedSearch = this.searches.get(query)
+        if (storedSearch) {
+            return storedSearch
+        }
+
+        const updatedSearch = await getSearch(text)
+        if (!updatedSearch) return null
+
+        const searchWithQuery = { results: updatedSearch, query: query }
+        this.addSearches([searchWithQuery])
+        App.setStoredSearches([...this.searches.values()])
+
+        return searchWithQuery
     }
 
     /**
@@ -338,32 +388,27 @@ export class App {
      * @returns {void}
      */
     showRestrooms(restrooms) {
-
         if (!this.visible) return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')
 
         this.restroomLayerGroup.clearLayers()
         for (const restroom of restrooms.values()) {
-            const fee = restroom.tags.find(tag =>
-                tag.heading.toLowerCase() === "maksu:"
-            )
+            const fee = restroom.tags.find((tag) => tag.heading.toLowerCase() === 'maksu:')
 
             if (!restrooms || restrooms.length === 0) {
                 const container = document.createElement('div')
                 container.className = 'info-container'
-                container.appendChild(
-                    createPart({ heading: 'Hakemaltasi alueelta ei löytynyt vessoja!' })
-                )
+                container.appendChild(createPart({ heading: 'Hakemaltasi alueelta ei löytynyt vessoja!' }))
                 resultsTarget.appendChild(container)
-                return;
+                return
             }
 
             let icon
 
             if (!fee || !fee.text) {
                 icon = icons.gold
-            } else if (fee.text.toLowerCase() === "kyllä") {
+            } else if (fee.text.toLowerCase() === 'kyllä') {
                 icon = icons.red
-            } else if (fee.text.toLowerCase() === "ei") {
+            } else if (fee.text.toLowerCase() === 'ei') {
                 icon = icons.green
             } else {
                 icon = icons.gold
@@ -410,6 +455,19 @@ export class App {
         if (this.visible) {
             this.showRestrooms(this.restrooms)
         }
+    }
+
+    /**
+     * Add new searchresults to App
+     * @param {SearchResult[]} restrooms
+     * @returns {void}
+     */
+    addSearches(searches) {
+        for (const search of searches) {
+            if (this.searches.has(search.query)) continue
+            this.searches.set(search.query, search)
+        }
+        App.setStoredSearches([...this.searches.values()])
     }
 
     /**
