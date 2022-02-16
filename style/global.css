@@ -49,8 +49,11 @@ img {
     width: auto;
     height: auto;
     object-fit: contain;
+
+}
+.landing-section img{
     border-style: groove;
-    border-color: var(--surface1);
+    border-color: var(--surface2);
 }
 
 .site-header {
@@ -64,8 +67,7 @@ img {
     flex-wrap: wrap;
     gap: 1.75em;
     padding: 1em;
-    border-left-style: groove;
-    border-color: var(--surface1);
+
 }
 
 .site-navigation .link {
