@@ -53,7 +53,7 @@
     pointer-events: none;
 }
 
-.app-main > aside {
+.app-main>aside {
     display: flex;
     flex-direction: column;
     gap: 0.5em;
@@ -63,13 +63,11 @@
     .app {
         margin-top: 2rem;
     }
-
     .app-buttons {
         justify-content: flex-start;
         padding: 0 0.5em;
         gap: 1em;
     }
-
     .app-main {
         grid-auto-flow: column;
     }
@@ -98,4 +96,8 @@ img.leaflet-tile {
 .leaflet-bar a:hover {
     background-color: var(--surface-colored4);
     color: var(--text-colored1);
+}
+
+.leaflet-marker-icon {
+    image-rendering: pixelated;
 }
