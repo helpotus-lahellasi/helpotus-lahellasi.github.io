@@ -7,6 +7,7 @@
     --text2: hsl(var(--hue-color2), 86%, 20%);
     --text-contrary1: hsl(var(--hue-color1), 42%, 87%);
     --text-colored1: hsl(var(--hue-color2), 96%, 54%);
+    --text-colored2: hsl(var(--hue-color2), 96%, 84%);
     --text-accent1: hsl(var(--hue-accent), 100%, 90%);
     --surface1: hsl(var(--hue-color1), 42%, 87%);
     --surface2: hsl(var(--hue-color1), 41%, 90%);

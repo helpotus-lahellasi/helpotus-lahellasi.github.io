@@ -4,9 +4,15 @@ export async function setSearchResultsElement(target, data, onClickHandler) {
     clearElement(target)
 
     const container = document.createElement('div')
-    container.className = 'searchresults-container'
+    container.className = 'search-results-container'
 
-    console.log(data)
+    const heading = document.createElement('h3')
+    heading.textContent = 'Hakutulokset:'
+    const desc = document.createElement('span')
+    desc.textContent = '(napauta sijaintia etsiäksesi käymälät)'
+
+    container.appendChild(heading)
+    container.appendChild(desc)
 
     for (const location of data) {
         const button = document.createElement('button')
@@ -20,6 +26,4 @@ export async function setSearchResultsElement(target, data, onClickHandler) {
         container.appendChild(button)
         target.appendChild(container)
     }
-
-
 }

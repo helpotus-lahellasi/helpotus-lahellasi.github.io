@@ -73,6 +73,11 @@
     margin-top: 0;
 }
 
+.landing-section img {
+    border-style: groove;
+    border-color: var(--surface2);
+}
+
 .divided {
     display: grid;
     grid-auto-flow: row;

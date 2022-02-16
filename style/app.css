@@ -43,8 +43,8 @@
     background: hsl(172, 100%, 36%);
 }
 
-.app-buttons button:focus {
-    border-color: var(--text-accent1);
+.app-buttons button:active {
+    border-color: var(--surface-colored4);
 }
 
 .app-buttons button img {
@@ -80,9 +80,15 @@ img.leaflet-tile {
     filter: hue-rotate(67deg) saturate(1.2) contrast(1.1) brightness(0.9);
 }
 
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background-clip: padding-box;
+}
+
 .leaflet-bar a {
     color: var(--text-colored1);
-    display: flex;
+    display: flex !important;
     justify-content: center;
     align-items: flex-end;
     background-color: var(--surface-colored3);
