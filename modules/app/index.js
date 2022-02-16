@@ -128,6 +128,14 @@ export class App {
         console.info('app update finished')
     }
 
+    static async getRouteBetweenLocations(a, b) {
+        if (!a ||  !b) return null
+        return (await getHSLRoute({
+            from: a,
+            to: b
+        })) || (await getOrsRoute({ from: a, to: b }))
+    }
+
     async getRoute(id) {
         const restroom = this.restrooms.get(id)
         if (!restroom) throw new Error('Restroom was not stored in memory')

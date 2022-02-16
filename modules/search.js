@@ -1,10 +1,13 @@
 import { getSearch } from './api/osm/search.js'
 import { App } from './app/index.js'
 import { setSearchResultsElement } from './layout/searchResults.js'
+import { dateToFinnishLocale, createPart, clearElement } from './util/index.js'
+import { getStreetName } from './api/routereverse/streetNameFromPosition.js'
 
 const searchBar = document.getElementById('searchbar')
-const searchForm = document.getElementById("search-form")
+const searchForm = document.getElementById('search-form')
 const resultsTarget = document.querySelector('.search-results')
+const loadingSpinner = document.getElementById('loading-spinner')
 
 async function getRestrooms(location) {
     return await App.fetchRestroomsFromLocation(location)
@@ -12,15 +15,64 @@ async function getRestrooms(location) {
 
 async function main() {
     function onClick(event, data) {
-        ///
-        console.log(data)
+        listRestRooms(data.lat, data.lon)
+    }
 
+    async function listRestRooms(lat, lon) {
+        loadingSpinner.classList.toggle('hidden', false)
+        const restrooms = await getRestrooms({ lat: lat, lon: lon })
+        const restroomsWithDistance = restrooms.map(restroom => ({...restroom, distance: App.distanceBetween({ lat: lat, lon: lon }, restroom.location) }))
+        const sortedRestrooms = [...restroomsWithDistance]
+            .sort(
+                (vessaA, vessaB) =>
+                vessaA.distance -
+                vessaB.distance
+            )
+            .slice(0, 4)
+        const restroomsWithRoutes = await Promise.all([...sortedRestrooms].map(async(restroom) => ({...restroom, route: await App.getRouteBetweenLocations({ lat, lon }, restroom.location) })))
+
+
+        clearElement(resultsTarget)
+
+
+
+
+        for (const restroom of restroomsWithRoutes) {
+            const container = document.createElement('div')
+            container.className = 'info-container'
+
+            const route = restroom.route.data
+            container.appendChild(
+                createPart({ heading: 'Osoite:', text: await getStreetName(restroom.location.lat, restroom.location.lon) })
+
+            )
+
+            container.appendChild(createPart({ heading: 'Etäisyys:', text: Math.round(route.walkDistance) + ' m' }))
+            container.appendChild(createPart({ heading: 'Kesto:', text: Math.round(route.duration / 60) + ' minuuttia' }))
+
+
+            // Loop through restroom tags
+            for (const { heading, text }
+                of restroom.tags) {
+                if (!heading && !text) continue
+                container.appendChild(createPart({ heading, text }))
+            }
+
+            container.appendChild(
+                createPart({ heading: 'Lisätty:', text: dateToFinnishLocale(new Date(restroom.timestamp)) })
+            )
+
+            resultsTarget.appendChild(container)
+        }
+
+
+        loadingSpinner.classList.toggle('hidden', true)
     }
 
     async function onSearch(event) {
+        clearTimeout(timeout)
         event.preventDefault()
-        console.log(searchBar.value)
-        const data = await getSearch(searchBar.value);
+        const data = await getSearch(searchBar.value)
         setSearchResultsElement(resultsTarget, data, onClick)
     }
 
@@ -32,13 +84,10 @@ async function main() {
         timeout = setTimeout(async() => {
             await onSearch(event)
         }, 500)
-
     }
 
-
-
-    searchBar.addEventListener('change', debouncedOnSearch);
-    searchBar.addEventListener('keyup', debouncedOnSearch);
+    searchBar.addEventListener('change', debouncedOnSearch)
+    searchBar.addEventListener('keyup', debouncedOnSearch)
     searchForm.addEventListener('submit', onSearch)
 }
 
