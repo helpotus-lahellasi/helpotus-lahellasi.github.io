@@ -42,7 +42,13 @@ export async function getOrsRoute({ from, to }) {
                 duration: features.properties.summary.duration,
                 endTime: Date.now() + features.properties.summary.duration * 1000,
                 walkDistance: features.properties.summary.distance,
-                geometry: features.geometry,
+                geometry: {
+                    ...features.geometry,
+                    coordinates: features.geometry.coordinates.map((point) => {
+                        console.log(point)
+                        return point.reverse()
+                    }),
+                },
             },
             type: 'ors',
         }

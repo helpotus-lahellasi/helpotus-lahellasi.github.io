@@ -351,16 +351,18 @@ export class App {
             this.selectedRestroom = restroom
             return
         }
+
         setRouteInfoElement(document.querySelector('.app-route-info'), route)
 
         this.selectedRestroom = restroom
 
         if (this.routePolyline) {
+            console.log()
             this.map.removeLayer(this.routePolyline)
         }
 
         if (route.type === 'ors') {
-            const points = route.data.geometry.coordinates.map((point) => point.reverse())
+            const points = route.data.geometry.coordinates
 
             this.routePolyline = L.polyline(points)
                 .setStyle({
