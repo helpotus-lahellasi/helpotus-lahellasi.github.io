@@ -451,7 +451,7 @@ export class App {
                 },
             })
         }
-        App.setStoredRestrooms(this.restrooms)
+        App.setStoredRestrooms([...this.restrooms.values()])
         if (this.visible) {
             this.showRestrooms(this.restrooms)
         }
