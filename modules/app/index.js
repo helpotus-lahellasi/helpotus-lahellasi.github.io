@@ -217,6 +217,22 @@ export class App {
     }
 
     /**
+     * Fetches a route between two locations
+     * @param {Coordinates} a
+     * @param {Coordinates} b
+     * @returns {HSLRoute|ORSRoute|null}
+     */
+    static async getRouteBetweenLocations(a, b) {
+        if (!a || !b) return null
+        return (
+            (await getHSLRoute({
+                from: a,
+                to: b,
+            })) || (await getOrsRoute({ from: a, to: b }))
+        )
+    }
+
+    /**
      * Get and display route to given restroom
      * @param {number} id
      * @returns {HSLRoute|ORSRoute|null}
