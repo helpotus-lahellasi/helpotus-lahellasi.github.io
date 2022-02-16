@@ -96,7 +96,7 @@
     }
     .divided > div {
         justify-self: flex-end;
-        text-align: justify;
+        text-align: left;
         align-self: flex-start;
     }
 
