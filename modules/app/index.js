@@ -58,7 +58,6 @@ export class App {
 
         if (options && options.location) {
             this.location = options.location
-            App.setStoredLocation(this.location)
         }
 
         this.restroomLayerGroup = L.layerGroup()
@@ -452,7 +451,7 @@ export class App {
                 },
             })
         }
-        App.setStoredRestrooms([...this.restrooms.values()])
+
         if (this.visible) {
             this.showRestrooms(this.restrooms)
         }
