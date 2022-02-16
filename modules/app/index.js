@@ -357,7 +357,6 @@ export class App {
         this.selectedRestroom = restroom
 
         if (this.routePolyline) {
-            console.log()
             this.map.removeLayer(this.routePolyline)
         }
 

@@ -45,7 +45,6 @@ export async function getOrsRoute({ from, to }) {
                 geometry: {
                     ...features.geometry,
                     coordinates: features.geometry.coordinates.map((point) => {
-                        console.log(point)
                         return point.reverse()
                     }),
                 },
