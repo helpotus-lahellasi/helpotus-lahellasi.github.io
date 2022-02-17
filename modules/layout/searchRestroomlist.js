@@ -15,6 +15,7 @@ export async function setRestroomList(target, data) {
     container.appendChild(desc)
 
     if (!data || data.length === 0) {
+        const loadingSpinner = document.getElementById('loading-spinner')
         container.appendChild(createPart({ heading: 'Hakemaltasi alueelta ei löytynyt vessoja!' }))
         target.appendChild(container)
         loadingSpinner.classList.toggle('hidden', true)
@@ -38,7 +39,8 @@ export async function setRestroomList(target, data) {
         restroomContainer.appendChild(createPart({ heading: 'Etäisyys:', text: Math.round(route.walkDistance) + ' m' }))
 
         // Loop through restroom tags
-        for (const { heading, text } of restroom.tags) {
+        for (const { heading, text }
+            of restroom.tags) {
             if (!heading && !text) continue
             restroomContainer.appendChild(createPart({ heading, text }))
         }
