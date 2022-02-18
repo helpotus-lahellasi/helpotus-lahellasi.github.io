@@ -1,76 +1,81 @@
 <!DOCTYPE html>
 <html lang="fi">
+    <head>
+        <!-- Default meta -->
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16x16.png" />
+        <link rel="manifest" href="./icons/site.webmanifest" />
+        <link rel="mask-icon" href="./icons/safari-pinned-tab.svg" color="#015c50" />
+        <link rel="shortcut icon" href="./icons/favicon.ico" />
+        <meta name="apple-mobile-web-app-title" content="Helpotus L&auml;hell&auml;si" />
+        <meta name="application-name" content="Helpotus L&auml;hell&auml;si" />
+        <meta name="msapplication-TileColor" content="#fbccff" />
+        <meta name="msapplication-TileImage" content="./icons/mstile-144x144.png" />
+        <meta name="msapplication-config" content="./icons/browserconfig.xml" />
+        <meta name="theme-color" content="#ffffff" />
 
-<head>
-    <!-- Default meta -->
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16x16.png" />
-    <link rel="manifest" href="./icons/site.webmanifest" />
-    <link rel="mask-icon" href="./icons/safari-pinned-tab.svg" color="#015c50" />
-    <link rel="shortcut icon" href="./icons/favicon.ico" />
-    <meta name="apple-mobile-web-app-title" content="Helpotus L&auml;hell&auml;si" />
-    <meta name="application-name" content="Helpotus L&auml;hell&auml;si" />
-    <meta name="msapplication-TileColor" content="#fbccff" />
-    <meta name="msapplication-TileImage" content="./icons/mstile-144x144.png" />
-    <meta name="msapplication-config" content="./icons/browserconfig.xml" />
-    <meta name="theme-color" content="#ffffff" />
+        <!-- Global assets -->
+        <link rel="stylesheet" href="style/global.css" />
 
-    <!-- Global assets -->
-    <link rel="stylesheet" href="style/global.css" />
+        <!-- Page specific -->
+        <title>Haku | Helpotus lähelläsi</title>
+        <link rel="stylesheet" href="style/search.css" />
+    </head>
 
-    <!-- Page specific -->
-    <title>Haku | Helpotus lähelläsi</title>
-    <link rel="stylesheet" href="style/search.css" />
-</head>
+    <body>
+        <header class="site-header">
+            <nav class="site-navigation" role="navigation">
+                <a class="link home" href="index.html">
+                    <img src="./icons/favicon-32x32.png" width="24" height="24" />HL
+                </a>
+                <a class="link" href="sovellus.html">kartta</a>
+                <a class="link" href="haku.html">haku</a>
+            </nav>
+        </header>
 
-<body>
-    <header class="site-header">
-        <nav class="site-navigation" role="navigation">
-            <a class="link home" href="index.html">
-                <img src="./icons/favicon-32x32.png" width="24" height="24" />koti
-            </a>
-            <a class="link" href="sovellus.html">sovellus</a>
-            <a class="link" href="haku.html">haku</a>
-        </nav>
-    </header>
+        <main class="site-main search-main">
+            <div class="search">
+                <div class="upper">
+                    <section class="search-settings">
+                        <form id="search-form">
+                            <label for="searchbar">Syötä osoite/paikka/koordinaatit: </label>
+                            <input type="text" id="searchbar" />
+                        </form>
+                    </section>
 
-    <main class="site-main search-main">
-        <div class="search">
-            <div class="upper">
-                <section class="search-settings">
-                    <form id="search-form">
-                        <label for="searchbar">Syötä osoite/paikka/koordinaatit: </label>
-                        <input type="text" id="searchbar" />
-                    </form>
-                </section>
+                    <section class="search-results"></section>
+                </div>
 
-                <section class="search-results"></section>
+                <div id="loading-spinner" class="hidden">
+                    <div></div>
+                </div>
+
+                <section class="restroomlist"></section>
+                <div class="more-restrooms-container">
+                    <button
+                        aria-label="lataa lisää hakutuloksia"
+                        class="custom-button hidden"
+                        type="button"
+                        title="lataa lisää hakutuloksia"
+                        id="more-restrooms"
+                    >
+                        <img width="20px" height="20px" src="icons/plus.svg" alt="placeholder" />
+                    </button>
+                </div>
             </div>
+        </main>
 
-            <div id="loading-spinner" class="hidden">
-                <div></div>
+        <footer class="site-footer">
+            <div class="copyright">
+                Helpotus Lähelläsi ei vastaa
+                <a href="https://www.openstreetmap.org/copyright">© OpenStreetMapin</a> tekijät johtuvista väärän tiedon
+                levityksestä, datan manipuloinnista tai datan väärinkäytöstä.&copy;2022
             </div>
-
-            <section class="restroomlist"></section>
-            <div class="more-restrooms-container">
-                <button aria-label="lataa lisää hakutuloksia" class="custom-button hidden" type="button" title="lataa lisää hakutuloksia" id="more-restrooms"> <img width="20px" height="20px" src="icons/plus.svg" alt="placeholder" /></button>
-            </div>
-
-
-        </div>
-    </main>
-
-    <footer class="site-footer">
-        <div class="copyright">
-            Helpotus Lähelläsi ei vastaa
-            <a href="https://www.openstreetmap.org/copyright">© OpenStreetMapin</a> tekijät johtuvista väärän tiedon levityksestä, datan manipuloinnista tai datan väärinkäytöstä.&copy;2022
-        </div>
-    </footer>
-</body>
-<script src="modules/search.js" type="module"></script>
-
+        </footer>
+    </body>
+    <script src="modules/search.js" type="module"></script>
 </html>
