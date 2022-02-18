@@ -10,7 +10,7 @@ const iconBase = {
 export const icons = {
     moneyRestroom: new L.Icon({
         ...iconBase,
-        iconUrl: 'https://pennane.github.io/web-tekniikat-projekti/icons/favicon-32x32.png',
+        iconUrl: 'https://pennane.github.io/helpotus-lahellasi/icons/favicon-32x32.png',
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
     }),
     userMarker: new L.Icon({
@@ -20,12 +20,12 @@ export const icons = {
     }),
     freeRestroom: new L.Icon({
         ...iconBase,
-        iconUrl: 'https://pennane.github.io/web-tekniikat-projekti/icons/favicon-32x32.png',
+        iconUrl: 'https://pennane.github.io/helpotus-lahellasi/icons/favicon-32x32.png',
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
     }),
     unknownFeeRestroom: new L.Icon({
         ...iconBase,
-        iconUrl: 'https://pennane.github.io/web-tekniikat-projekti/icons/favicon-32x32.png',
+        iconUrl: 'https://pennane.github.io/helpotus-lahellasi/icons/favicon-32x32.png',
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
     }),
 }
