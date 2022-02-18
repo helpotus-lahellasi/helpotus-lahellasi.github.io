@@ -6,7 +6,6 @@ import { clearElement, createPart } from './util/index.js'
 const searchBar = document.getElementById('searchbar')
 const searchForm = document.getElementById('search-form')
 const resultsTarget = document.querySelector('.search-results')
-const loadingSpinner = document.getElementById('loading-spinner')
 const restroomList = document.querySelector('.restroomlist')
 const moreRestroomsButton = document.getElementById('more-restrooms')
 
