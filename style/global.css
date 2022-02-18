@@ -204,6 +204,11 @@ img {
     filter: var(--app-button-filter);
 }
 
+.center-page {
+    position: fixed !important;
+    inset: 0;
+}
+
 @keyframes spin {
     0% {
         transform: rotate(0);
