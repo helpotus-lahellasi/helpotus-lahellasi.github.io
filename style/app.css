@@ -2,6 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 0 0.75rem;
 }
 
 .app {
@@ -10,7 +11,7 @@
     max-width: 700px;
     flex: 1;
     margin-top: 0.5em;
-    gap: 0.5em;
+    box-shadow: var(--shadow);
 }
 
 .app-main {
@@ -19,16 +20,21 @@
     grid-auto-columns: 7fr 3fr;
     background: var(--surface-colored2);
     gap: 0.5em;
-    padding: 0.5em;
+    padding: 0.5rem;
+    border-radius: 0 0 0.3rem 0.3rem;
 }
 
 .app-buttons {
     display: flex;
     justify-content: center;
-    gap: 2.5rem;
+    gap: 1rem;
+    padding: 0.3rem 0.5rem;
+    padding-bottom: 0;
+    border-radius: 0.3rem 0.3rem 0 0;
+    background: var(--surface-colored2);
 }
 
-.app-main>aside {
+.app-main > aside {
     display: flex;
     flex-direction: column;
     gap: 0.5em;
@@ -40,7 +46,6 @@
     }
     .app-buttons {
         justify-content: flex-start;
-        padding: 0 0.5em;
         gap: 1em;
     }
     .app-main {
@@ -52,7 +57,7 @@
 }
 
 img.leaflet-tile {
-    filter: hue-rotate(67deg) saturate(1.2) contrast(1.1) brightness(0.9);
+    filter: var(--map-filter);
 }
 
 .leaflet-touch .leaflet-control-layers,
@@ -62,7 +67,7 @@ img.leaflet-tile {
 }
 
 .leaflet-bar a {
-    color: var(--text-colored1);
+    color: var(--text-accent1);
     display: flex !important;
     justify-content: center;
     align-items: flex-end;
@@ -76,9 +81,13 @@ img.leaflet-tile {
 
 .leaflet-bar a:hover {
     background-color: var(--surface-colored4);
-    color: var(--text-colored1);
+    color: var(--text-accent1);
 }
 
 .leaflet-marker-icon {
     image-rendering: pixelated;
+}
+
+#map path {
+    stroke: var(--route-color);
 }

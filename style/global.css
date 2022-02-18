@@ -56,9 +56,8 @@ img {
 }
 
 .site-header {
-    background: var(--surface-colored2);
+    background: var(--surface-colored1);
     box-shadow: inset var(--shadow);
-    background: linear-gradient(180deg, var(--surface-colored1), var(--surface-colored2));
 }
 
 .site-navigation {
@@ -104,7 +103,7 @@ img {
     z-index: 10;
 }
 
-.sticky+.content {
+.sticky + .content {
     padding-top: 60px;
 }
 
@@ -163,7 +162,7 @@ img {
     z-index: 1000;
 }
 
-#loading-spinner>div {
+#loading-spinner > div {
     display: block;
     height: 4em;
     width: 4em;
@@ -184,24 +183,24 @@ img {
     background: var(--surface-colored3);
     padding: 0.7rem;
     border-radius: 100%;
-    border: 2px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--surface-colored2);
     width: 46px;
     height: 46px;
 }
 
 .custom-button:hover {
-    background: transparent;
-    background: hsl(172, 100%, 36%);
+    background: var(--surface-colored4);
 }
 
 .custom-button:active {
-    border-color: var(--surface-colored4);
+    border-color: var(--surface-colored3);
 }
 
 .custom-button img {
     width: 20px;
     height: 20px;
     pointer-events: none;
+    filter: var(--app-button-filter);
 }
 
 @keyframes spin {
