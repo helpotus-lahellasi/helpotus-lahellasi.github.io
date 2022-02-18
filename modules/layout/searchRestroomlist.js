@@ -2,17 +2,10 @@ import { getStreetName } from '../api/routereverse/streetNameFromPosition.js'
 import { dateToFinnishLocale, createPart, clearElement } from '../util/index.js'
 
 export async function setRestroomList(target, data) {
-    clearElement(target)
+
     const container = document.createElement('div')
     container.className = 'search-results-container'
 
-    const heading = document.createElement('h3')
-    heading.textContent = 'Löydetyt käymälät:'
-    const desc = document.createElement('span')
-    desc.textContent = '(napauta käymälää etsiäksesi reitin)'
-
-    container.appendChild(heading)
-    container.appendChild(desc)
 
     if (!data || data.length === 0) {
         const loadingSpinner = document.getElementById('loading-spinner')

@@ -1,12 +1,14 @@
 import { App } from './app/index.js'
 import { setSearchResultsElement } from './layout/searchResults.js'
 import { setRestroomList } from './layout/searchRestroomlist.js'
+import { clearElement, createPart } from './util/index.js'
 
 const searchBar = document.getElementById('searchbar')
 const searchForm = document.getElementById('search-form')
 const resultsTarget = document.querySelector('.search-results')
 const loadingSpinner = document.getElementById('loading-spinner')
 const restroomList = document.querySelector('.restroomlist')
+const moreRestroomsButton = document.getElementById('more-restrooms')
 
 let oldSearch
 
@@ -19,12 +21,13 @@ async function main() {
     }
 
     async function listRestrooms(_event, data) {
+
         const { lat, lon } = data
         app.location = { lat, lon }
         loadingSpinner.classList.toggle('hidden', false)
 
         const restrooms = await App.fetchRestroomsFromLocation({ lat, lon })
-
+        clearElement(restroomList)
         app.addRestrooms(restrooms)
 
         const restroomsWithDistance = restrooms.map((restroom) => ({
@@ -32,18 +35,68 @@ async function main() {
             distance: App.distanceBetween(app.location, restroom.location),
         }))
 
-        const sortedRestrooms = [...restroomsWithDistance]
-            .sort((vessaA, vessaB) => vessaA.distance - vessaB.distance)
-            .slice(0, 4)
+        const restroomChunks = arrayToChunks([...restroomsWithDistance]
+            .sort((vessaA, vessaB) => vessaA.distance - vessaB.distance))
+        console.log(restroomChunks.length);
+
+        if (!restroomChunks || restroomChunks.length === 0) {
+            const container = document.createElement('div')
+            container.className = 'search-results-container'
+
+            container.appendChild(createPart({ heading: 'Hakemaltasi alueelta ei löytynyt vessoja!' }))
+            restroomList.appendChild(container)
+            loadingSpinner.classList.toggle('hidden', true)
+            return
+        }
+
+        const heading = document.createElement('h3')
+        heading.textContent = 'Löydetyt käymälät:'
+        const desc = document.createElement('span')
+        desc.textContent = '(napauta käymälää etsiäksesi reitin)'
+
+        restroomList.appendChild(heading)
+        restroomList.appendChild(desc)
+
+
+        let i = 0
+
+        if (!restroomChunks ||  restroomChunks.length === 0) return
+
 
         const restroomsWithRoutes = await Promise.all(
-            [...sortedRestrooms].map(async (restroom) => ({
+            restroomChunks[i].map(async(restroom) => ({
                 ...restroom,
                 route: await app.getRoute(restroom.id),
             }))
         )
 
         await setRestroomList(restroomList, restroomsWithRoutes)
+
+        if (restroomChunks.length > 1) {
+            moreRestroomsButton.classList.toggle('hidden', false)
+        }
+
+
+        moreRestroomsButton.addEventListener('click', async() => {
+            i++
+
+            if (i >= restroomChunks.length) {
+                moreRestroomsButton.classList.toggle('hidden', true)
+                return
+            }
+            if (i + 1 >= restroomChunks.length) {
+                moreRestroomsButton.classList.toggle('hidden', true)
+            }
+
+            loadingSpinner.classList.toggle('hidden', false)
+            const restroomsWithRoutes = await Promise.all(
+                restroomChunks[i].map(async(restroom) => ({
+                    ...restroom,
+                    route: await app.getRoute(restroom.id),
+                })))
+            await setRestroomList(restroomList, restroomsWithRoutes)
+            loadingSpinner.classList.toggle('hidden', true)
+        })
 
         loadingSpinner.classList.toggle('hidden', true)
     }
@@ -65,7 +118,7 @@ async function main() {
     function debouncedOnSearch(event) {
         event.preventDefault()
         clearTimeout(timeout)
-        timeout = setTimeout(async () => {
+        timeout = setTimeout(async() => {
             await onSearch(event)
         }, 500)
     }
@@ -76,3 +129,14 @@ async function main() {
 }
 
 main()
+
+//SIIRRETÄÄN UTIL
+function arrayToChunks(arr) {
+    const _arr = [...arr]
+    const chunks = []
+    while (_arr.length > 0) {
+        const chunk = _arr.splice(0, 4)
+        chunks.push(chunk)
+    }
+    return chunks
+}

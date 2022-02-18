@@ -28,31 +28,6 @@
     gap: 2.5rem;
 }
 
-.app-buttons button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    background: var(--surface-colored3);
-    padding: 0.7rem;
-    border-radius: 100%;
-    border: 2px solid rgba(0, 0, 0, 0.1);
-}
-
-.app-buttons button:hover {
-    background: transparent;
-    background: hsl(172, 100%, 36%);
-}
-
-.app-buttons button:active {
-    border-color: var(--surface-colored4);
-}
-
-.app-buttons button img {
-    width: 20px;
-    height: 20px;
-    pointer-events: none;
-}
-
 .app-main>aside {
     display: flex;
     flex-direction: column;

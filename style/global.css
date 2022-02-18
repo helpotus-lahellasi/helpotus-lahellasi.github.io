@@ -104,7 +104,7 @@ img {
     z-index: 10;
 }
 
-.sticky + .content {
+.sticky+.content {
     padding-top: 60px;
 }
 
@@ -112,11 +112,9 @@ img {
     display: grid;
     justify-content: center;
     align-items: center;
-
     color: var(--text-accent1);
     font-weight: 300;
     font-size: 0.75em;
-
     padding: 2em;
     margin-top: 3.5rem;
     margin-bottom: 1rem;
@@ -165,7 +163,7 @@ img {
     z-index: 1000;
 }
 
-#loading-spinner > div {
+#loading-spinner>div {
     display: block;
     height: 4em;
     width: 4em;
@@ -177,6 +175,33 @@ img {
     animation-duration: 0.6s;
     animation-fill-mode: both;
     animation-iteration-count: infinite;
+}
+
+.custom-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    background: var(--surface-colored3);
+    padding: 0.7rem;
+    border-radius: 100%;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    width: 46px;
+    height: 46px;
+}
+
+.custom-button:hover {
+    background: transparent;
+    background: hsl(172, 100%, 36%);
+}
+
+.custom-button:active {
+    border-color: var(--surface-colored4);
+}
+
+.custom-button img {
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
 }
 
 @keyframes spin {
