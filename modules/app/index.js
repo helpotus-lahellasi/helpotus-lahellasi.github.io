@@ -74,7 +74,7 @@ export class App {
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         }).addTo(this.map)
-        this.locationMarker = L.marker(this.location, { icon: icons.black })
+        this.locationMarker = L.marker(this.location, { icon: icons.userMarker })
             .bindPopup(`Olet tässä`)
             .openPopup(this.map)
             .addTo(this.map)
@@ -405,13 +405,13 @@ export class App {
             let icon
 
             if (!fee || !fee.text) {
-                icon = icons.gold
+                icon = icons.unknownFeeRestroom
             } else if (fee.text.toLowerCase() === 'kyllä') {
-                icon = icons.red
+                icon = icons.moneyRestroom
             } else if (fee.text.toLowerCase() === 'ei') {
-                icon = icons.green
+                icon = icons.freeRestroom
             } else {
-                icon = icons.gold
+                icon = icons.unknownFeeRestroom
             }
 
             const marker = L.marker(restroom.location, { icon })
