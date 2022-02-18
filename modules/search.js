@@ -21,6 +21,7 @@ async function main() {
     }
 
     async function listRestrooms(_event, data) {
+        const loadingSpinner = document.getElementById('loading-spinner')
 
         const { lat, lon } = data
         app.location = { lat, lon }
@@ -35,9 +36,10 @@ async function main() {
             distance: App.distanceBetween(app.location, restroom.location),
         }))
 
-        const restroomChunks = arrayToChunks([...restroomsWithDistance]
-            .sort((vessaA, vessaB) => vessaA.distance - vessaB.distance))
-        console.log(restroomChunks.length);
+        const restroomChunks = arrayToChunks(
+            [...restroomsWithDistance].sort((vessaA, vessaB) => vessaA.distance - vessaB.distance)
+        )
+        console.log(restroomChunks.length)
 
         if (!restroomChunks || restroomChunks.length === 0) {
             const container = document.createElement('div')
@@ -57,14 +59,12 @@ async function main() {
         restroomList.appendChild(heading)
         restroomList.appendChild(desc)
 
-
         let i = 0
 
-        if (!restroomChunks ||  restroomChunks.length === 0) return
-
+        if (!restroomChunks || restroomChunks.length === 0) return
 
         const restroomsWithRoutes = await Promise.all(
-            restroomChunks[i].map(async(restroom) => ({
+            restroomChunks[i].map(async (restroom) => ({
                 ...restroom,
                 route: await app.getRoute(restroom.id),
             }))
@@ -76,8 +76,7 @@ async function main() {
             moreRestroomsButton.classList.toggle('hidden', false)
         }
 
-
-        moreRestroomsButton.addEventListener('click', async() => {
+        moreRestroomsButton.addEventListener('click', async () => {
             i++
 
             if (i >= restroomChunks.length) {
@@ -90,10 +89,11 @@ async function main() {
 
             loadingSpinner.classList.toggle('hidden', false)
             const restroomsWithRoutes = await Promise.all(
-                restroomChunks[i].map(async(restroom) => ({
+                restroomChunks[i].map(async (restroom) => ({
                     ...restroom,
                     route: await app.getRoute(restroom.id),
-                })))
+                }))
+            )
             await setRestroomList(restroomList, restroomsWithRoutes)
             loadingSpinner.classList.toggle('hidden', true)
         })
@@ -118,7 +118,7 @@ async function main() {
     function debouncedOnSearch(event) {
         event.preventDefault()
         clearTimeout(timeout)
-        timeout = setTimeout(async() => {
+        timeout = setTimeout(async () => {
             await onSearch(event)
         }, 500)
     }
