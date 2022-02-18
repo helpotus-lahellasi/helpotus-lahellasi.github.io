@@ -17,3 +17,27 @@
     --surface-colored4: hsl(var(--hue-color2), 100%, 37%);
     --shadow: 0 1px 3px 0 hsla(var(--hue-color2), 0%, 0%, 0.1), 0 1px 2px 0 hsla(var(--hue-color2), 0%, 0%, 0.04);
 }
+@media (prefers-color-scheme: dark) {
+    :root {
+
+        color-scheme: dark;
+        --hue-color1: 43;
+        --hue-color2: 172;
+        --hue-accent: 295;
+        --text1: hsl(var(--hue-color2), 1%, 87%);
+        --text2: hsl(var(--hue-color2), 1%, 87%);
+        --text-contrary1: hsl(var(--hue-color1), 1%, 98%);
+        --text-colored1: hsl(var(--hue-color2), 1%, 98%);
+        --text-colored2: hsl(var(--hue-color2), 96%, 84%);
+        --text-accent1: hsl(var(--hue-accent), 100%, 90%);
+        --surface1: hsl(var(--hue-color1), 1%, 12%);
+        --surface2: hsl(var(--hue-color1), 1%, 15%);
+        --surface-colored1: hsl(var(--hue-color2), 1%, 18%);
+        --surface-colored2: hsl(var(--hue-color2), 1%, 19%);
+        --surface-colored3: hsl(var(--hue-color2), 1%, 1%);
+        --surface-colored4: hsl(var(--hue-color2), 10%, 37%);
+        --shadow: 0 1px 3px 0 hsla(var(--hue-color2), 0%, 0%, 0.1), 0 1px 2px 0 hsla(var(--hue-color2), 0%, 0%, 0.04);
+
+    }
+
+}
