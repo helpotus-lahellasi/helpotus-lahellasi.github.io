@@ -190,6 +190,20 @@
     }
 }
 
+@media screen and (max-width: 900px) {
+    .divided.hasvideo {
+        display: grid;
+        grid-auto-flow: row;
+        gap: 1em;
+        justify-content: center;
+    }
+
+    .hasvideo > div {
+        max-width: 650px;
+        justify-self: center !important;
+    }
+}
+
 @media screen and (min-width: 700px) {
     .landing-section {
         --angle: 3deg;
