@@ -25,13 +25,10 @@
 .landing-section {
     --angle: 5deg;
     position: relative;
-
     min-height: 22em;
-
     padding: max(5vw, 1.5rem);
     padding-top: 5rem;
     padding-bottom: 12rem;
-
     color: var(--text3);
     display: flex;
     flex-direction: column;
@@ -85,7 +82,7 @@
     justify-content: center;
 }
 
-.divided > div {
+.divided>div {
     max-width: 400px;
     justify-self: center;
 }
@@ -99,7 +96,7 @@
     overflow: hidden;
 }
 
-.authors > h2 {
+.authors>h2 {
     width: 100%;
 }
 
@@ -133,22 +130,22 @@
     border: none;
 }
 
+.face:hover img {
+    transition: 0.25s;
+    opacity: 0.5;
+}
+
 .face h3 {
     visibility: hidden;
     opacity: 0;
-
     display: flex;
     position: absolute;
     inset: 0;
-
     color: var(--text2);
-
     margin: 1rem;
-
     justify-content: center;
     align-items: center;
     text-align: center;
-
     /* filter: drop-shadow(0px 2px 5px rgba(0, 0, 0, 0.4)); */
     pointer-events: none;
 }
@@ -157,7 +154,6 @@
 .face:focus h3 {
     visibility: visible;
     opacity: 1;
-
     animation-name: face-enter;
     animation-duration: 0.25s;
     animation-fill-mode: both;
@@ -198,8 +194,7 @@
         gap: 1em;
         justify-content: center;
     }
-
-    .hasvideo > div {
+    .hasvideo>div {
         max-width: 650px;
         justify-self: center !important;
     }
@@ -214,17 +209,15 @@
         grid-auto-columns: 1fr;
         gap: 3em;
     }
-    .divided > div {
+    .divided>div {
         justify-self: flex-end;
         text-align: left;
         align-self: flex-start;
     }
-
-    .divided > div:nth-child(even) {
+    .divided>div:nth-child(even) {
         justify-self: flex-start;
         text-align: start;
     }
-
     .faces {
         justify-content: center;
     }
