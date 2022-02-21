@@ -141,7 +141,7 @@ img {
     margin: 0.5em;
     color: var(--text-colored1);
     font-weight: 300;
-    display: flex;
+    display: block;
     align-items: baseline;
 }
 
