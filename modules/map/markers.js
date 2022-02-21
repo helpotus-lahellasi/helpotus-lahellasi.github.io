@@ -10,22 +10,22 @@ const iconBase = {
 export const icons = {
     moneyRestroom: new L.Icon({
         ...iconBase,
-        iconUrl: 'https://pennane.github.io/helpotus-lahellasi/icons/favicon-32x32.png',
-        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconUrl: './images/markers/paid-marker.png',
+        shadowUrl: './images/markers/user-marker-shadow.png',
     }),
     userMarker: new L.Icon({
         ...iconBase,
-        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconUrl: './images/markers/user-marker.png',
+        shadowUrl: './images/markers/toilet-marker-shadow.png',
     }),
     freeRestroom: new L.Icon({
         ...iconBase,
-        iconUrl: 'https://pennane.github.io/helpotus-lahellasi/icons/favicon-32x32.png',
-        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconUrl: './images/markers/free-marker.png',
+        shadowUrl: './images/markers/toilet-marker-shadow.png',
     }),
     unknownFeeRestroom: new L.Icon({
         ...iconBase,
-        iconUrl: 'https://pennane.github.io/helpotus-lahellasi/icons/favicon-32x32.png',
-        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconUrl: './images/markers/unknown-marker.png',
+        shadowUrl: './images/markers/toilet-marker-shadow.png',
     }),
 }

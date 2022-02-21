@@ -141,6 +141,8 @@ img {
     margin: 0.5em;
     color: var(--text-colored1);
     font-weight: 300;
+    display: flex;
+    align-items: baseline;
 }
 
 .part-heading {
@@ -149,8 +151,16 @@ img {
     margin-right: 0.4em;
 }
 
-.inline {
+.part-icon {
     display: inline-block;
+    width: 0.93em;
+    height: 0.93em;
+    margin: 0 0.2rem;
+    align-self: center;
+}
+
+.inline {
+    display: inline-flex;
 }
 
 .first-row {
