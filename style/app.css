@@ -34,7 +34,7 @@
     background: var(--surface-colored2);
 }
 
-.app-main > aside {
+.app-main>aside {
     display: flex;
     flex-direction: column;
     gap: 0.5em;
@@ -90,4 +90,10 @@ img.leaflet-tile {
 
 #map path {
     stroke: var(--route-color);
+}
+
+.restroom-amount-info {
+    margin-left: auto;
+    margin-top: auto;
+    margin-bottom: auto;
 }

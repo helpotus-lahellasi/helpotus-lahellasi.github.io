@@ -1,6 +1,7 @@
 import { App } from './app/index.js'
 import { createPart } from './util/index.js'
 import { LOCATION_REFRESH_TIME } from './config.js'
+import { setRestroomAmountElement } from './layout/restroomamount.js'
 
 async function test() {
     if (!document.getElementById('map')) throw new Error('Page does not have an element with the id of "map"')
@@ -32,6 +33,8 @@ async function test() {
         container.appendChild(createPart({ heading: 'Lähialueeltasi ei löydy vessoja!' }))
         resultsTarget.appendChild(container)
     }
+
+    setRestroomAmountElement(document.querySelector('.restroom-amount-info'), restrooms.length)
 
     setInterval(() => {
         app.updateApp()
