@@ -90,6 +90,102 @@
     justify-self: center;
 }
 
+.authors {
+    margin: auto;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+}
+
+.authors > h2 {
+    width: 100%;
+}
+
+.authors-content {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.faces {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.face {
+    display: block;
+    position: relative;
+    overflow: hidden;
+}
+
+.face img {
+    width: 19vh;
+    height: 19vh;
+    object-fit: cover;
+    border-radius: 100%;
+    filter: grayscale(1);
+    pointer-events: none;
+}
+
+.face h3 {
+    visibility: hidden;
+    opacity: 0;
+
+    display: flex;
+    position: absolute;
+    inset: 0;
+
+    margin: 1rem;
+
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    filter: drop-shadow(0px 2px 5px rgba(0, 0, 0, 0.4));
+    pointer-events: none;
+}
+
+.face:hover h3,
+.face:focus h3 {
+    visibility: visible;
+    opacity: 1;
+
+    animation-name: face-enter;
+    animation-duration: 0.25s;
+    animation-fill-mode: both;
+    animation-iteration-count: 1;
+    animation-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+
+@keyframes face-out {
+    0% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+    75% {
+        transform: translateY(4px);
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes face-enter {
+    0% {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    75% {
+        transform: translateY(0px);
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
 @media screen and (min-width: 700px) {
     .landing-section {
         --angle: 3deg;
@@ -108,5 +204,21 @@
     .divided > div:nth-child(even) {
         justify-self: flex-start;
         text-align: start;
+    }
+
+    .authors-content {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .authors-description {
+        flex-basis: 70%;
+    }
+
+    .faces {
+        flex-basis: 30%;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-left: 2rem;
     }
 }
