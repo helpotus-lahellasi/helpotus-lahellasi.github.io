@@ -1,3 +1,8 @@
+header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--text-contrary1);
+}
 .site-main.search-main {
     margin: 1em;
     display: flex;
