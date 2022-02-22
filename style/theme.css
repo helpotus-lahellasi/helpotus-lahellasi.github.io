@@ -5,6 +5,7 @@
     --hue-accent: 295;
     --text1: hsl(var(--hue-color2), 86%, 9%);
     --text2: hsl(var(--hue-color2), 86%, 20%);
+    --text3: hsl(var(--hue-color2), 6%, 22%);
     --text-contrary1: hsl(var(--hue-color2), 42%, 87%);
     --text-colored1: hsl(var(--hue-color2), 96%, 74%);
     --text-colored2: hsl(var(--hue-color2), 96%, 84%);
@@ -27,8 +28,8 @@
         --hue-color2: 172;
         --hue-accent: 295;
         --text1: hsl(var(--hue-color2), 10%, 87%);
-        --text2: hsl(var(--hue-color2), 1%, 95%);
-        --text3: hsl(var(--hue-color2), 10%, 90%);
+        --text2: hsl(var(--hue-color2), 40%, 70%);
+        --text3: hsl(var(--hue-color2), 12%, 80%);
         --text-contrary1: hsl(var(--hue-color1), 1%, 98%);
         --text-colored1: hsl(var(--hue-color2), 1%, 98%);
         --text-colored2: hsl(var(--hue-color2), 96%, 84%);
