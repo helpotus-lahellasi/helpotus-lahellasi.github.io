@@ -195,7 +195,7 @@
         justify-content: center;
     }
     .hasvideo>div {
-        max-width: 650px;
+        max-width: min(650px, 85vw);
         justify-self: center !important;
     }
 }

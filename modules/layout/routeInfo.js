@@ -9,7 +9,13 @@ export function setRouteInfoElement(target, route) {
 
     container.appendChild(createPart({ heading: 'Perillä:', text: dateToFinnishLocale(new Date(data.endTime)) }))
     container.appendChild(createPart({ text: (data.walkDistance / 1000).toFixed(1) + ' km', inline: true }))
-    container.appendChild(createPart({ text: Math.round(data.walkDistance / 60) + ' min', inline: true }))
+    container.appendChild(
+        createPart({
+            text: Math.round(data.walkDistance / 60) + ' min',
+            inline: true,
+            icon: './images/icons/walk.svg',
+        })
+    )
 
     target.appendChild(container)
 }

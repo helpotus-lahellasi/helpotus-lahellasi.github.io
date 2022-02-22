@@ -2,7 +2,7 @@ export const dateToFinnishLocale = (date) => {
     return date.toLocaleDateString('fi-Fi', {
         minute: '2-digit',
         hour: '2-digit',
-        timeZone: 'Europe/Helsinki'
+        timeZone: 'Europe/Helsinki',
     })
 }
 
@@ -12,9 +12,15 @@ export function clearElement(target) {
     }
 }
 
-export function createPart({ text, heading, inline }) {
+export function createPart({ text, heading, inline, icon }) {
     const container = document.createElement('div')
     container.className = inline ? 'part-container inline' : 'part-container'
+    if (icon) {
+        const img = document.createElement('img')
+        img.className = 'part-icon'
+        img.src = icon
+        container.appendChild(img)
+    }
     if (heading) {
         const el = document.createElement('span')
         el.className = 'part-heading'
@@ -27,5 +33,6 @@ export function createPart({ text, heading, inline }) {
         el.textContent = text
         container.appendChild(el)
     }
+
     return container
 }
