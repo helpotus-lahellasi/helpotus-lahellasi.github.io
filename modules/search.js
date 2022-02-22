@@ -38,7 +38,6 @@ async function main() {
         const restroomChunks = arrayToChunks(
             [...restroomsWithDistance].sort((vessaA, vessaB) => vessaA.distance - vessaB.distance)
         )
-        console.log(restroomChunks.length)
 
         if (!restroomChunks || restroomChunks.length === 0) {
             const container = document.createElement('div')
@@ -50,14 +49,6 @@ async function main() {
             return
         }
 
-        const heading = document.createElement('h3')
-        heading.textContent = 'Löydetyt käymälät:'
-        const desc = document.createElement('span')
-        desc.textContent = '(napauta käymälää etsiäksesi reitin)'
-
-        restroomList.appendChild(heading)
-        restroomList.appendChild(desc)
-
         let i = 0
 
         if (!restroomChunks || restroomChunks.length === 0) return
@@ -68,6 +59,15 @@ async function main() {
                 route: await app.getRoute(restroom.id),
             }))
         )
+
+        const heading = document.createElement('h3')
+        heading.textContent = 'Löydetyt käymälät:'
+        const desc = document.createElement('span')
+        desc.textContent = '(napauta käymälää etsiäksesi reitin)'
+        desc.className = 'mb'
+
+        restroomList.appendChild(heading)
+        restroomList.appendChild(desc)
 
         await setRestroomList(restroomList, restroomsWithRoutes)
 

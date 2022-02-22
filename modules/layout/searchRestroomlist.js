@@ -2,10 +2,8 @@ import { getStreetName } from '../api/routereverse/streetNameFromPosition.js'
 import { dateToFinnishLocale, createPart, clearElement } from '../util/index.js'
 
 export async function setRestroomList(target, data) {
-
     const container = document.createElement('div')
     container.className = 'search-results-container'
-
 
     if (!data || data.length === 0) {
         const loadingSpinner = document.getElementById('loading-spinner')
@@ -15,9 +13,11 @@ export async function setRestroomList(target, data) {
         return
     }
 
-    for (const restroom of data) {
+    for (let i = 0; i < data.length; i++) {
+        const restroom = data[i]
         const restroomContainer = document.createElement('div')
-        restroomContainer.className = 'info-container'
+        restroomContainer.className = 'info-container fade-in'
+        restroomContainer.style.animationDelay = i * 30 + 'ms'
 
         const route = restroom.route.data
 
@@ -32,8 +32,7 @@ export async function setRestroomList(target, data) {
         restroomContainer.appendChild(createPart({ heading: 'Etäisyys:', text: Math.round(route.walkDistance) + ' m' }))
 
         // Loop through restroom tags
-        for (const { heading, text }
-            of restroom.tags) {
+        for (const { heading, text } of restroom.tags) {
             if (!heading && !text) continue
             restroomContainer.appendChild(createPart({ heading, text }))
         }

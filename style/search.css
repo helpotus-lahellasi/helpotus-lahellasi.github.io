@@ -79,6 +79,10 @@ header h2 {
     min-height: 4rem;
 }
 
+.restroomlist h3 {
+    margin-top: 0;
+}
+
 #search-form {
     display: flex;
     flex-wrap: wrap;
@@ -116,5 +120,9 @@ header h2 {
     }
     .upper .search-results {
         flex: 1 0 62%;
+    }
+    #search-form {
+        flex-direction: row;
+        align-items: baseline;
     }
 }

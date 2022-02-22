@@ -244,6 +244,11 @@ img {
     }
 }
 
+.mb {
+    margin-bottom: 1rem;
+    display: block;
+}
+
 .hidden {
     display: none !important;
 }
@@ -261,5 +266,24 @@ img {
     }
     100% {
         filter: hue-rotate(360deg);
+    }
+}
+
+.fade-in {
+    opacity: 0;
+    will-change: opacity;
+    animation: fadein;
+    animation-iteration-count: 1;
+    animation-fill-mode: both;
+    animation-duration: 0.3s;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes fadein {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
     }
 }
