@@ -133,7 +133,10 @@ p {
 
 .authors-description {
     max-width: 600px;
-    text-align: justify;
+}
+
+.authors-description p {
+    line-height: 1.8;
 }
 
 .faces {
