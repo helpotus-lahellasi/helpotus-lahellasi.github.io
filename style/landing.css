@@ -10,6 +10,7 @@
 
 .landing-header h1 {
     letter-spacing: -0.05em;
+    font-weight: 700;
     font-size: min(max(3.8rem, 6vw), 4.5rem);
     text-align: center;
     margin: 3rem 0;
