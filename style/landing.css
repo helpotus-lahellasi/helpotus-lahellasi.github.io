@@ -9,13 +9,17 @@
 }
 
 .landing-header h1 {
-    max-width: 260px;
     letter-spacing: -0.05em;
-    font-size: min(max(3.5em, 6vw), 4em);
+    font-size: min(max(3.8rem, 6vw), 4.5rem);
     text-align: center;
-    margin: 5rem 0;
+    margin: 3rem 0;
+    margin-bottom: 6rem;
     color: var(--text-contrary1);
     line-height: 0.8;
+}
+
+.landing-header h1 span {
+    display: block;
 }
 
 .landing-header h1 span:last-of-type {
@@ -61,18 +65,40 @@
     margin-top: min(6vw, 5rem);
 }
 
-.landing-section b,
-.landing-section h2 {
+b {
     color: var(--text2);
-}
-
-.landing-section h2 {
-    margin-top: 0;
 }
 
 .landing-section img {
     border-style: groove;
     border-color: var(--surface2);
+    border: none;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+header h3,
+header h2 {
+    margin: 0;
+    font-weight: 500;
+}
+
+header h3 {
+    color: var(--text2);
+}
+
+header h2 {
+    line-height: 2.7rem;
+    color: var(--text1);
+}
+
+p {
+    color: var(--text3);
 }
 
 .divided {
@@ -82,7 +108,7 @@
     justify-content: center;
 }
 
-.divided>div {
+.divided > div {
     max-width: 400px;
     justify-self: center;
 }
@@ -96,13 +122,18 @@
     overflow: hidden;
 }
 
-.authors>h2 {
+.authors > h2 {
     width: 100%;
 }
 
 .authors-content {
     display: flex;
     flex-direction: column-reverse;
+}
+
+.authors-description {
+    max-width: 600px;
+    text-align: justify;
 }
 
 .faces {
@@ -191,7 +222,7 @@
         gap: 1em;
         justify-content: center;
     }
-    .hasvideo>div {
+    .hasvideo > div {
         max-width: min(650px, 85vw);
         justify-self: center !important;
     }
@@ -206,12 +237,12 @@
         grid-auto-columns: 1fr;
         gap: 3em;
     }
-    .divided>div {
+    .divided > div {
         justify-self: flex-end;
         text-align: left;
         align-self: flex-start;
     }
-    .divided>div:nth-child(even) {
+    .divided > div:nth-child(even) {
         justify-self: flex-start;
         text-align: start;
     }
