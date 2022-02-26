@@ -60,7 +60,7 @@ async function apiPost(body) {
  *
  * @param {Coordinates} from Coordinates to get the routes from
  * @param {Coordinates} to Coordinates to get the routes to
- * @returns {Object} GraphQL data from hsl
+ * @returns {Promise<Object>} GraphQL data from hsl
  */
 async function getHSLRoute({ from, to }) {
     try {

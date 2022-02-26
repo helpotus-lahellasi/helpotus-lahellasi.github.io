@@ -120,7 +120,7 @@ export class App {
 
     /**
      * Fetches the current user location
-     * @returns {Coordinates}
+     * @returns {Promise<Coordinates>}
      */
     static async fetchLocation() {
         const locationObject = await getCurrentLocation()
@@ -133,7 +133,7 @@ export class App {
     /**
      * Fetches restrooms around location
      * @param {Coordinates} location
-     * @returns {Restroom[]}
+     * @returns {Promise<Restroom[]>}
      */
     static async fetchRestroomsFromLocation(location) {
         return await getRestrooms(location)
@@ -219,7 +219,7 @@ export class App {
     /**
      * Update app
      * updates location, restrooms, and visible map
-     * @returns {void}
+     * @returns {Promise<void>}
      */
     async updateApp() {
         console.info('updating app')
@@ -245,7 +245,7 @@ export class App {
      * Fetches a route between two locations
      * @param {Coordinates} a
      * @param {Coordinates} b
-     * @returns {HSLRoute|ORSRoute|null}
+     * @returns {Promise<HSLRoute|ORSRoute|null>}
      */
     static async getRouteBetweenLocations(a, b) {
         if (!a || !b) return null
@@ -260,7 +260,7 @@ export class App {
     /**
      * Get searchresults from string
      * @param {string} text
-     * @returns {SearchResult[]|null}
+     * @returns {Promise<SearchResult[]|null>}
      */
     async getSearchResult(text) {
         const query = text.toLowerCase()
@@ -282,7 +282,7 @@ export class App {
     /**
      * Get and display route to given restroom
      * @param {number} id
-     * @returns {HSLRoute|ORSRoute|null}
+     * @returns {Promise<HSLRoute|ORSRoute|null>}
      */
     async getRoute(id) {
         const restroom = this.restrooms.get(id)
@@ -325,7 +325,7 @@ export class App {
     /**
      * Show route to restroom
      * @param {number} id
-     * @returns {HSLRoute|ORSRoute|void}
+     * @returns {Promise<HSLRoute|ORSRoute|void>}
      */
     async showRouteToRestroom(id) {
         if (!this.visible) return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')

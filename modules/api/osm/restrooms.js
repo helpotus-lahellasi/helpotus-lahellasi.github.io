@@ -25,7 +25,7 @@ const baseUrl = 'https://overpass-api.de/api/interpreter/'
 /**
  *
  * @param {Coordinates} coordinates Coordinates to get the toilets around
- * @returns {Restroom[]} List of restrooms bro
+ * @returns {Promise<Restroom[]>} List of restrooms bro
  */
 export async function getRestrooms(coordinates) {
     const params = `[out:json];node["amenity"="toilets"](around:${RESTROOM_FETCH_DISTANCE},${coordinates.lat}, ${coordinates.lon}); out meta;`

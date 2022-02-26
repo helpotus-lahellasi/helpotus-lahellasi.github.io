@@ -10,7 +10,7 @@ const baseUrl =
 /**
  *
  * @param {Coordinates} coordinates Coordinates to get the toilets around
- * @returns List of restrooms bro
+ * @returns {Promise<OrsRoute|null>}
  */
 export async function getOrsRoute({ from, to }) {
     try {
