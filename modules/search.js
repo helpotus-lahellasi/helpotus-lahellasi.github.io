@@ -69,7 +69,7 @@ async function main() {
         restroomList.appendChild(heading)
         restroomList.appendChild(desc)
 
-        await setRestroomList(restroomList, restroomsWithRoutes)
+        await setRestroomList(restroomList, restroomsWithRoutes, { lat, lon })
 
         if (restroomChunks.length > 1) {
             moreRestroomsButton.classList.toggle('hidden', false)

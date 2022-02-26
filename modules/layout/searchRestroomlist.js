@@ -1,7 +1,7 @@
 import { getStreetName } from '../api/routereverse/streetNameFromPosition.js'
-import { dateToFinnishLocale, createPart, clearElement } from '../util/index.js'
+import { dateToFinnishLocale, createPart, createSearchUrl } from '../util/index.js'
 
-export async function setRestroomList(target, data) {
+export async function setRestroomList(target, data, from) {
     const container = document.createElement('div')
     container.className = 'search-results-container'
 
@@ -14,12 +14,12 @@ export async function setRestroomList(target, data) {
     }
 
     for (let i = 0; i < data.length; i++) {
-        const restroom = data[i]
-        const restroomContainer = document.createElement('div')
-        restroomContainer.className = 'info-container fade-in'
-        restroomContainer.style.animationDelay = i * 30 + 'ms'
+        const { route, distance, ...restroom } = data[i]
+        const restroomContainer = document.createElement('a')
 
-        const route = restroom.route.data
+        restroomContainer.className = 'restroom-result info-container fade-in'
+        restroomContainer.style.animationDelay = i * 30 + 'ms'
+        restroomContainer.href = createSearchUrl(from, restroom)
 
         restroom.name && restroomContainer.appendChild(createPart({ heading: restroom.name }))
 
@@ -29,7 +29,9 @@ export async function setRestroomList(target, data) {
                 text: await getStreetName(restroom.location.lat, restroom.location.lon),
             })
         )
-        restroomContainer.appendChild(createPart({ heading: 'Etäisyys:', text: Math.round(route.walkDistance) + ' m' }))
+        restroomContainer.appendChild(
+            createPart({ heading: 'Etäisyys:', text: Math.round(route.data.walkDistance) + ' m' })
+        )
 
         // Loop through restroom tags
         for (const { heading, text } of restroom.tags) {

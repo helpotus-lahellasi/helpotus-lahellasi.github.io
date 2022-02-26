@@ -36,3 +36,30 @@ export function createPart({ text, heading, inline, icon }) {
 
     return container
 }
+
+export function createSearchUrl(from, restroom) {
+    const to = restroom.location
+    const base = '/sovellus.html?'
+    let data = ''
+    if (from && from.lat && from.lon) {
+        data += `flat=${from.lat}&flon=${from.lon}&`
+    }
+    if (to && to.lat && to.lon) {
+        data += `tlat=${to.lat}&tlon=${to.lon}&`
+    }
+    if (restroom.id) {
+        data += `rid=${restroom.id}&`
+    }
+    if (restroom.name) {
+        data += `rname=${restroom.name}&`
+    }
+    if (restroom.tags.length > 0) {
+        data += restroom.tags.map((t) => `t[]=${encodeURIComponent([t.heading, t.text])}&`).join('')
+    }
+    if (restroom.timestamp) {
+        data += `time=${new Date(restroom.timestamp).getTime()}&`
+    }
+
+    return `${base}${data}`
+}
+

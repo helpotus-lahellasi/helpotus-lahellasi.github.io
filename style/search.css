@@ -50,9 +50,14 @@ header h2 {
     text-overflow: ellipsis;
 }
 
-.search-result-button:hover {
+.restroom-result {
+    text-decoration: none;
+}
+
+.search-result-button:hover,
+.restroom-result:hover {
+    text-decoration: none;
     background-color: var(--surface-colored3);
-    color: black;
     cursor: pointer;
 }
 
