@@ -63,3 +63,35 @@ export function createSearchUrl(from, restroom) {
     return `${base}${data}`
 }
 
+export function isValidDate(d) {
+    return d instanceof Date && !isNaN(d)
+}
+
+export function readSearchParams() {
+    const search = window.location.search
+    const params = new URLSearchParams(search)
+
+    const from = {
+        lat: params.get('flat'),
+        lon: params.get('flon'),
+    }
+
+    const restroom = {
+        id: params.get('rid'),
+        name: params.get('rname'),
+        location: { lat: params.get('tlat'), lon: params.get('tlon') },
+        tags: Array.from(params.entries())
+            .filter((pair) => pair[0] === 't[]')
+            .map((pair) => {
+                const parts = pair[1].split(',')
+                return { heading: parts[0], text: parts[1] }
+            }),
+        timestamp: new Date(Number(params.get('time'))).toGMTString(),
+    }
+
+    const validFrom = !isNaN(from.lat) && !isNaN(from.lon)
+    const validRestroom =
+        restroom.id && restroom.location.lat && restroom.location.lon && isValidDate(new Date(restroom.timestamp))
+
+    return { from: validFrom ? from : null, restroom: validRestroom ? restroom : null }
+}

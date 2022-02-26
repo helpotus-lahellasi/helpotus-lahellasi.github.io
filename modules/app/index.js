@@ -35,6 +35,7 @@ import { getSearch } from '../api/osm/search.js'
 /**
  * @typedef {Object} AppOptions
  * @property {Coordinates} location Location to initiate the app with
+ * @property {Restroom} restroom Restroom from URL params
  */
 
 // Class for combining app functionality
@@ -58,6 +59,11 @@ export class App {
 
         if (options && options.location) {
             this.location = options.location
+        }
+
+        if (options && options.restroom) {
+            this.addRestrooms([options.restroom])
+            this.selectedRestroom = options.restroom
         }
 
         this.restroomLayerGroup = L.layerGroup()

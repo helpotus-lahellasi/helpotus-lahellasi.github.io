@@ -16,7 +16,6 @@ export async function setSearchResultsElement(target, data, onClickHandler) {
 
     for (let i = 0; i < data.length; i++) {
         const location = data[i]
-        console.log(location)
         const button = document.createElement('button')
         button.addEventListener('click', (event) => onClickHandler(event, location))
         button.className = 'search-result-button fade-in'

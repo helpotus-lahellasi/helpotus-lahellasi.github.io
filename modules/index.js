@@ -1,49 +1,26 @@
 import { App } from './app/index.js'
-import { createPart } from './util/index.js'
+import { createPart, readSearchParams } from './util/index.js'
 import { LOCATION_REFRESH_TIME } from './config.js'
 import { setRestroomAmountElement } from './layout/restroomamount.js'
 
 async function test() {
     if (!document.getElementById('map')) throw new Error('Page does not have an element with the id of "map"')
 
-    const location = await App.fetchLocation()
+    const searchParams = readSearchParams()
 
-    const app = new App({ location })
+    const paramRestroom = searchParams.restroom
 
-    app.setVisible()
+    let location
+    let usingParamLocation = false
 
-    let restrooms
-
-    const cachedRestrooms = App.getStoredRestrooms()
-    if (cachedRestrooms) {
-        restrooms = cachedRestrooms
+    if (searchParams.from && searchParams.from.lat && searchParams.from.lon) {
+        location = searchParams.from
+        usingParamLocation = true
     } else {
-        restrooms = await App.fetchRestroomsFromLocation(location)
+        location = await App.fetchLocation()
     }
 
-    if (restrooms && restrooms.length > 0) {
-        app.addRestrooms(restrooms)
-
-        const closest = app.getClosestRestroom()
-        app.showRouteToRestroom(closest.id)
-    } else {
-        const container = document.createElement('div')
-        const resultsTarget = document.querySelector('.app-restroom-info')
-        container.className = 'info-container'
-        container.appendChild(createPart({ heading: 'Lähialueeltasi ei löydy vessoja!' }))
-        resultsTarget.appendChild(container)
-    }
-
-    setRestroomAmountElement(document.querySelector('.restroom-amount-info'), restrooms.length)
-
-    setInterval(() => {
-        app.updateApp()
-    }, LOCATION_REFRESH_TIME)
-
-    app.updateApp()
-
-    // window.app = app
-    // window.App = App
+    const app = new App({ location, restroom: searchParams.restroom })
 
     document.querySelector('#focususer').addEventListener('click', () => {
         app.setViewUserLocation()
@@ -58,6 +35,40 @@ async function test() {
     })
 
     document.getElementById('loading-spinner').classList.add('hidden')
+
+    app.setVisible()
+
+    let restrooms
+
+    const cachedRestrooms = App.getStoredRestrooms()
+    if (cachedRestrooms) {
+        restrooms = cachedRestrooms
+    } else {
+        restrooms = await App.fetchRestroomsFromLocation(location)
+    }
+
+    if (restrooms && restrooms.length > 0) {
+        app.addRestrooms(restrooms)
+        if (!paramRestroom) {
+            const closest = app.getClosestRestroom()
+            app.showRouteToRestroom(closest.id)
+        }
+    } else {
+        const container = document.createElement('div')
+        const resultsTarget = document.querySelector('.app-restroom-info')
+        container.className = 'info-container'
+        container.appendChild(createPart({ heading: 'Lähialueeltasi ei löydy vessoja!' }))
+        resultsTarget.appendChild(container)
+    }
+
+    setRestroomAmountElement(document.querySelector('.restroom-amount-info'), restrooms.length)
+
+    if (!usingParamLocation) {
+        setInterval(() => {
+            app.updateApp()
+        }, LOCATION_REFRESH_TIME)
+        app.updateApp()
+    }
 }
 
 test()
