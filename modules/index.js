@@ -3,7 +3,7 @@ import { createPart, readSearchParams } from './util/index.js'
 import { LOCATION_REFRESH_TIME } from './config.js'
 import { setRestroomAmountElement } from './layout/restroomamount.js'
 
-async function test() {
+;(async function () {
     if (!document.getElementById('map')) throw new Error('Page does not have an element with the id of "map"')
 
     const searchParams = readSearchParams()
@@ -69,6 +69,4 @@ async function test() {
         }, LOCATION_REFRESH_TIME)
         app.updateApp()
     }
-}
-
-test()
+})()

@@ -3,15 +3,14 @@ import { setSearchResultsElement } from './layout/searchResults.js'
 import { setRestroomList } from './layout/searchRestroomlist.js'
 import { clearElement, createPart, arrayToChunks } from './util/index.js'
 
-const searchBar = document.getElementById('searchbar')
-const searchForm = document.getElementById('search-form')
-const resultsTarget = document.querySelector('.search-results')
-const restroomList = document.querySelector('.restroomlist')
-const moreRestroomsButton = document.getElementById('more-restrooms')
+;(async function () {
+    const searchBar = document.getElementById('searchbar')
+    const searchForm = document.getElementById('search-form')
+    const resultsTarget = document.querySelector('.search-results')
+    const restroomList = document.querySelector('.restroomlist')
+    const moreRestroomsButton = document.getElementById('more-restrooms')
 
-let oldSearch
-
-async function main() {
+    let oldSearch
     const app = new App()
     const cachedSearches = App.getStoredSearches()
 
@@ -125,7 +124,5 @@ async function main() {
     searchBar.addEventListener('change', debouncedOnSearch)
     searchBar.addEventListener('keyup', debouncedOnSearch)
     searchForm.addEventListener('submit', onSearch)
-}
-
-main()
+})()
 
