@@ -2,7 +2,6 @@ import { App } from './app/index.js'
 import { createPart, readSearchParams } from './util/index.js'
 import { LOCATION_REFRESH_TIME } from './config.js'
 import { setRestroomAmountElement } from './layout/restroomamount.js'
-
 ;(async function () {
     if (!document.getElementById('map')) throw new Error('Page does not have an element with the id of "map"')
 
@@ -12,6 +11,7 @@ import { setRestroomAmountElement } from './layout/restroomamount.js'
 
     let location
     let usingParamLocation = false
+    let updatingLoopOn = false
 
     if (searchParams.from && searchParams.from.lat && searchParams.from.lon) {
         location = searchParams.from
@@ -21,6 +21,17 @@ import { setRestroomAmountElement } from './layout/restroomamount.js'
     }
 
     const app = new App({ location, restroom: searchParams.restroom })
+
+    function startUpdateLoop() {
+        console.log('in updateloop')
+        if (updatingLoopOn) return
+        console.log('started loop')
+        updatingLoopOn = true
+        setInterval(() => {
+            console.log('new loop iteration')
+            app.updateApp()
+        }, LOCATION_REFRESH_TIME)
+    }
 
     document.querySelector('#focususer').addEventListener('click', () => {
         app.setViewUserLocation()
@@ -34,7 +45,13 @@ import { setRestroomAmountElement } from './layout/restroomamount.js'
         app.showRouteToRestroom(app.getClosestRestroom().id)
     })
 
-    document.getElementById('loading-spinner').classList.add('hidden')
+    document.querySelector('#updatelocation').addEventListener('click', () => {
+        console.log('clicked')
+        if (!startUpdateLoop) {
+            startUpdateLoop()
+        }
+        app.updateApp()
+    })
 
     app.setVisible()
 
@@ -64,9 +81,8 @@ import { setRestroomAmountElement } from './layout/restroomamount.js'
     setRestroomAmountElement(document.querySelector('.restroom-amount-info'), restrooms.length)
 
     if (!usingParamLocation) {
-        setInterval(() => {
-            app.updateApp()
-        }, LOCATION_REFRESH_TIME)
-        app.updateApp()
+        startUpdateLoop()
     }
+
+    document.getElementById('loading-spinner').classList.add('hidden')
 })()

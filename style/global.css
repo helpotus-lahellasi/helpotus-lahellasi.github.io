@@ -213,6 +213,7 @@ img {
     border: 1px solid var(--surface-colored2);
     width: 46px;
     height: 46px;
+    pointer-events: all;
 }
 
 .custom-button:hover {
