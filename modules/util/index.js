@@ -95,3 +95,13 @@ export function readSearchParams() {
 
     return { from: validFrom ? from : null, restroom: validRestroom ? restroom : null }
 }
+
+export function arrayToChunks(arr) {
+    const _arr = [...arr]
+    const chunks = []
+    while (_arr.length > 0) {
+        const chunk = _arr.splice(0, 4)
+        chunks.push(chunk)
+    }
+    return chunks
+}

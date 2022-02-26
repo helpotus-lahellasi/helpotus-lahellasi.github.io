@@ -1,7 +1,7 @@
 import { App } from './app/index.js'
 import { setSearchResultsElement } from './layout/searchResults.js'
 import { setRestroomList } from './layout/searchRestroomlist.js'
-import { clearElement, createPart } from './util/index.js'
+import { clearElement, createPart, arrayToChunks } from './util/index.js'
 
 const searchBar = document.getElementById('searchbar')
 const searchForm = document.getElementById('search-form')
@@ -129,13 +129,3 @@ async function main() {
 
 main()
 
-//SIIRRETÄÄN UTIL
-function arrayToChunks(arr) {
-    const _arr = [...arr]
-    const chunks = []
-    while (_arr.length > 0) {
-        const chunk = _arr.splice(0, 4)
-        chunks.push(chunk)
-    }
-    return chunks
-}
