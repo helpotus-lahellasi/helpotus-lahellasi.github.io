@@ -38,14 +38,22 @@ export function createPart({ text, heading, inline, icon }) {
 }
 
 export function createSearchUrl(from, restroom) {
-    const to = restroom.location
-    const base = '/sovellus.html?'
+    let origin
+
+    if (location.hostname.includes('github.io')) {
+        origin = 'https://pennane.github.io/helpotus-lahellasi'
+    } else {
+        origin = location.origin
+    }
+    const page = 'sovellus.html'
+    const base = `${origin}/${page}?`
+
     let data = ''
     if (from && from.lat && from.lon) {
         data += `flat=${from.lat}&flon=${from.lon}&`
     }
-    if (to && to.lat && to.lon) {
-        data += `tlat=${to.lat}&tlon=${to.lon}&`
+    if (restroom.location && restroom.location.lat && restroom.location.lon) {
+        data += `tlat=${restroom.location.lat}&tlon=${restroom.location.lon}&`
     }
     if (restroom.id) {
         data += `rid=${restroom.id}&`
