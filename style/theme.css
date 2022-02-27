@@ -21,27 +21,25 @@
     --route-color: hsl(var(--hue-accent) 100% 43%);
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        color-scheme: dark;
-        --hue-color1: 43;
-        --hue-color2: 172;
-        --hue-accent: 295;
-        --text1: hsl(var(--hue-color2), 10%, 87%);
-        --text2: hsl(var(--hue-color2), 40%, 70%);
-        --text3: hsl(var(--hue-color2), 12%, 80%);
-        --text-contrary1: hsl(var(--hue-color1), 1%, 98%);
-        --text-colored1: hsl(var(--hue-color2), 1%, 98%);
-        --text-colored2: hsl(var(--hue-color2), 96%, 84%);
-        --text-accent1: hsl(var(--hue-accent), 100%, 90%);
-        --surface1: hsl(var(--hue-color2), 20%, 7%);
-        --surface2: hsl(var(--hue-color2), 20%, 8%);
-        --surface-colored1: hsl(var(--hue-color2), 40%, 11%);
-        --surface-colored2: hsl(var(--hue-color2), 40%, 12%);
-        --surface-colored3: hsl(var(--hue-color2), 30%, 20%);
-        --surface-colored4: hsl(var(--hue-color2), 30%, 8%);
-        --shadow: 0 1px 3px 0 hsla(var(--hue-color2), 0%, 0%, 0.1), 0 1px 2px 0 hsla(var(--hue-color2), 0%, 0%, 0.04);
-        --map-filter: grayscale(1) invert(1) brightness(1.3);
-        --route-color: hsl(var(--hue-accent) 68% 73%);
-    }
+.dark-mode {
+    color-scheme: dark;
+    --hue-color1: 43;
+    --hue-color2: 172;
+    --hue-accent: 295;
+    --text1: hsl(var(--hue-color2), 10%, 87%);
+    --text2: hsl(var(--hue-color2), 40%, 70%);
+    --text3: hsl(var(--hue-color2), 12%, 80%);
+    --text-contrary1: hsl(var(--hue-color1), 1%, 98%);
+    --text-colored1: hsl(var(--hue-color2), 1%, 98%);
+    --text-colored2: hsl(var(--hue-color2), 96%, 84%);
+    --text-accent1: hsl(var(--hue-accent), 100%, 90%);
+    --surface1: hsl(var(--hue-color2), 20%, 7%);
+    --surface2: hsl(var(--hue-color2), 20%, 8%);
+    --surface-colored1: hsl(var(--hue-color2), 40%, 11%);
+    --surface-colored2: hsl(var(--hue-color2), 40%, 12%);
+    --surface-colored3: hsl(var(--hue-color2), 30%, 20%);
+    --surface-colored4: hsl(var(--hue-color2), 30%, 8%);
+    --shadow: 0 1px 3px 0 hsla(var(--hue-color2), 0%, 0%, 0.1), 0 1px 2px 0 hsla(var(--hue-color2), 0%, 0%, 0.04);
+    --map-filter: grayscale(1) invert(1) brightness(1.3);
+    --route-color: hsl(var(--hue-accent) 68% 73%);
 }
