@@ -45,7 +45,7 @@ export function createSearchUrl(from, restroom) {
     } else {
         origin = location.origin
     }
-    const page = 'sovellus.html'
+    const page = 'sovellus'
     const base = `${origin}/${page}?`
 
     let data = ''
