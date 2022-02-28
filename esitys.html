@@ -162,10 +162,16 @@
 
             function previousSlide() {
                 pageImages[currentPage - 2]?.scrollIntoView()
+                if (pageImages[currentPage - 3]) {
+                    currentPage--
+                }
             }
 
             function nextSlide() {
                 pageImages[currentPage]?.scrollIntoView()
+                if (pageImages[currentPage + 1]) {
+                    currentPage++
+                }
             }
 
             document.addEventListener('keydown', (e) => {
