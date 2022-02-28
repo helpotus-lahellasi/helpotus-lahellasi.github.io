@@ -1,6 +1,6 @@
 let darkModeState = false
 
-const button = document.querySelector('.dark-mode-button')
+const button = document.getElementById('dark-mode-button')
 
 const useDark = window.matchMedia("(prefers-color-scheme: dark)")
 
