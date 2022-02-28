@@ -41,7 +41,7 @@ export function createSearchUrl(from, restroom) {
     let origin
 
     if (location.hostname.includes('github.io')) {
-        origin = 'https://pennane.github.io/helpotus-lahellasi'
+        origin = 'https://helpotus-lahellasi.github.io'
     } else {
         origin = location.origin
     }
