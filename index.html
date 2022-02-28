@@ -1,168 +1,201 @@
 <!DOCTYPE html>
 <html lang="fi">
+    <head>
+        <!-- Default meta -->
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16x16.png" />
+        <link rel="manifest" href="./icons/site.webmanifest" />
+        <link rel="mask-icon" href="./icons/safari-pinned-tab.svg" color="#015c50" />
+        <link rel="shortcut icon" href="./icons/favicon.ico" />
+        <meta name="apple-mobile-web-app-title" content="Helpotus L&auml;hell&auml;si" />
+        <meta name="application-name" content="Helpotus L&auml;hell&auml;si" />
+        <meta name="msapplication-TileColor" content="#fbccff" />
+        <meta name="msapplication-TileImage" content="./icons/mstile-144x144.png" />
+        <meta name="msapplication-config" content="./icons/browserconfig.xml" />
+        <meta name="theme-color" content="#ffffff" />
 
-<head>
-    <!-- Default meta -->
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16x16.png" />
-    <link rel="manifest" href="./icons/site.webmanifest" />
-    <link rel="mask-icon" href="./icons/safari-pinned-tab.svg" color="#015c50" />
-    <link rel="shortcut icon" href="./icons/favicon.ico" />
-    <meta name="apple-mobile-web-app-title" content="Helpotus L&auml;hell&auml;si" />
-    <meta name="application-name" content="Helpotus L&auml;hell&auml;si" />
-    <meta name="msapplication-TileColor" content="#fbccff" />
-    <meta name="msapplication-TileImage" content="./icons/mstile-144x144.png" />
-    <meta name="msapplication-config" content="./icons/browserconfig.xml" />
-    <meta name="theme-color" content="#ffffff" />
+        <meta property="og:image" content="https://pennane.github.io/helpotus-lahellasi/images/logo.jpg" />
+        <meta
+            property="og:description"
+            content="Oletko joskus ollut liikkellä tuntemattomalla alueella tai vain kaukana kotoa? Oletko huolissasi kaupunkisi tai lähialueesi siisteydestä ja haluat lisätä tietoasi lähialueen fasiliteetteistä?"
+        />
+        <meta property="og:title" content="Helpotus lähelläsi" />
 
-    <meta property="og:image" content="https://pennane.github.io/helpotus-lahellasi/images/logo.jpg" />
-    <meta property="og:description" content="Oletko joskus ollut liikkellä tuntemattomalla alueella tai vain kaukana kotoa? Oletko huolissasi kaupunkisi tai lähialueesi siisteydestä ja haluat lisätä tietoasi lähialueen fasiliteetteistä?" />
-    <meta property="og:title" content="Helpotus lähelläsi" />
+        <!-- HTML Meta Tags -->
 
-    <!-- HTML Meta Tags -->
+        <!-- Google / Search Engine Tags -->
+        <meta itemprop="name" content="Helpotus lähelläsi" />
+        <meta
+            itemprop="description"
+            content="Oletko joskus ollut liikkellä tuntemattomalla alueella tai vain kaukana kotoa? Oletko huolissasi kaupunkisi tai lähialueesi siisteydestä ja haluat lisätä tietoasi lähialueen fasiliteetteistä?"
+        />
+        <meta itemprop="image" content="https://pennane.github.io/helpotus-lahellasi/images/logo.jpg" />
 
-    <!-- Google / Search Engine Tags -->
-    <meta itemprop="name" content="Helpotus lähelläsi" />
-    <meta itemprop="description" content="Oletko joskus ollut liikkellä tuntemattomalla alueella tai vain kaukana kotoa? Oletko huolissasi kaupunkisi tai lähialueesi siisteydestä ja haluat lisätä tietoasi lähialueen fasiliteetteistä?" />
-    <meta itemprop="image" content="https://pennane.github.io/helpotus-lahellasi/images/logo.jpg" />
+        <!-- Facebook Meta Tags -->
+        <meta property="og:url" content="https://pennane.github.io/helpotus-lahellasi/index.html" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Helpotus lähelläsi" />
+        <meta
+            property="og:description"
+            content="Oletko joskus ollut liikkellä tuntemattomalla alueella tai vain kaukana kotoa? Oletko huolissasi kaupunkisi tai lähialueesi siisteydestä ja haluat lisätä tietoasi lähialueen fasiliteetteistä?"
+        />
+        <meta property="og:image" content="https://pennane.github.io/helpotus-lahellasi/images/logo.jpg" />
 
-    <!-- Facebook Meta Tags -->
-    <meta property="og:url" content="https://pennane.github.io/helpotus-lahellasi/index.html" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Helpotus lähelläsi" />
-    <meta property="og:description" content="Oletko joskus ollut liikkellä tuntemattomalla alueella tai vain kaukana kotoa? Oletko huolissasi kaupunkisi tai lähialueesi siisteydestä ja haluat lisätä tietoasi lähialueen fasiliteetteistä?" />
-    <meta property="og:image" content="https://pennane.github.io/helpotus-lahellasi/images/logo.jpg" />
+        <!-- Twitter Meta Tags -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Helpotus lähelläsi" />
+        <meta
+            name="twitter:description"
+            content="Oletko joskus ollut liikkellä tuntemattomalla alueella tai vain kaukana kotoa? Oletko huolissasi kaupunkisi tai lähialueesi siisteydestä ja haluat lisätä tietoasi lähialueen fasiliteetteistä?"
+        />
+        <meta name="twitter:image" content="https://pennane.github.io/helpotus-lahellasi/images/logo.jpg" />
 
-    <!-- Twitter Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Helpotus lähelläsi" />
-    <meta name="twitter:description" content="Oletko joskus ollut liikkellä tuntemattomalla alueella tai vain kaukana kotoa? Oletko huolissasi kaupunkisi tai lähialueesi siisteydestä ja haluat lisätä tietoasi lähialueen fasiliteetteistä?" />
-    <meta name="twitter:image" content="https://pennane.github.io/helpotus-lahellasi/images/logo.jpg" />
+        <!-- Global assets -->
+        <link rel="stylesheet" href="style/global.css" />
 
-    <!-- Global assets -->
-    <link rel="stylesheet" href="style/global.css" />
+        <!-- Page specific -->
+        <title>Helpotus lähelläsi</title>
+        <link rel="stylesheet" href="style/landing.css" />
+        <script src="modules/darkmode.js" type="module"></script>
+    </head>
 
-    <!-- Page specific -->
-    <title>Helpotus lähelläsi</title>
-    <link rel="stylesheet" href="style/landing.css" />
-    <script src="modules/darkmode.js" type="module"></script>
-</head>
-
-<body>
-    <header class="site-header sticky">
-        <nav class="site-navigation" role="navigation">
-            <a class="link home" href="index.html">
-                <img src="./icons/favicon-32x32.png" width="24" height="24" />HL
-            </a>
-            <a class="link" href="sovellus.html">kartta</a>
-            <a class="link" href="haku.html">haku</a>
-            <div>
-                <button aria-label="Tumma teema" id="dark-mode-button" class="updatelocation-button" title="Tumma teema">
+    <body>
+        <header class="site-header sticky">
+            <nav class="site-navigation" role="navigation">
+                <a class="link home" href="index.html">
+                    <img src="./icons/favicon-32x32.png" width="24" height="24" />HL
+                </a>
+                <a class="link" href="sovellus.html">kartta</a>
+                <a class="link" href="haku.html">haku</a>
+                <div>
+                    <button
+                        aria-label="Tumma teema"
+                        id="dark-mode-button"
+                        class="updatelocation-button"
+                        title="Tumma teema"
+                    >
                         <img width="32px" height="32px" src="images/icons/darkmode.svg" />
                     </button>
-            </div>
-        </nav>
-    </header>
-
-    <main class="site-main landing-main">
-        <header class="landing-header">
-            <h1><span>Helpotus</span> <span>lähelläsi</span></h1>
+                </div>
+            </nav>
         </header>
-        <section class="landing-section">
-            <div class="divided hasvideo">
-                <div>
-                    <header>
-                        <h3>Helpotus on taattu</h3>
-                        <h2>Sovelluksemme edesauttaa tehokasta helpotusta</h2>
-                    </header>
 
-                    <p>
-                        Oletko joskus ollut liikkellä tuntemattomalla alueella tai kaukana kotoa? Oletko huolissasi kaupunkisi tai lähialueesi siisteydestä ja haluat lisätä tietoasi lähialueen fasiliteetteistä?
-                    </p>
-                    <p>
-                        Helpotus lähelläsi tarjoaa jokaiselle helpotusta etsivälle helpon ratkaisun lähimmän käymälän paikantamiselle.
-                    </p>
-                </div>
-                <div class="video">
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/UcT8bulJ4u4?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
-            </div>
-        </section>
-        <section class="landing-section">
-            <div class="divided">
-                <div>
-                    <img src="images/placeholder.png" alt="" />
-                </div>
-                <div class="first-row">
-                    <header>
-                        <h3>Kärkiteknologiaa</h3>
-                        <h2>Interaktiivinen karttasovellus</h2>
-                    </header>
-                    <p>
-                        Karttasovellusksemme pyrkii tarjoamaan nopeimman ja käytännöllisimmän ratkaisun liikkeellä oleville käyttäjillemme. Tavoitteenamme on <b> tarkimman ja uusimman </b> informaation tarjoaminen.
-                    </p>
-                </div>
-            </div>
-        </section>
-        <section class="landing-section">
-            <div class="divided">
-                <div>
-                    <header>
-                        <h3>Hyötysuhde kohdallaan</h3>
-                        <h2>Pidetään kaupunki siistinä hyödyntämällä käymälöitä</h2>
-                    </header>
-                    <p>
-                        Sovelluksemme sisältää kaiken <b>keskeisen informaation</b> käymälöiden sijainnista, esteettömyydestä, maksuista ja muusta relevantista informaatiosta. Toivomme sovelluksen tuovan käyttäjät kaduilta käymälöihin, ja muistuttamaan
-                        fasiliteettien olemassaolosta. Helpota oloasi ja tee se siistimmän kaupunkiympäristön vuoksi!
-                    </p>
-                </div>
-                <div>
-                    <img src="images/placeholder.png" alt="" />
-                </div>
-            </div>
-        </section>
-        <section class="landing-section">
-            <div class="authors">
-                <header>
-                    <h3>Sovelluksen takana</h3>
-                    <h2>Kehittäjät</h2>
-                </header>
+        <main class="site-main landing-main">
+            <header class="landing-header">
+                <h1><span>Helpotus</span> <span>lähelläsi</span></h1>
+            </header>
+            <section class="landing-section">
+                <div class="divided hasvideo">
+                    <div>
+                        <header>
+                            <h3>Helpotus on taattu</h3>
+                            <h2>Sovelluksemme edesauttaa tehokasta helpotusta</h2>
+                        </header>
 
-                <div class="authors-content">
-                    <div class="authors-description">
                         <p>
-                            Me Helpotus Lähelläsi -sovelluksen kehittäjät olemme pyrkineet tuottamaan luotettavan ja käyttäjiä palvelevan karttasovelluksen. Kolmen hengen kehitystiimmimme kuuluuvat Arttu Pennanen, Tuomo Muttonen ja Severi Pietikäinen. Sivusto on luotu osana Metropolia
-                            Ammattikorkeakoulun web-tekniikat ja digitaalinen media -kurssia.
+                            Oletko joskus ollut liikkellä tuntemattomalla alueella tai kaukana kotoa? Oletko huolissasi
+                            kaupunkisi tai lähialueesi siisteydestä ja haluat lisätä tietoasi lähialueen
+                            fasiliteetteistä?
+                        </p>
+                        <p>
+                            Helpotus lähelläsi tarjoaa jokaiselle helpotusta etsivälle helpon ratkaisun lähimmän
+                            käymälän paikantamiselle.
                         </p>
                     </div>
-                    <div class="faces">
-                        <div class="face">
-                            <img src="images/hl_muttonen.jpg" alt="" onclick="" />
-                            <h3>Tuomo Muttonen</h3>
+                    <div class="video">
+                        <iframe
+                            width="560"
+                            height="315"
+                            src="https://www.youtube.com/embed/UcT8bulJ4u4?controls=0"
+                            title="YouTube video player"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                        ></iframe>
+                    </div>
+                </div>
+            </section>
+            <section class="landing-section">
+                <div class="divided">
+                    <div>
+                        <img src="images/placeholder.png" alt="" />
+                    </div>
+                    <div class="first-row">
+                        <header>
+                            <h3>Kärkiteknologiaa</h3>
+                            <h2>Interaktiivinen karttasovellus</h2>
+                        </header>
+                        <p>
+                            Karttasovellusksemme pyrkii tarjoamaan nopeimman ja käytännöllisimmän ratkaisun liikkeellä
+                            oleville käyttäjillemme. Tavoitteenamme on <b> tarkimman ja uusimman </b> informaation
+                            tarjoaminen.
+                        </p>
+                    </div>
+                </div>
+            </section>
+            <section class="landing-section">
+                <div class="divided">
+                    <div>
+                        <header>
+                            <h3>Hyötysuhde kohdallaan</h3>
+                            <h2>Pidetään kaupunki siistinä hyödyntämällä käymälöitä</h2>
+                        </header>
+                        <p>
+                            Sovelluksemme sisältää kaiken <b>keskeisen informaation</b> käymälöiden sijainnista,
+                            esteettömyydestä, maksuista ja muusta relevantista informaatiosta. Toivomme sovelluksen
+                            tuovan käyttäjät kaduilta käymälöihin, ja muistuttamaan fasiliteettien olemassaolosta.
+                            Helpota oloasi ja tee se siistimmän kaupunkiympäristön vuoksi!
+                        </p>
+                    </div>
+                    <div>
+                        <img src="images/placeholder.png" alt="" />
+                    </div>
+                </div>
+            </section>
+            <section class="landing-section">
+                <div class="authors">
+                    <header>
+                        <h3>Sovelluksen takana</h3>
+                        <h2>Kehittäjät</h2>
+                    </header>
+
+                    <div class="authors-content">
+                        <div class="authors-description">
+                            <p>
+                                Me Helpotus Lähelläsi -sovelluksen kehittäjät olemme pyrkineet tuottamaan luotettavan ja
+                                käyttäjiä palvelevan karttasovelluksen. Kolmen hengen kehitystiimmimme kuuluuvat Arttu
+                                Pennanen, Tuomo Muttonen ja Severi Pietikäinen. Sivusto on luotu osana Metropolia
+                                Ammattikorkeakoulun web-tekniikat ja digitaalinen media -kurssia.
+                            </p>
                         </div>
-                        <div class="face">
-                            <img src="images/placeholder.png" alt="" onclick="" />
-                            <h3>Severi Pietikäinen</h3>
-                        </div>
-                        <div class="face">
-                            <img src="images/hl_pennanen.jpg" alt="" onclick="" />
-                            <h3>Arttu Pennanen</h3>
+                        <div class="faces">
+                            <div class="face">
+                                <img src="images/hl_muttonen.jpg" alt="" onclick="" />
+                                <h3>Tuomo Muttonen</h3>
+                            </div>
+                            <div class="face">
+                                <img src="images/placeholder.png" alt="" onclick="" />
+                                <h3>Severi Pietikäinen</h3>
+                            </div>
+                            <div class="face">
+                                <img src="images/hl_pennanen.jpg" alt="" onclick="" />
+                                <h3>Arttu Pennanen</h3>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </section>
+        </main>
+        <footer class="site-footer">
+            <div class="copyright">
+                Helpotus Lähelläsi ei vastaa
+                <a href="https://www.openstreetmap.org/copyright">© OpenStreetMapin</a> tekijät johtuvista väärän tiedon
+                levityksestä, datan manipuloinnista tai datan väärinkäytöstä.&copy;2022
             </div>
-        </section>
-    </main>
-    <footer class="site-footer">
-        <div class="copyright">
-            Helpotus Lähelläsi ei vastaa
-            <a href="https://www.openstreetmap.org/copyright">© OpenStreetMapin</a> tekijät johtuvista väärän tiedon levityksestä, datan manipuloinnista tai datan väärinkäytöstä.&copy;2022
-        </div>
-    </footer>
-</body>
-
+        </footer>
+    </body>
 </html>
