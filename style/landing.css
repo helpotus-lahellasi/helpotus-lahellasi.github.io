@@ -66,6 +66,10 @@
     margin-top: min(6vw, 5rem);
 }
 
+.landing-section:last-of-type {
+    margin-bottom: 2rem;
+}
+
 b {
     color: var(--text2);
 }
