@@ -45,12 +45,14 @@ import { setRestroomAmountElement } from './layout/restroomamount.js'
         app.showRouteToRestroom(app.getClosestRestroom().id)
     })
 
-    document.querySelector('#updatelocation').addEventListener('click', () => {
-        console.log('clicked')
+    document.querySelector('#updatelocation').addEventListener('click', async () => {
         if (!startUpdateLoop) {
             startUpdateLoop()
         }
-        app.updateApp()
+        document.getElementById('loading-spinner').classList.toggle('hidden', false)
+        app.setViewUserLocation()
+        await app.updateApp()
+        document.getElementById('loading-spinner').classList.toggle('hidden', true)
     })
 
     app.setVisible()
