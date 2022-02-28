@@ -159,18 +159,33 @@
 
             container.appendChild(presentation)
 
+            function previousSlide() {
+                pageImages[currentPage - 2]?.scrollIntoView()
+            }
+
+            function nextSlide() {
+                pageImages[currentPage]?.scrollIntoView()
+            }
+
             document.addEventListener('keydown', (e) => {
-                e.preventDefault()
                 if (e.repeat) return
-                if (e.keyCode === 39 || e.keyCode === 40) {
-                    if (pageImages[currentPage]) {
-                        pageImages[currentPage]?.scrollIntoView()
-                    }
+                if (e.keyCode === 39 || e.keyCode === 40 || e.keyCode === 32) {
+                    nextSlide()
                 } else if (e.keyCode === 38 || e.keyCode === 37) {
-                    if (pageImages[currentPage - 2]) {
-                        pageImages[currentPage - 2]?.scrollIntoView()
-                    }
+                    previousSlide()
                 }
+            })
+
+            window.addEventListener('mouseup', (e) => {
+                if (e.button === 0) {
+                    nextSlide()
+                } else if (e.button === 2) {
+                    previousSlide()
+                }
+            })
+
+            window.addEventListener('contextmenu', (event) => {
+                previousSlide()
             })
         </script>
     </body>
