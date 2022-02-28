@@ -2,6 +2,7 @@ import { App } from './app/index.js'
 import { createPart, readSearchParams } from './util/index.js'
 import { LOCATION_REFRESH_TIME } from './config.js'
 import { setRestroomAmountElement } from './layout/restroomamount.js'
+import { createSearchUrl } from './util/index.js'
 ;(async function () {
     if (!document.getElementById('map')) throw new Error('Page does not have an element with the id of "map"')
 
@@ -21,6 +22,15 @@ import { setRestroomAmountElement } from './layout/restroomamount.js'
     }
 
     const app = new App({ location, restroom: searchParams.restroom })
+
+    app.addEventListener('informationChange', (e) => {
+        const eventApp = e.currentTarget
+        window.eventApp = eventApp
+        if (!eventApp || !eventApp.selectedRestroom) return
+        document.querySelector('footer').classList.remove('hidden')
+
+        document.querySelector('#copy-url-input').value = createSearchUrl(eventApp.location, eventApp.selectedRestroom)
+    })
 
     function startUpdateLoop() {
         console.log('in updateloop')
@@ -55,6 +65,17 @@ import { setRestroomAmountElement } from './layout/restroomamount.js'
         document.getElementById('loading-spinner').classList.toggle('hidden', true)
     })
 
+    document.querySelector('#copy-url-button').addEventListener('click', () => {
+        navigator.clipboard
+            .writeText(document.querySelector('#copy-url-input').value)
+            .then(() => {
+                console.log('Text copied to clipboard...')
+            })
+            .catch((err) => {
+                console.log('Something went wrong', err)
+            })
+    })
+
     app.setVisible()
 
     let restrooms
@@ -85,6 +106,6 @@ import { setRestroomAmountElement } from './layout/restroomamount.js'
     if (!usingParamLocation) {
         startUpdateLoop()
     }
-
+    document.getElementById('updatelocation').classList.remove('hidden')
     document.getElementById('loading-spinner').classList.add('hidden')
 })()

@@ -51,6 +51,9 @@
     .app-main {
         grid-auto-flow: column;
     }
+    .app-main > aside {
+        grid-row: 1;
+    }
     #map {
         grid-column: 1;
     }
@@ -97,4 +100,67 @@ img.leaflet-tile {
     margin-left: auto;
     margin-top: auto;
     margin-bottom: auto;
+}
+
+.updatelocation-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    background: var(--surface-colored3);
+    border-radius: 100%;
+    border: 1px solid var(--surface-colored2);
+    width: 40px;
+    height: 40px;
+    pointer-events: all;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    margin-bottom: 8px;
+}
+
+.location-icon {
+    height: 27px;
+    width: 27px;
+}
+
+footer {
+    border: 1px solid rgb(0 0 0 / 15%);
+    padding: 0.5em;
+    background: var(--surface-colored2);
+    grid-row: 3;
+    grid-column: 1;
+    display: flex;
+    gap: 0.25rem;
+}
+
+#copy-url-input {
+    direction: rtl;
+    width: 60%;
+    background: var(--surface-colored1);
+    border: 1px solid var(--surface-colored3);
+    color: var(--surface-colored3);
+    padding: 0.4rem;
+    padding-left: 0.6rem;
+    border-radius: 0.3rem;
+}
+
+#copy-url-button {
+    padding: 0.4rem 0.6rem;
+    border-radius: 0.3rem;
+    background: var(--surface-colored3);
+    color: var(--text-accent1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--surface-colored3);
+    cursor: pointer;
+}
+#copy-url-button:hover {
+    background: var(--surface-colored3);
+    border-color: var(--surface-colored4);
+}
+
+#copy-url-button:active {
+    background: var(--surface-colored4);
 }

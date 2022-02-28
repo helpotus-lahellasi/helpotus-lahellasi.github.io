@@ -39,12 +39,13 @@ import { getSearch } from '../api/osm/search.js'
  */
 
 // Class for combining app functionality
-export class App {
+export class App extends EventTarget {
     /**
      *
      * @param {AppOptions} options
      */
     constructor(options) {
+        super()
         this.map = null
         this.locationMarker = null
         this.selectedRestroom = null
@@ -63,7 +64,7 @@ export class App {
 
         if (options && options.restroom) {
             this.addRestrooms([options.restroom])
-            this.selectedRestroom = options.restroom
+            this.selectRestroom(options.restroom)
         }
 
         this.restroomLayerGroup = L.layerGroup()
@@ -244,7 +245,7 @@ export class App {
 
         this.showAllCurrent()
 
-        console.info('app update finished')
+        this.dispatchEvent(new Event('informationChange'))
     }
 
     /**
@@ -329,6 +330,15 @@ export class App {
     }
 
     /**
+     * Select restroom
+     * @param {Restroom} restroom
+     */
+    selectRestroom(restroom) {
+        this.selectedRestroom = restroom
+        this.dispatchEvent(new Event('informationChange'))
+    }
+
+    /**
      * Show route to restroom
      * @param {number} id
      * @returns {Promise<HSLRoute|ORSRoute|void>}
@@ -353,13 +363,13 @@ export class App {
 
         if (!route) {
             clearElement(document.querySelector('.app-route-info'))
-            this.selectedRestroom = restroom
+            this.selectRestroom(restroom)
             return
         }
 
         setRouteInfoElement(document.querySelector('.app-route-info'), route)
 
-        this.selectedRestroom = restroom
+        this.selectRestroom(restroom)
 
         if (this.routePolyline) {
             this.map.removeLayer(this.routePolyline)

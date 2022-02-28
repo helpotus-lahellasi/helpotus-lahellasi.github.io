@@ -97,7 +97,7 @@
             <section class="app-main">
                 <div id="map">
                     <div class="leaflet-bottom leaflet-left">
-                        <button class="updatelocation-button" id="updatelocation" role="button" title="päivitä sijainti">
+                        <button class="updatelocation-button hidden" id="updatelocation" role="button" title="päivitä sijainti">
                                 <img src="images/icons/location.svg" alt="icon of my location" class="location-icon" />
                             </button>
                     </div>
@@ -106,6 +106,10 @@
                     <div class="app-restroom-info"></div>
                     <div class="app-route-info"></div>
                 </aside>
+                <footer class="hidden">
+                    <input id="copy-url-input" type="text" readonly onClick="this.setSelectionRange(0, this.value.length)" />
+                    <button id="copy-url-button" role="button">kopioi reitti</button>
+                </footer>
                 <div id="loading-spinner">
                     <div></div>
                 </div>

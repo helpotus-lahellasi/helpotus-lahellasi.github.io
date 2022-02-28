@@ -231,27 +231,6 @@ img {
     filter: var(--app-button-filter);
 }
 
-.updatelocation-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    background: var(--surface-colored3);
-    border-radius: 100%;
-    border: 1px solid var(--surface-colored2);
-    width: 46px;
-    height: 46px;
-    pointer-events: all;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0.2em;
-}
-
-.location-icon {
-    height: 28px;
-    width: 28px;
-}
-
 .center-page {
     position: fixed !important;
     inset: 0;
