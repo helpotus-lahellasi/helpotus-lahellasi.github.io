@@ -257,6 +257,37 @@ img {
     inset: 0;
 }
 
+.theme-changer {
+    margin-left: auto;
+}
+
+.theme-changer button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: transparent;
+
+    height: 2rem;
+    width: 2rem;
+    border-radius: 100%;
+    border: 1px solid var(--surface-colored3);
+
+    cursor: pointer;
+}
+
+.theme-changer button:hover {
+    background: var(--surface-colored3);
+}
+
+.theme-changer button:active {
+    border-color: var(--text-accent1);
+}
+
+.theme-changer button img {
+    width: 1rem;
+    height: 1rem;
+}
 @keyframes spin {
     0% {
         transform: rotate(0);
