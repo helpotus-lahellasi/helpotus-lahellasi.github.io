@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fi">
+    <head>
+        <!-- Default meta -->
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16x16.png" />
+        <link rel="manifest" href="./icons/site.webmanifest" />
+        <link rel="mask-icon" href="./icons/safari-pinned-tab.svg" color="#015c50" />
+        <link rel="shortcut icon" href="./icons/favicon.ico" />
+        <meta name="apple-mobile-web-app-title" content="Helpotus L&auml;hell&auml;si" />
+        <meta name="application-name" content="Helpotus L&auml;hell&auml;si" />
+        <meta name="msapplication-TileColor" content="#fbccff" />
+        <meta name="msapplication-TileImage" content="./icons/mstile-144x144.png" />
+        <meta name="msapplication-config" content="./icons/browserconfig.xml" />
+        <meta name="theme-color" content="#ffffff" />
+
+        <meta property="og:image" content="https://helpotus-lahellasi.github.io/images/logo.jpg" />
+        <meta
+            property="og:description"
+            content="Oletko joskus ollut liikkellä tuntemattomalla alueella tai vain kaukana kotoa? Oletko huolissasi kaupunkisi tai lähialueesi siisteydestä ja haluat lisätä tietoasi lähialueen fasiliteetteistä?"
+        />
+        <meta property="og:title" content="Helpotus lähelläsi | Esitys" />
+
+        <!-- HTML Meta Tags -->
+        <meta
+            name="description"
+            content="Oletko joskus ollut liikkellä tuntemattomalla alueella tai vain kaukana kotoa? Oletko huolissasi kaupunkisi tai lähialueesi siisteydestä ja haluat lisätä tietoasi lähialueen fasiliteetteistä?"
+        />
+
+        <!-- Google / Search Engine Tags -->
+        <meta itemprop="name" content="Helpotus lähelläsi | Esitys" />
+        <meta
+            itemprop="description"
+            content="Oletko joskus ollut liikkellä tuntemattomalla alueella tai vain kaukana kotoa? Oletko huolissasi kaupunkisi tai lähialueesi siisteydestä ja haluat lisätä tietoasi lähialueen fasiliteetteistä?"
+        />
+        <meta itemprop="image" content="https://helpotus-lahellasi.github.io/images/logo.jpg" />
+
+        <!-- Facebook Meta Tags -->
+        <meta property="og:url" content="https://helpotus-lahellasi.github.io/index.html" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Helpotus lähelläsi | Esitys" />
+        <meta
+            property="og:description"
+            content="Oletko joskus ollut liikkellä tuntemattomalla alueella tai vain kaukana kotoa? Oletko huolissasi kaupunkisi tai lähialueesi siisteydestä ja haluat lisätä tietoasi lähialueen fasiliteetteistä?"
+        />
+        <meta property="og:image" content="https://helpotus-lahellasi.github.io/images/logo.jpg" />
+
+        <!-- Twitter Meta Tags -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Helpotus lähelläsi | Esitys" />
+        <meta
+            name="twitter:description"
+            content="Oletko joskus ollut liikkellä tuntemattomalla alueella tai vain kaukana kotoa? Oletko huolissasi kaupunkisi tai lähialueesi siisteydestä ja haluat lisätä tietoasi lähialueen fasiliteetteistä?"
+        />
+        <meta name="twitter:image" content="https://helpotus-lahellasi.github.io/images/logo.jpg" />
+
+        <!-- Page specific -->
+        <title>Helpotus lähelläsi | Esitys</title>
+
+        <style>
+            body,
+            html {
+                scroll-behavior: smooth;
+                scroll-snap-type: y mandatory;
+                scroll-snap-stop: always;
+                padding: 0;
+                margin: 0;
+                background: #002720;
+            }
+
+            #presentation {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+            }
+
+            .presentation-page {
+                scroll-snap-align: center;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                width: 100vw;
+            }
+
+            .presentation-page-image {
+                max-width: 100%;
+                max-height: 100vh;
+                object-fit: contain;
+            }
+        </style>
+    </head>
+
+    <body>
+        <script>
+            /*********   Edit these   *****************/
+            const pageCount = 18
+            const basePageName = 'helpotuslähelläsi-esittely_Sivu_'
+            const pageExt = '.png'
+            const baseUrl = './images/presentation/'
+            /******************************************/
+
+            const presentation = document.createElement('main')
+            presentation.setAttribute('id', 'presentation')
+
+            const container = document.querySelector('body')
+
+            function onIntersect(o) {
+                currentPage = Number(o[0].target.id.split('-')[1])
+            }
+
+            const observer = new IntersectionObserver(onIntersect, {
+                root: document.querySelector('#presentation'),
+                rootMargin: '20px',
+                threshold: 0.9,
+            })
+
+            function parsePageNumber(i) {
+                return String(i + 1).padStart(String(pageCount).length, '0')
+            }
+
+            let pageImages = []
+
+            function createPage(i) {
+                const page = document.createElement('section')
+
+                page.className = 'presentation-page'
+
+                const img = document.createElement('img')
+                img.className = 'presentation-page-image'
+                img.src = baseUrl + basePageName + parsePageNumber(i, pageCount) + pageExt
+                img.width = document.documentElement.clientWidth
+                img.height = document.documentElement.clientHeight
+                img.alt = ''
+                img.loading = 'lazy'
+                img.setAttribute('id', 'p-' + (i + 1))
+
+                pageImages.push(img)
+
+                page.appendChild(img)
+
+                observer.observe(img)
+
+                return page
+            }
+
+            let currentPage = null
+
+            for (let i = 0; i < pageCount; i++) {
+                const page = createPage(i)
+                presentation.appendChild(page)
+            }
+
+            container.appendChild(presentation)
+
+            document.addEventListener('keydown', (e) => {
+                e.preventDefault()
+                if (e.repeat) return
+                if (e.keyCode === 39 || e.keyCode === 40) {
+                    if (pageImages[currentPage]) {
+                        pageImages[currentPage]?.scrollIntoView()
+                    }
+                } else if (e.keyCode === 38 || e.keyCode === 37) {
+                    if (pageImages[currentPage - 2]) {
+                        pageImages[currentPage - 2]?.scrollIntoView()
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>
