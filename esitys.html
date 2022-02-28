@@ -169,6 +169,7 @@
             }
 
             document.addEventListener('keydown', (e) => {
+                e.preventDefault()
                 if (e.repeat) return
                 if (e.keyCode === 39 || e.keyCode === 40 || e.keyCode === 32) {
                     nextSlide()
@@ -178,6 +179,7 @@
             })
 
             window.addEventListener('mouseup', (e) => {
+                e.preventDefault()
                 if (e.button === 0) {
                     nextSlide()
                 } else if (e.button === 2) {
@@ -186,6 +188,7 @@
             })
 
             window.addEventListener('contextmenu', (event) => {
+                e.preventDefault()
                 previousSlide()
             })
         </script>
