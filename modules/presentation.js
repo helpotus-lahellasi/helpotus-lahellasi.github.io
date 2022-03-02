@@ -3,7 +3,7 @@
 // Variables that dictate the slide image src creation
 const slideCount = 21
 const baseSlideName = 'Dia'
-const slideExt = '.PNG'
+const slideExt = '.jpg'
 const baseUrl = './images/presentation/v2_min/'
 
 const presentation = document.createElement('main')
