@@ -1,10 +1,10 @@
 // Create a presentation from powerpoint slide images
 
 // Variables that dictate the slide image src creation
-const slideCount = 18
-const baseSlideName = 'helpotuslähelläsi-esittely_Sivu_'
-const slideExt = '.png'
-const baseUrl = './images/presentation/'
+const slideCount = 21
+const baseSlideName = 'Dia'
+const slideExt = '.PNG'
+const baseUrl = './images/presentation/v2/'
 
 const presentation = document.createElement('main')
 presentation.setAttribute('id', 'presentation')
