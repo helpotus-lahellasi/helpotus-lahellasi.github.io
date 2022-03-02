@@ -1,9 +1,7 @@
-/*********   Edit these   *****************/
-const pageCount = 18
-const basePageName = 'helpotuslähelläsi-esittely_Sivu_'
-const pageExt = '.png'
+const slideCount = 18
+const baseSlideName = 'helpotuslähelläsi-esittely_Sivu_'
+const slideExt = '.png'
 const baseUrl = './images/presentation/'
-/******************************************/
 
 const presentation = document.createElement('main')
 presentation.setAttribute('id', 'presentation')
@@ -11,7 +9,7 @@ presentation.setAttribute('id', 'presentation')
 const container = document.querySelector('body')
 
 function onIntersect(o) {
-    currentPage = Number(o[0].target.id.split('-')[1])
+    currentSlide = Number(o[0].target.id.split('-')[1])
 }
 
 const observer = new IntersectionObserver(onIntersect, {
@@ -20,55 +18,55 @@ const observer = new IntersectionObserver(onIntersect, {
     threshold: 0.9,
 })
 
-function parsePageNumber(i) {
-    return String(i + 1).padStart(String(pageCount).length, '0')
+function parseSlideNumber(i) {
+    return String(i + 1).padStart(String(slideCount).length, '0')
 }
 
-let pageImages = []
+let slideImages = []
 
-function createPage(i) {
-    const page = document.createElement('section')
+function createSlide(i) {
+    const slide = document.createElement('section')
 
-    page.className = 'presentation-page'
+    slide.className = 'presentation-slide'
 
     const img = document.createElement('img')
-    img.className = 'presentation-page-image'
-    img.src = baseUrl + basePageName + parsePageNumber(i, pageCount) + pageExt
+    img.className = 'presentation-slide-image'
+    img.src = baseUrl + baseSlideName + parseSlideNumber(i, slideCount) + slideExt
     img.width = document.documentElement.clientWidth
     img.height = document.documentElement.clientHeight
     img.alt = ''
     img.loading = 'lazy'
     img.setAttribute('id', 'p-' + (i + 1))
 
-    pageImages.push(img)
+    slideImages.push(img)
 
-    page.appendChild(img)
+    slide.appendChild(img)
 
     observer.observe(img)
 
-    return page
+    return slide
 }
 
-let currentPage = null
+let currentSlide = null
 
-for (let i = 0; i < pageCount; i++) {
-    const page = createPage(i)
-    presentation.appendChild(page)
+for (let i = 0; i < slideCount; i++) {
+    const slide = createSlide(i)
+    presentation.appendChild(slide)
 }
 
 container.appendChild(presentation)
 
 function previousSlide() {
-    pageImages[currentPage - 2]?.scrollIntoView()
-    if (pageImages[currentPage - 3]) {
-        currentPage--
+    slideImages[currentSlide - 2]?.scrollIntoView()
+    if (slideImages[currentSlide - 3]) {
+        currentSlide--
     }
 }
 
 function nextSlide() {
-    pageImages[currentPage]?.scrollIntoView()
-    if (pageImages[currentPage + 1]) {
-        currentPage++
+    slideImages[currentSlide]?.scrollIntoView()
+    if (slideImages[currentSlide + 1]) {
+        currentSlide++
     }
 }
 
@@ -86,12 +84,10 @@ presentation.addEventListener('mouseup', (e) => {
     e.preventDefault()
     if (e.button === 0) {
         nextSlide()
-    } else if (e.button === 2) {
-        previousSlide()
     }
 })
 
-// presentation.addEventListener('contextmenu', (e) => {
-//     e.preventDefault()
-//     previousSlide()
-// })
+presentation.addEventListener('contextmenu', (e) => {
+    e.preventDefault()
+    previousSlide()
+})
