@@ -91,7 +91,7 @@ presentation.addEventListener('mouseup', (e) => {
     }
 })
 
-presentation.addEventListener('contextmenu', (e) => {
-    e.preventDefault()
-    previousSlide()
-})
+// presentation.addEventListener('contextmenu', (e) => {
+//     e.preventDefault()
+//     previousSlide()
+// })
