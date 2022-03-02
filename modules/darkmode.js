@@ -1,19 +1,21 @@
-let darkModeState = localStorage.getItem('dark-mode') ?? window.matchMedia('(prefers-color-scheme: dark)').matches
+//Darkmode toggle for website
 
-const button = document.getElementById('dark-mode-button')
+let darkModeState = localStorage.getItem('dark-mode') ?? window.matchMedia('(prefers-color-scheme: dark)').matches // get current darkmode state from local storage or from browser selection
+
+const button = document.getElementById('dark-mode-button') // get dark-mode toggle button from website
 
 function toggleDarkMode(state) {
     if (state) {
-        document.firstElementChild.setAttribute('color-scheme', 'dark')
+        document.firstElementChild.setAttribute('color-scheme', 'dark') // if state is true change site to use darkmode css
     } else {
-        document.firstElementChild.setAttribute('color-scheme', 'light')
+        document.firstElementChild.setAttribute('color-scheme', 'light') // if state is false change site to use lightmode css
     }
 
     darkModeState = state
 }
 
 function setDarkModeLocalStorage(state) {
-    localStorage.setItem('dark-mode', state)
+    localStorage.setItem('dark-mode', state) // save darkmode state (true/false) to local storage with 'dark-mode' key
 }
 
 if (localStorage.getItem('dark-mode') !== null) {
@@ -21,6 +23,7 @@ if (localStorage.getItem('dark-mode') !== null) {
 }
 
 button.addEventListener('click', () => {
+    // event listener for button click
     darkModeState = !darkModeState
 
     toggleDarkMode(darkModeState)
