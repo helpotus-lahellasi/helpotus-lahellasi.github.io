@@ -4,7 +4,7 @@
 const slideCount = 21
 const baseSlideName = 'Dia'
 const slideExt = '.PNG'
-const baseUrl = './images/presentation/v2/'
+const baseUrl = './images/presentation/v2_min/'
 
 const presentation = document.createElement('main')
 presentation.setAttribute('id', 'presentation')
