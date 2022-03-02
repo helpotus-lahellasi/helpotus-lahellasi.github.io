@@ -1,8 +1,12 @@
 import { createPart } from '../util/index.js'
 import { RESTROOM_FETCH_DISTANCE } from '../config.js'
+/**
+ * Write into html element how many toilets are displayed in selected area
+ * @param {HTMLElement} target
+ * @param {number} amount
+ */
 
 export function setRestroomAmountElement(target, amount) {
-    
     const container = document.createElement('div')
     container.className = 'restroom-amount-container'
 
@@ -11,9 +15,9 @@ export function setRestroomAmountElement(target, amount) {
     }
 
     if (amount > 1) {
-        container.appendChild(createPart({ text: `${amount} käymälää ${RESTROOM_FETCH_DISTANCE/1000} km säteellä.` }))
+        container.appendChild(createPart({ text: `${amount} käymälää ${RESTROOM_FETCH_DISTANCE / 1000} km säteellä.` }))
     } else if (amount === 1) {
-        container.appendChild(createPart({ text: `${amount} käymälä ${RESTROOM_FETCH_DISTANCE/1000} km säteellä.` }))
+        container.appendChild(createPart({ text: `${amount} käymälä ${RESTROOM_FETCH_DISTANCE / 1000} km säteellä.` }))
     }
 
     target.appendChild(container)

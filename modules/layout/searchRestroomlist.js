@@ -1,6 +1,20 @@
 import { getStreetName } from '../api/routereverse/streetNameFromPosition.js'
 import { dateToFinnishLocale, createPart, createSearchUrl } from '../util/index.js'
 
+/**
+ * @typedef {Object} Coordinates
+ * @property {number} lat The latitude of the coordinates
+ * @property {number} lon The longtitude of the coordinates
+ */
+
+/**
+ * Write into html element list of restrooms (with name, address, distance, fee and wheelchair attribute, publish date) or info that there is no restrooms in area.
+ * @param {HTMLElement} target
+ * @param {restroomsWithRoutes} data
+ * @param {Coordinates} from
+ * @returns
+ */
+
 export async function setRestroomList(target, data, from) {
     const container = document.createElement('div')
     container.className = 'search-results-container'
@@ -34,7 +48,8 @@ export async function setRestroomList(target, data, from) {
         )
 
         // Loop through restroom tags
-        for (const { heading, text } of restroom.tags) {
+        for (const { heading, text }
+            of restroom.tags) {
             if (!heading && !text) continue
             restroomContainer.appendChild(createPart({ heading, text }))
         }
