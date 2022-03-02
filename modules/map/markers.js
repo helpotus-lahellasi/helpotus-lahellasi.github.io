@@ -1,5 +1,7 @@
 import * as L from '../../vendor/leaflet/leaflet-src.esm.js'
 
+// Export icons used in the project
+
 const iconBase = {
     iconSize: [32, 32],
     iconAnchor: [12, 41],
