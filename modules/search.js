@@ -35,7 +35,8 @@ import { clearElement, createPart, arrayToChunks } from './util/index.js'
         }))
 
         const restroomChunks = arrayToChunks(
-            [...restroomsWithDistance].sort((vessaA, vessaB) => vessaA.distance - vessaB.distance)
+            [...restroomsWithDistance].sort((vessaA, vessaB) => vessaA.distance - vessaB.distance),
+            4
         )
 
         if (!restroomChunks || restroomChunks.length === 0) {

@@ -1,3 +1,9 @@
+/**
+ * Convert js date into Finnish locale
+ * eq. 10.8.2019 klo 16.01
+ * @param {Date} date
+ * @returns string
+ */
 export const dateToFinnishLocale = (date) => {
     return date.toLocaleDateString('fi-Fi', {
         minute: '2-digit',
@@ -6,12 +12,29 @@ export const dateToFinnishLocale = (date) => {
     })
 }
 
+/**
+ * Remove all children of a HTML ELement
+ * @param {HTMLElement} target
+ */
 export function clearElement(target) {
     while (target.firstChild) {
         target.removeChild(target.firstChild)
     }
 }
 
+/**
+ * @typedef {Object} PartOptions
+ * @property {string} heading
+ * @property {string} text
+ * @property {boolean} inline
+ * @property {string} icon
+ */
+
+/**
+ * Create HTML part used in listing properties
+ * @param {PartOptions} partOptions
+ * @returns
+ */
 export function createPart({ text, heading, inline, icon }) {
     const container = document.createElement('div')
     container.className = inline ? 'part-container inline' : 'part-container'
@@ -37,6 +60,32 @@ export function createPart({ text, heading, inline, icon }) {
     return container
 }
 
+/**
+ * @typedef {Object} Coordinates
+ * @property {number} lat The latitude of the coordinates
+ * @property {number} lon The longtitude of the coordinates
+ */
+
+/**
+ * @typedef {Object} Tag
+ * @property {string} heading
+ * @property {string} text
+ */
+
+/**
+ * @typedef {Object} Restroom
+ * @property {number} id
+ * @property {Date} timestamp
+ * @property {Coordinates} location
+ * @property {Tag[]} tags
+ */
+
+/**
+ * Convert Application data into shareable URL
+ * @param {Coordinates} from
+ * @param {Restroom} restroom
+ * @returns {string} shareable url
+ */
 export function createSearchUrl(from, restroom) {
     let origin
 
@@ -71,10 +120,25 @@ export function createSearchUrl(from, restroom) {
     return `${base}${data}`
 }
 
+/**
+ * Check if object is a valid js Date
+ * @param {any} d
+ * @returns {boolean}
+ */
 export function isValidDate(d) {
     return d instanceof Date && !isNaN(d)
 }
 
+/**
+ * @typedef {Object} ReadSearchParamsOuput
+ * @property {Coordinates|null} location
+ * @property {Restroom|null} restroom
+ */
+
+/**
+ * Read url created by createSearchUrl() from page window.location
+ * @returns {ReadSearchParamsOuput}
+ */
 export function readSearchParams() {
     const search = window.location.search
     const params = new URLSearchParams(search)
@@ -104,11 +168,17 @@ export function readSearchParams() {
     return { from: validFrom ? from : null, restroom: validRestroom ? restroom : null }
 }
 
-export function arrayToChunks(arr) {
+/**
+ * Split array into chunks of n size
+ * @param {any[]} arr
+ * @param {number} size
+ * @returns {any[]}
+ */
+export function arrayToChunks(arr, size) {
     const _arr = [...arr]
     const chunks = []
     while (_arr.length > 0) {
-        const chunk = _arr.splice(0, 4)
+        const chunk = _arr.splice(0, size)
         chunks.push(chunk)
     }
     return chunks

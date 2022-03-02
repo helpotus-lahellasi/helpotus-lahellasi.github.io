@@ -41,17 +41,22 @@ function getGraphQLRouteQueryBody(from, to) {
     }
   }
 }
-`
+`,
     }
 }
 
+/**
+ * Intermediary function used for posting the request
+ * @param {any} body
+ * @returns {Promise<any>}
+ */
 async function apiPost(body) {
     const response = await fetch(`${baseUrl}`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
     })
     return response.json()
 }
@@ -64,12 +69,12 @@ async function apiPost(body) {
  */
 async function getHSLRoute({ from, to }) {
     try {
-    const body = getGraphQLRouteQueryBody(from, to)
-    const data = await apiPost(body)
+        const body = getGraphQLRouteQueryBody(from, to)
+        const data = await apiPost(body)
         if (!data.data.plan.itineraries[0]) return null
         return {
             data: data.data.plan.itineraries[0],
-            type: 'hsl'
+            type: 'hsl',
         }
     } catch {
         return null
