@@ -1,4 +1,23 @@
 import { dateToFinnishLocale, createPart, clearElement } from '../util/index.js'
+/**
+ * @typedef {Object} Tag
+ * @property {string} heading
+ * @property {string} text
+ */
+
+/**
+ * @typedef {Object} Restroom
+ * @property {number} id
+ * @property {Date} timestamp
+ * @property {Coordinates} location
+ * @property {Tag[]} tags
+ */
+
+/**
+ * Write into html element restroom info (name, address, publish date)
+ * @param {HTMLElement} target
+ * @param {Restroom} data
+ */
 
 export async function setRestroomElement(target, data) {
     clearElement(target)

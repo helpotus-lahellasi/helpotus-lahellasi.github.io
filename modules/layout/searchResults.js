@@ -1,5 +1,12 @@
 import { createPart, clearElement } from '../util/index.js'
 
+/**
+ * Write into html element list of address search results
+ * @param {HTMLElement} target
+ * @param {SearchResult[]} data
+ * @param {{()=>void} onClickHandler} onClickHandler
+ */
+
 export async function setSearchResultsElement(target, data, onClickHandler) {
     clearElement(target)
 
