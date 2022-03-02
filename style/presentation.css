@@ -16,7 +16,7 @@ html {
     overflow-y: scroll;
 }
 
-.presentation-page {
+.presentation-slide {
     scroll-snap-align: center;
     display: flex;
     justify-content: center;
@@ -25,7 +25,7 @@ html {
     width: 100vw;
 }
 
-.presentation-page-image {
+.presentation-slide-image {
     max-width: 100%;
     max-height: 100vh;
     object-fit: contain;
