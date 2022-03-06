@@ -50,15 +50,31 @@ function dirFlatMap(arr, dir) {
 
 self.addEventListener('install', (event) => {
     event.waitUntil(
-        caches.open(CACHE_ID).then((cache) => {
-            return cache.addAll(dirFlatMap(urlsToCache))
-        })
+        (async () => {
+            const cache = await caches.open(CACHE_ID)
+            cache.addAll(dirFlatMap(urlsToCache))
+        })()
+    )
+})
+
+self.addEventListener('activate', (event) => {
+    event.waitUntil(
+        (async () => {
+            const cacheKeys = await caches.keys()
+            for (const key of cacheKeys) {
+                if (key !== CACHE_ID) {
+                    caches.delete(key)
+                }
+            }
+        })()
     )
 })
 
 self.addEventListener('fetch', (event) => {
     event.respondWith(
-        caches.match(event.request).then(async (cacheResponse) => {
+        (async () => {
+            const cacheResponse = await caches.match(event.request)
+
             if (cacheResponse) {
                 return cacheResponse
             }
@@ -75,6 +91,6 @@ self.addEventListener('fetch', (event) => {
             cache.put(event.request, responseToCache)
 
             return response
-        })
+        })()
     )
 })
