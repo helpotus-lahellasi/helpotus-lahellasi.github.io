@@ -1,4 +1,6 @@
-if ('serviceWorker' in navigator) {
+const acceptedHostnames = ['helpotus-lahellasi.github.io']
+
+if ('serviceWorker' in navigator && acceptedHostnames.includes(location.hostname)) {
     window.addEventListener('load', function () {
         navigator.serviceWorker.register('/sw.js').then(
             function (registration) {
