@@ -1,6 +1,8 @@
 {
-    "name": "Helpotus L\u00e4hell\u00e4si",
-    "short_name": "Helpotus L\u00e4hell\u00e4si",
+    "name": "Helpotus Lähelläsi",
+    "language": "fi",
+    "description": "Helpotus lähelläsi tarjoaa jokaiselle helpotusta etsivälle helpon ratkaisun lähimmän käymälän paikantamiselle.",
+    "short_name": "HL",
     "icons": [
         {
             "src": "android-chrome-192x192.png",
@@ -13,8 +15,14 @@
             "type": "image/png"
         }
     ],
-    "theme_color": "#ffffff",
-    "background_color": "#ffffff",
+    "theme_color": "#015c50",
+    "background_color": "#015c50",
     "display": "standalone",
-    "orientation": "portrait"
+    "orientation": "portrait-primary",
+    "categories": [
+        "navigation",
+        "utilities",
+        "travel"
+    ],
+    "start_url": "https://helpotus-lahellasi.github.io/sovellus"
 }
