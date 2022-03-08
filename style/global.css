@@ -125,15 +125,46 @@ img {
 }
 
 .site-footer {
+    box-sizing: content-box;
+
     display: grid;
-    justify-content: center;
-    align-items: center;
+    grid-auto-columns: 175px 70px 1fr;
+    justify-items: stretch;
+    gap: 0.5rem;
+
+    max-width: 700px;
+
+    margin: auto;
+    margin-top: 4rem;
+    margin-bottom: 2rem;
+
+    padding: 0 1rem;
+
     color: var(--text-accent1);
     font-weight: 300;
-    font-size: 0.75em;
-    padding: 2em;
-    margin-top: 3.5rem;
-    margin-bottom: 1rem;
+    font-size: 0.8rem;
+
+    /* text-align: center; */
+
+    line-height: 1.6;
+}
+
+.site-footer b {
+    color: inherit;
+}
+
+.site-footer > .discharge {
+    grid-row: 2;
+    grid-column: span 3;
+    text-align: start;
+}
+.site-footer > .copyright {
+    grid-row: 1;
+    grid-column: 1;
+}
+.site-footer > .additional {
+    grid-row: 1;
+    grid-column: 2;
 }
 
 .info-container {

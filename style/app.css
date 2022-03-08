@@ -124,7 +124,7 @@ img.leaflet-tile {
     width: 27px;
 }
 
-footer {
+.app-main footer {
     border: 1px solid rgb(0 0 0 / 15%);
     padding: 0.5em;
     background: var(--surface-colored2);
@@ -132,6 +132,11 @@ footer {
     grid-column: 1;
     display: flex;
     gap: 0.25rem;
+}
+
+.site-footer {
+    margin-top: 3rem;
+    margin-bottom: 1rem;
 }
 
 #copy-url-input {

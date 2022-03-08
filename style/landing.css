@@ -223,6 +223,12 @@ p {
     }
 }
 
+.site-footer {
+    max-width: 620px;
+    padding-right: max(5vw, 1.5rem);
+    padding-left: max(5vw, 1.5rem);
+}
+
 @media screen and (max-width: 900px) {
     .divided.hasvideo {
         display: grid;
