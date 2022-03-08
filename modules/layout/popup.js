@@ -5,7 +5,7 @@ function killPopup({ target, id }) {
     setTimeout(() => target.removeChild(popupInTarget), 2000)
 }
 
-export function summonPopup({ heading, text, infinite, time, target, onOk, onCancel }) {
+export function summonPopup({ heading, text, infinite, time, target, onAccept, onCancel, acceptText, cancelText }) {
     const id = 'popup-' + Math.round(Math.random() * 10000)
     let killed = false
 
@@ -41,19 +41,19 @@ export function summonPopup({ heading, text, infinite, time, target, onOk, onCan
 
     const footer = document.createElement('footer')
 
-    const ok = document.createElement('button')
-    ok.textContent = 'ok'
-    ok.className = 'ok'
-    ok.addEventListener('click', () => {
+    const accept = document.createElement('button')
+    accept.textContent = acceptText || 'ok'
+    accept.className = 'accept'
+    accept.addEventListener('click', () => {
         if (killed) return
-        if (onOk) onOk()
+        if (onAccept) onAccept()
         killed = true
         killPopup({ id, target })
     })
-    footer.appendChild(ok)
+    footer.appendChild(accept)
 
     const cancel = document.createElement('button')
-    cancel.textContent = 'kumoa'
+    cancel.textContent = cancelText || 'kumoa'
     cancel.className = 'cancel'
     cancel.addEventListener('click', () => {
         if (killed) return

@@ -20,7 +20,9 @@ function promptOfUpdate() {
         text: 'Asenna uusin versio',
         target: document.querySelector('body'),
         infinite: true,
-        onOk: () => useNewestWorker(),
+        onAccept: () => useNewestWorker(),
+        acceptText: 'Asenna',
+        cancelText: 'Hylkää',
     })
 }
 
