@@ -396,6 +396,7 @@ img {
     color: white;
     font-weight: 600;
     font-size: 1.25rem;
+    margin-top: 0;
 }
 
 .popup > p {
