@@ -1,7 +1,7 @@
 // Create a presentation from powerpoint slide images
 
 // Variables that dictate the slide image src creation
-const slideCount = 22
+const slideCount = 23
 const baseSlideName = 'Dia'
 const slideExt = '.jpg'
 const baseUrl = './images/presentation/v2_min/'
