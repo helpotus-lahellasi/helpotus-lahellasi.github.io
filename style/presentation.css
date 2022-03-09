@@ -30,3 +30,117 @@ html {
     max-height: 100vh;
     object-fit: contain;
 }
+
+.popup {
+    display: flex;
+    flex-direction: column;
+
+    z-index: 1000000;
+
+    background: var(--surface-colored2);
+    box-shadow: var(--shadow);
+
+    max-width: 300px;
+
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    margin: auto;
+    margin-bottom: 1rem;
+
+    border-radius: 1rem;
+
+    transition: transform 0.7s;
+    will-change: transform;
+
+    animation-name: popup-appear;
+    animation-duration: 0.7s;
+    animation-fill-mode: backwards;
+    animation-iteration-count: 1;
+}
+
+.popup.popup-hide {
+    transform: translateY(1000px);
+}
+
+.popup header {
+    margin: 1rem 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.popup header h3 {
+    color: white;
+    font-weight: 600;
+    font-size: 1.25rem;
+    margin-top: 0;
+}
+
+.popup > p {
+    margin: 0 1rem;
+    color: var(--text-colored2);
+    font-size: 0.95rem;
+}
+
+.popup footer {
+    margin: 1.5rem 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 0.5rem;
+}
+
+.popup button {
+    background: transparent;
+    border: 1px solid var(--surface-colored4);
+    border-radius: 0.2rem;
+    color: var(--text-colored1);
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.25em 0.4em;
+}
+
+.popup button.close {
+    width: 2rem;
+    height: 2rem;
+    background: transparent;
+    /* color: #ff8080; */
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup button.accept {
+    color: #78ff78;
+    border-color: #78ff78;
+}
+
+.popup button.accept:hover {
+    color: rgb(0, 0, 0);
+    background-color: #78ff78;
+}
+
+.popup button.cancel {
+    color: #ff5885;
+    border-color: #ff5885;
+}
+
+.popup button.cancel:hover {
+    color: black;
+    background-color: #ff5885;
+}
+
+@keyframes popup-appear {
+    0% {
+        transform: translateY(1000px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
