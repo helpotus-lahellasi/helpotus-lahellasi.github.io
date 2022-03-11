@@ -1,5 +1,5 @@
 const CACHE_NAME = 'helpotus-lahellasi-cache'
-const CACHE_VERSION = 10
+const CACHE_VERSION = 11
 const CACHE_ID = `${CACHE_NAME}-v${CACHE_VERSION}`
 
 const urlsToCache = [
