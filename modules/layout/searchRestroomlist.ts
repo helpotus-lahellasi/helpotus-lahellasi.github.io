@@ -29,7 +29,7 @@ export async function setRestroomList(
     }
 
     for (let i = 0; i < data.length; i++) {
-        const { route, distance, ...restroom } = data[i]
+        const { route, ...restroom } = data[i]
         const restroomContainer = document.createElement('a')
 
         restroomContainer.className = 'restroom-result info-container fade-in'

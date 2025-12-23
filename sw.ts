@@ -39,18 +39,15 @@ sw.addEventListener('fetch', (event: Event) => {
             if (cacheResponse) {
                 return cacheResponse
             }
-            try {
-                const response = await fetch(e.request)
-                if (response.status === 200 && response.type === 'basic' && e.request.method === 'GET') {
-                    const responseToCache = response.clone()
-                    const cache = await caches.open(CACHE_ID)
-                    cache.put(e.request, responseToCache)
-                }
 
-                return response
-            } catch (error) {
-                throw error
+            const response = await fetch(e.request)
+            if (response.status === 200 && response.type === 'basic' && e.request.method === 'GET') {
+                const responseToCache = response.clone()
+                const cache = await caches.open(CACHE_ID)
+                cache.put(e.request, responseToCache)
             }
+
+            return response
         })()
     )
 })

@@ -52,7 +52,10 @@ export function createPart({ text, heading, inline, icon }: PartOptions): HTMLEl
 /**
  * Convert Application data into shareable URL
  */
-export function createSearchUrl(from: Coordinates | null, restroom: Restroom): string {
+export function createSearchUrl(
+    from: Coordinates | null,
+    restroom: Pick<Restroom, 'location' | 'id' | 'name' | 'tags' | 'timestamp'>
+): string {
     let origin
 
     if (location.hostname.includes('github.io')) {
