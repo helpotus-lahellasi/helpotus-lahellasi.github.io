@@ -1,4 +1,5 @@
 import { RESTROOM_FETCH_DISTANCE } from '../../config.js'
+import { safeFetch, validateArray } from '../util.js'
 
 const baseUrl = 'https://overpass-api.de/api/interpreter/'
 
@@ -30,8 +31,19 @@ const baseUrl = 'https://overpass-api.de/api/interpreter/'
 export async function getRestrooms(coordinates) {
     const params = `[out:json];node["amenity"="toilets"](around:${RESTROOM_FETCH_DISTANCE},${coordinates.lat}, ${coordinates.lon}); out meta;`
     const url = `${baseUrl}?data=${encodeURIComponent(params)}`
-    const res = await fetch(url)
-    const data = await res.json()
+    
+    const result = await safeFetch(url, {}, { apiName: 'Overpass API' })
+    
+    if (!result.success || !result.data) {
+        return []
+    }
+
+    const { data } = result
+    
+    if (!validateArray(data.elements)) {
+        return []
+    }
+
     const restrooms = data.elements
     return restrooms.map((restroom) => ({
         id: restroom.id,
@@ -40,8 +52,8 @@ export async function getRestrooms(coordinates) {
             lat: restroom.lat,
             lon: restroom.lon,
         },
-        name: restroom.tags['name'] || undefined,
-        tags: Object.entries(restroom.tags)
+        name: restroom.tags?.['name'] || undefined,
+        tags: Object.entries(restroom.tags || {})
             .map((pair) => {
                 return getTranslation(pair)
             })

@@ -37,10 +37,11 @@ export async function setRestroomList(target, data, from) {
 
         restroom.name && restroomContainer.appendChild(createPart({ heading: restroom.name }))
 
+        const streetName = await getStreetName(restroom.location.lat, restroom.location.lon)
         restroomContainer.appendChild(
             createPart({
                 heading: 'Osoite:',
-                text: await getStreetName(restroom.location.lat, restroom.location.lon),
+                text: streetName || 'Osoite ei saatavilla',
             })
         )
         restroomContainer.appendChild(

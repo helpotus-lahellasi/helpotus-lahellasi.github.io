@@ -1,5 +1,7 @@
 // https://digitransit.fi/en/developers/apis/1-routing-api/
 
+import { safeFetch, validateArray } from '../util.js'
+
 const baseUrl = 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql'
 
 /**
@@ -48,17 +50,21 @@ function getGraphQLRouteQueryBody(from, to) {
 /**
  * Intermediary function used for posting the request
  * @param {any} body
- * @returns {Promise<any>}
+ * @returns {Promise<{success: boolean, data: any, error: string|null}>}
  */
 async function apiPost(body) {
-    const response = await fetch(`${baseUrl}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
+    const result = await safeFetch(
+        baseUrl,
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
         },
-        body: JSON.stringify(body),
-    })
-    return response.json()
+        { apiName: 'HSL Digitransit API' }
+    )
+    return result
 }
 
 /**
@@ -68,16 +74,27 @@ async function apiPost(body) {
  * @returns {Promise<Object>} GraphQL data from hsl
  */
 async function getHSLRoute({ from, to }) {
-    try {
-        const body = getGraphQLRouteQueryBody(from, to)
-        const data = await apiPost(body)
-        if (!data.data.plan.itineraries[0]) return null
-        return {
-            data: data.data.plan.itineraries[0],
-            type: 'hsl',
-        }
-    } catch {
+    const body = getGraphQLRouteQueryBody(from, to)
+    const result = await apiPost(body)
+    
+    if (!result.success || !result.data) {
         return null
+    }
+
+    const { data } = result
+    
+
+    if (!validateArray(data.data.plan.itineraries)) {
+        return null
+    }
+
+    if (!data.data.plan.itineraries[0]) {
+        return null
+    }
+
+    return {
+        data: data.data.plan.itineraries[0],
+        type: 'hsl',
     }
 }
 
