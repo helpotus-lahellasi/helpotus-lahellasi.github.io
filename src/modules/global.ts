@@ -31,7 +31,7 @@ function promptOfUpdate(): void {
 
 async function work(): Promise<void> {
     console.log('Working big time to make the service worker work')
-    navigator.serviceWorker.register('/sw')
+    navigator.serviceWorker.register('/sw.js')
 
     // If first time visiting the site, the controller will not be available
     const firstInstall = !navigator.serviceWorker.controller

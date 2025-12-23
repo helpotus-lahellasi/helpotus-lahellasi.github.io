@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 
 const CACHE_NAME = 'helpotus-lahellasi-cache'
-const CACHE_VERSION = 15
+const CACHE_VERSION = 16
 const CACHE_ID = `${CACHE_NAME}-v${CACHE_VERSION}`
 
 const sw = self as unknown as ServiceWorkerGlobalScope
