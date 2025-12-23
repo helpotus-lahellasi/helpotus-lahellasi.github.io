@@ -7,7 +7,7 @@ import { SearchResult } from '../types'
 export async function setSearchResultsElement(
     target: HTMLElement,
     data: SearchResult[],
-    onClickHandler: (event: MouseEvent, location: SearchResult) => void
+    onClickHandler: (event: MouseEvent, location: SearchResult) => void,
 ): Promise<void> {
     clearElement(target)
 

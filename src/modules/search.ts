@@ -57,7 +57,7 @@ interface RestroomWithRoute extends Omit<Restroom, 'distance'> {
         // Split restrooms into chunks for pagination
         const restroomChunks = arrayToChunks(
             [...restroomsWithDistance].sort((vessaA, vessaB) => vessaA.distance - vessaB.distance),
-            4
+            4,
         )
 
         // Handler for when there are no found restrooms
@@ -86,7 +86,7 @@ interface RestroomWithRoute extends Omit<Restroom, 'distance'> {
                     ...restroom,
                     route,
                 }
-            })
+            }),
         )
 
         const heading = document.createElement('h3')
@@ -131,7 +131,7 @@ interface RestroomWithRoute extends Omit<Restroom, 'distance'> {
                             ...restroom,
                             route,
                         }
-                    })
+                    }),
                 )
                 if (restroomList) {
                     await setRestroomList(restroomList, restroomsWithRoutes, location)

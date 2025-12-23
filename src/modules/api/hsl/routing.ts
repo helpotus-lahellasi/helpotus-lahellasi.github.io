@@ -58,7 +58,7 @@ async function apiPost(body: GraphQLQueryBody) {
             },
             body: JSON.stringify(body),
         },
-        { apiName: 'HSL Digitransit API' }
+        { apiName: 'HSL Digitransit API' },
     )
     return result
 }

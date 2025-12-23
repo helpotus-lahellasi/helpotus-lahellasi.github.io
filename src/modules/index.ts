@@ -26,7 +26,7 @@ import { Coordinates } from './types'
     }
 
     // Create App that serves as a great abstraction over API calls and such
-    const app = new App({ location, restroom: searchParams.restroom })
+    const app = new App({ location, restroom: searchParams.restroom || undefined })
 
     // Detect and handle when the data in App changes
     // Update the "copy url" value by new app data

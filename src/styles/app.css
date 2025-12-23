@@ -34,7 +34,7 @@
     background: var(--surface-colored2);
 }
 
-.app-main>aside {
+.app-main > aside {
     display: flex;
     flex-direction: column;
     gap: 0.5em;

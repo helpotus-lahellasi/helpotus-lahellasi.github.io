@@ -70,13 +70,13 @@ header h2 {
     gap: 0.5rem;
 }
 
-.search-results-container>h3,
-.search-results-container>span {
+.search-results-container > h3,
+.search-results-container > span {
     margin: 0;
     display: inline;
 }
 
-.search-results-container>span {
+.search-results-container > span {
     font-size: 0.8rem;
 }
 

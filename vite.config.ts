@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import { resolve } from 'path'
 
 export default defineConfig({
+    publicDir: 'public',
     build: {
         rollupOptions: {
             input: {
@@ -10,7 +11,7 @@ export default defineConfig({
                 haku: resolve(__dirname, 'haku.html'),
                 esitys: resolve(__dirname, 'esitys.html'),
                 'media-vaatimukset': resolve(__dirname, 'media-vaatimukset.html'),
-                sw: resolve(__dirname, 'sw.ts'),
+                sw: resolve(__dirname, 'src/sw.ts'),
             },
             output: {
                 entryFileNames: (chunkInfo) => {
@@ -21,7 +22,7 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            '@': resolve(__dirname, './modules'),
+            '@': resolve(__dirname, './src/modules'),
         },
     },
 })

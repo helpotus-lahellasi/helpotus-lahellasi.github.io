@@ -110,7 +110,7 @@ export class App extends EventTarget {
         } else {
             sessionStorage.setItem(
                 'restroom-app-restrooms',
-                JSON.stringify({ value: [...restrooms.values()], modified: Date.now() })
+                JSON.stringify({ value: [...restrooms.values()], modified: Date.now() }),
             )
         }
     }

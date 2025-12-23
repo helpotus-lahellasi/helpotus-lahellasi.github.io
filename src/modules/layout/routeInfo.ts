@@ -17,8 +17,8 @@ export function setRouteInfoElement(target: HTMLElement, route: Route): void {
         createPart({
             text: Math.round(data.walkDistance / 60) + ' min',
             inline: true,
-            icon: './images/icons/walk.svg',
-        })
+            icon: '/images/icons/walk.svg',
+        }),
     )
 
     target.appendChild(container)

@@ -13,7 +13,7 @@ type RestroomWithRoute = Omit<Restroom, 'distance'> & {
 export async function setRestroomList(
     target: HTMLElement,
     data: RestroomWithRoute[] | null,
-    from: Coordinates
+    from: Coordinates,
 ): Promise<void> {
     const container = document.createElement('div')
     container.className = 'search-results-container'
@@ -43,10 +43,10 @@ export async function setRestroomList(
             createPart({
                 heading: 'Osoite:',
                 text: streetName || 'Osoite ei saatavilla',
-            })
+            }),
         )
         restroomContainer.appendChild(
-            createPart({ heading: 'Etäisyys:', text: Math.round(route.data.walkDistance) + ' m' })
+            createPart({ heading: 'Etäisyys:', text: Math.round(route.data.walkDistance) + ' m' }),
         )
 
         // Loop through restroom tags
@@ -56,7 +56,7 @@ export async function setRestroomList(
         }
 
         restroomContainer.appendChild(
-            createPart({ heading: 'Lisätty:', text: dateToFinnishLocale(new Date(restroom.timestamp)) })
+            createPart({ heading: 'Lisätty:', text: dateToFinnishLocale(new Date(restroom.timestamp)) }),
         )
 
         container.appendChild(restroomContainer)

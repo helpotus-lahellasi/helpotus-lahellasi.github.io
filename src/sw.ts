@@ -22,7 +22,7 @@ sw.addEventListener('activate', (event: Event) => {
                 }
             }
             await sw.clients.claim()
-        })()
+        })(),
     )
 })
 
@@ -48,7 +48,7 @@ sw.addEventListener('fetch', (event: Event) => {
             }
 
             return response
-        })()
+        })(),
     )
 })
 

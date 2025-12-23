@@ -11,22 +11,22 @@ const iconBase = {
 export const icons = {
     moneyRestroom: new L.Icon({
         ...iconBase,
-        iconUrl: './images/markers/paid-marker.png',
-        shadowUrl: './images/markers/user-marker-shadow.png',
+        iconUrl: '/images/markers/paid-marker.png',
+        shadowUrl: '/images/markers/user-marker-shadow.png',
     }),
     userMarker: new L.Icon({
         ...iconBase,
-        iconUrl: './images/markers/user-marker.png',
-        shadowUrl: './images/markers/toilet-marker-shadow.png',
+        iconUrl: '/images/markers/user-marker.png',
+        shadowUrl: '/images/markers/toilet-marker-shadow.png',
     }),
     freeRestroom: new L.Icon({
         ...iconBase,
-        iconUrl: './images/markers/free-marker.png',
-        shadowUrl: './images/markers/toilet-marker-shadow.png',
+        iconUrl: '/images/markers/free-marker.png',
+        shadowUrl: '/images/markers/toilet-marker-shadow.png',
     }),
     unknownFeeRestroom: new L.Icon({
         ...iconBase,
-        iconUrl: './images/markers/unknown-marker.png',
-        shadowUrl: './images/markers/toilet-marker-shadow.png',
+        iconUrl: '/images/markers/unknown-marker.png',
+        shadowUrl: '/images/markers/toilet-marker-shadow.png',
     }),
 }

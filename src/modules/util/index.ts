@@ -54,7 +54,7 @@ export function createPart({ text, heading, inline, icon }: PartOptions): HTMLEl
  */
 export function createSearchUrl(
     from: Coordinates | null,
-    restroom: Pick<Restroom, 'location' | 'id' | 'name' | 'tags' | 'timestamp'>
+    restroom: Pick<Restroom, 'location' | 'id' | 'name' | 'tags' | 'timestamp'>,
 ): string {
     let origin
 

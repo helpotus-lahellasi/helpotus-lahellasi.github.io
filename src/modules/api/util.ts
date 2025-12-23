@@ -10,7 +10,7 @@ import { SafeFetchResult, SafeFetchConfig } from '../types'
 export async function safeFetch<T = unknown>(
     url: string,
     options: RequestInit = {},
-    config: SafeFetchConfig = {}
+    config: SafeFetchConfig = {},
 ): Promise<SafeFetchResult<T>> {
     const { logErrors = true, apiName = 'API' } = config
 

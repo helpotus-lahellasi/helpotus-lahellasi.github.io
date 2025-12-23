@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fi">
     <head>
         <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -16,17 +16,17 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16x16.png" />
-        <link rel="manifest" href="./icons/site.webmanifest" />
-        <link rel="mask-icon" href="./icons/safari-pinned-tab.svg" color="#015c50" />
-        <link rel="shortcut icon" href="./icons/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
+        <link rel="manifest" href="/icons/site.webmanifest" />
+        <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#015c50" />
+        <link rel="shortcut icon" href="/icons/favicon.ico" />
         <meta name="apple-mobile-web-app-title" content="Helpotus L&auml;hell&auml;si" />
         <meta name="application-name" content="Helpotus L&auml;hell&auml;si" />
         <meta name="msapplication-TileColor" content="#fbccff" />
-        <meta name="msapplication-TileImage" content="./icons/mstile-144x144.png" />
-        <meta name="msapplication-config" content="./icons/browserconfig.xml" />
+        <meta name="msapplication-TileImage" content="/icons/mstile-144x144.png" />
+        <meta name="msapplication-config" content="/icons/browserconfig.xml" />
         <meta name="theme-color" content="#015c50" />
 
         <meta property="og:image" content="https://helpotus-lahellasi.github.io/images/logo.jpg" />
@@ -70,13 +70,13 @@
         <meta name="twitter:image" content="https://helpotus-lahellasi.github.io/images/logo.jpg" />
 
         <!-- Global assets -->
-        <link rel="stylesheet" href="style/global.css" />
-        <script src="modules/darkmode.ts" type="module"></script>
-        <script src="modules/global.ts" type="module" async></script>
+        <link rel="stylesheet" href="src/styles/global.css" />
+        <script src="src/modules/darkmode.ts" type="module"></script>
+        <script src="src/modules/global.ts" type="module" async></script>
 
         <!-- Page specific -->
         <title>Helpotus lähelläsi | Media vaatimukset</title>
-        <link rel="stylesheet" href="style/landing.css" />
+        <link rel="stylesheet" href="src/styles/landing.css" />
         <style>
             header h1 {
                 font-size: min(10vw, 5rem);
@@ -127,7 +127,7 @@
                 <a class="link home" href="/">
                     <img
                         alt="Helpotus lähelläsi logo | Vihreä wc"
-                        src="./icons/favicon-32x32.png"
+                        src="/icons/favicon-32x32.png"
                         width="24"
                         height="24"
                     />HL
@@ -136,7 +136,7 @@
                 <a class="link" href="haku">haku</a>
                 <div class="theme-changer">
                     <button aria-label="Tumma teema" id="dark-mode-button" title="Tumma teema">
-                        <img alt="Kuu" width="26" height="26" src="images/icons/darkmode.svg" />
+                        <img alt="Kuu" width="26" height="26" src="/images/icons/darkmode.svg" />
                     </button>
                 </div>
             </nav>
@@ -148,7 +148,7 @@
             </header>
             <section class="landing-section">
                 <h2>Kuva kuvassa</h2>
-                <img src="images/pip-700.jpg" alt="Metroasemalta kuva, jossa esimerkkimainos sovelluksesta" />
+                <img src="/images/pip-700.jpg" alt="Metroasemalta kuva, jossa esimerkkimainos sovelluksesta" />
             </section>
             <section class="landing-section">
                 <h2>Videon suunnittelu ja toteutus</h2>
@@ -184,14 +184,14 @@
                     </div>
                     <div>
                         <h3>Videon kuvakäsikirjoitus</h3>
-                        <img src="docs/HL_video_suunnitelma.png" alt="" />
+                        <img src="/docs/HL_video_suunnitelma.png" alt="" />
                     </div>
                 </div>
             </section>
             <section class="landing-section">
                 <h2>Videon puhe</h2>
                 <audio controls>
-                    <source src="./docs/Dragged sample_41.wav" type="audio/wav" />
+                    <source src="/docs/Dragged sample_41.wav" type="audio/wav" />
                     Your browser does not support the audio element.
                 </audio>
             </section>
