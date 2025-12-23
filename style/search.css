@@ -1,0 +1,134 @@
+header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--text-contrary1);
+}
+
+.site-main.search-main {
+    margin: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    justify-content: center;
+    align-items: center;
+}
+
+.search {
+    max-width: 700px;
+    width: 100%;
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.search section {
+    background: var(--surface-colored2);
+    padding: 1rem;
+}
+
+.upper {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.search-result-button {
+    background-color: var(--surface-colored2);
+    border: none;
+    cursor: pointer;
+    transition-duration: 0.2s;
+    width: 100%;
+    text-align: left;
+    border-bottom: 1px solid var(--surface-colored3);
+}
+
+.search-result-button span {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.restroom-result {
+    text-decoration: none;
+}
+
+.search-result-button:hover,
+.restroom-result:hover {
+    text-decoration: none;
+    background-color: var(--surface-colored3);
+    cursor: pointer;
+}
+
+.search-results-container {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.search-results-container>h3,
+.search-results-container>span {
+    margin: 0;
+    display: inline;
+}
+
+.search-results-container>span {
+    font-size: 0.8rem;
+}
+
+.restroomlist {
+    font-size: 0.9rem;
+    min-height: 4rem;
+}
+
+.restroomlist h3 {
+    margin-top: 0;
+}
+
+#search-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+#search-form label {
+    color: var(--text-accent1);
+    font-weight: 300;
+    font-size: 0.9rem;
+}
+
+#search-form input {
+    background: var(--surface-colored2);
+    border: 1px solid var(--surface-colored3);
+    color: var(--text-colored1);
+    padding: 0.4rem;
+    padding-left: 0.6rem;
+    border-radius: 0.3rem;
+}
+
+.more-restrooms-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media screen and (min-width: 700px) {
+    .upper {
+        flex-direction: row;
+    }
+    .upper .search-settings {
+        flex: 0 1 38%;
+    }
+    .upper .search-results {
+        flex: 1 0 62%;
+    }
+    #search-form {
+        flex-direction: row;
+        align-items: baseline;
+    }
+}
