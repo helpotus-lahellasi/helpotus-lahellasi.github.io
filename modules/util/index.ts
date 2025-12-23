@@ -1,10 +1,10 @@
+import { Coordinates, Restroom, PartOptions, ReadSearchParamsOutput } from '../types'
+
 /**
  * Convert js date into Finnish locale
  * eq. 10.8.2019 klo 16.01
- * @param {Date} date
- * @returns string
  */
-export const dateToFinnishLocale = (date) => {
+export const dateToFinnishLocale = (date: Date): string => {
     return date.toLocaleDateString('fi-Fi', {
         minute: '2-digit',
         hour: '2-digit',
@@ -13,29 +13,18 @@ export const dateToFinnishLocale = (date) => {
 }
 
 /**
- * Remove all children of a HTML ELement
- * @param {HTMLElement} target
+ * Remove all children of a HTML Element
  */
-export function clearElement(target) {
+export function clearElement(target: HTMLElement): void {
     while (target.firstChild) {
         target.removeChild(target.firstChild)
     }
 }
 
 /**
- * @typedef {Object} PartOptions
- * @property {string} heading
- * @property {string} text
- * @property {boolean} inline
- * @property {string} icon
- */
-
-/**
  * Create HTML part used in listing properties
- * @param {PartOptions} partOptions
- * @returns
  */
-export function createPart({ text, heading, inline, icon }) {
+export function createPart({ text, heading, inline, icon }: PartOptions): HTMLElement {
     const container = document.createElement('div')
     container.className = inline ? 'part-container inline' : 'part-container'
     if (icon) {
@@ -61,32 +50,9 @@ export function createPart({ text, heading, inline, icon }) {
 }
 
 /**
- * @typedef {Object} Coordinates
- * @property {number} lat The latitude of the coordinates
- * @property {number} lon The longtitude of the coordinates
- */
-
-/**
- * @typedef {Object} Tag
- * @property {string} heading
- * @property {string} text
- */
-
-/**
- * @typedef {Object} Restroom
- * @property {number} id
- * @property {Date} timestamp
- * @property {Coordinates} location
- * @property {Tag[]} tags
- */
-
-/**
  * Convert Application data into shareable URL
- * @param {Coordinates} from
- * @param {Restroom} restroom
- * @returns {string} shareable url
  */
-export function createSearchUrl(from, restroom) {
+export function createSearchUrl(from: Coordinates | null, restroom: Restroom): string {
     let origin
 
     if (location.hostname.includes('github.io')) {
@@ -111,10 +77,11 @@ export function createSearchUrl(from, restroom) {
         data += `rname=${restroom.name}&`
     }
     if (restroom.tags.length > 0) {
-        data += restroom.tags.map((t) => `t[]=${encodeURIComponent([t.heading, t.text])}&`).join('')
+        data += restroom.tags.map((t) => `t[]=${encodeURIComponent(`${t.heading},${t.text}`)}&`).join('')
     }
     if (restroom.timestamp) {
-        data += `time=${new Date(restroom.timestamp).getTime()}&`
+        const timestamp = restroom.timestamp instanceof Date ? restroom.timestamp : new Date(restroom.timestamp)
+        data += `time=${timestamp.getTime()}&`
     }
 
     return `${base}${data}`
@@ -122,59 +89,64 @@ export function createSearchUrl(from, restroom) {
 
 /**
  * Check if object is a valid js Date
- * @param {any} d
- * @returns {boolean}
  */
-export function isValidDate(d) {
-    return d instanceof Date && !isNaN(d)
+export function isValidDate(d: unknown): boolean {
+    return d instanceof Date && !isNaN(d.getTime())
 }
 
 /**
- * @typedef {Object} ReadSearchParamsOuput
- * @property {Coordinates|null} location
- * @property {Restroom|null} restroom
- */
-
-/**
  * Read url created by createSearchUrl() from page window.location
- * @returns {ReadSearchParamsOuput}
  */
-export function readSearchParams() {
+export function readSearchParams(): ReadSearchParamsOutput {
     const search = window.location.search
     const params = new URLSearchParams(search)
 
-    const from = {
-        lat: params.get('flat'),
-        lon: params.get('flon'),
-    }
+    const flat = params.get('flat')
+    const flon = params.get('flon')
+    const from: Coordinates | null =
+        flat && flon && !isNaN(Number(flat)) && !isNaN(Number(flon)) ? { lat: Number(flat), lon: Number(flon) } : null
 
-    const restroom = {
-        id: params.get('rid'),
-        name: params.get('rname'),
-        location: { lat: params.get('tlat'), lon: params.get('tlon') },
-        tags: Array.from(params.entries())
-            .filter((pair) => pair[0] === 't[]')
-            .map((pair) => {
-                const parts = pair[1].split(',')
-                return { heading: parts[0], text: parts[1] }
-            }),
-        timestamp: new Date(Number(params.get('time'))).toGMTString(),
-    }
+    const rid = params.get('rid')
+    const tlat = params.get('tlat')
+    const tlon = params.get('tlon')
+    const time = params.get('time')
+    const rname = params.get('rname')
 
-    const validFrom = !isNaN(from.lat) && !isNaN(from.lon)
+    const tags = Array.from(params.entries())
+        .filter((pair) => pair[0] === 't[]')
+        .map((pair) => {
+            const parts = pair[1].split(',')
+            return { heading: parts[0] || '', text: parts[1] || '' }
+        })
+
     const validRestroom =
-        restroom.id && restroom.location.lat && restroom.location.lon && isValidDate(new Date(restroom.timestamp))
+        rid &&
+        tlat &&
+        tlon &&
+        time &&
+        !isNaN(Number(rid)) &&
+        !isNaN(Number(tlat)) &&
+        !isNaN(Number(tlon)) &&
+        !isNaN(Number(time)) &&
+        isValidDate(new Date(Number(time)))
 
-    return { from: validFrom ? from : null, restroom: validRestroom ? restroom : null }
+    const restroom: Restroom | null = validRestroom
+        ? {
+              id: Number(rid),
+              name: rname || undefined,
+              location: { lat: Number(tlat), lon: Number(tlon) },
+              tags,
+              timestamp: new Date(Number(time)),
+          }
+        : null
+
+    return { from, restroom }
 }
 
 /**
  * Split array into chunks of n size
- * @param {any[]} arr
- * @param {number} size
- * @returns {any[]}
  */
-export function arrayToChunks(arr, size) {
+export function arrayToChunks<T>(arr: T[], size: number): T[][] {
     const _arr = [...arr]
     const chunks = []
     while (_arr.length > 0) {

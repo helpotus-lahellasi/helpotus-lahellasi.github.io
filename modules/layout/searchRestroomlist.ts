@@ -1,21 +1,20 @@
 import { getStreetName } from '../api/routereverse/streetNameFromPosition'
 import { dateToFinnishLocale, createPart, createSearchUrl } from '../util/index'
+import { Coordinates, Restroom, Route } from '../types'
 
-/**
- * @typedef {Object} Coordinates
- * @property {number} lat The latitude of the coordinates
- * @property {number} lon The longtitude of the coordinates
- */
+type RestroomWithRoute = Omit<Restroom, 'distance'> & {
+    route: Route
+    distance: number
+}
 
 /**
  * Write into html element list of restrooms (with name, address, distance, fee and wheelchair attribute, publish date) or info that there is no restrooms in area.
- * @param {HTMLElement} target
- * @param {restroomsWithRoutes} data
- * @param {Coordinates} from
- * @returns
  */
-
-export async function setRestroomList(target, data, from) {
+export async function setRestroomList(
+    target: HTMLElement,
+    data: RestroomWithRoute[] | null,
+    from: Coordinates
+): Promise<void> {
     const container = document.createElement('div')
     container.className = 'search-results-container'
 
@@ -23,7 +22,9 @@ export async function setRestroomList(target, data, from) {
         const loadingSpinner = document.getElementById('loading-spinner')
         container.appendChild(createPart({ heading: 'Hakemaltasi alueelta ei löytynyt vessoja!' }))
         target.appendChild(container)
-        loadingSpinner.classList.toggle('hidden', true)
+        if (loadingSpinner) {
+            loadingSpinner.classList.toggle('hidden', true)
+        }
         return
     }
 

@@ -1,11 +1,23 @@
-function killPopup({ target, id }) {
+import { PopupOptions } from '../types'
+
+function killPopup({ target, id }: { target: HTMLElement; id: string }): void {
     const popupInTarget = target.querySelector('#' + id)
     if (!popupInTarget) return
     popupInTarget.classList.add('popup-hide')
     setTimeout(() => target.removeChild(popupInTarget), 2000)
 }
 
-export function summonPopup({ heading, text, infinite, time, target, onAccept, onCancel, acceptText, cancelText }) {
+export function summonPopup({
+    heading,
+    text,
+    infinite,
+    time,
+    target,
+    onAccept,
+    onCancel,
+    acceptText,
+    cancelText,
+}: PopupOptions): HTMLElement {
     const id = 'popup-' + Math.round(Math.random() * 10000)
     let killed = false
 

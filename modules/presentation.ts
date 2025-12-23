@@ -10,46 +10,40 @@ const presentation = document.createElement('main')
 presentation.setAttribute('id', 'presentation')
 
 const container = document.querySelector('body')
+if (!container) {
+    throw new Error('Body element not found')
+}
 
-/**
- * Change current slide index from intersection observer callback
- * @param {any} o
- */
-function onIntersect(o) {
-    currentSlide = Number(o[0].target.id.split('-')[1])
+let currentSlide: number | null = null
+
+function onIntersect(o: IntersectionObserverEntry[]): void {
+    if (o[0]?.target) {
+        currentSlide = Number(o[0].target.id.split('-')[1])
+    }
 }
 
 // Intersection observer for observing the current slide index
+const presentationElement = document.querySelector('#presentation')
 const observer = new IntersectionObserver(onIntersect, {
-    root: document.querySelector('#presentation'),
+    root: presentationElement,
     rootMargin: '20px',
     threshold: 0.9,
 })
 
-/**
- * Parse slide file number from the slide element ID
- * @param {number} i
- * @returns {string}
- */
-function parseSlideNumber(i) {
+function parseSlideNumber(i: number): string {
     return String(i + 1).padStart(String(slideCount).length, '0')
 }
 
-let slideImages = []
+const slideImages: HTMLImageElement[] = []
 
-/**
- * Create slide element
- * @param {number} slideIndex
- * @returns {HTMLElement}
- */
-function createSlide(i) {
+function createSlide(i: number): HTMLElement {
     const slide = document.createElement('section')
 
     slide.className = 'presentation-slide'
 
     const img = document.createElement('img')
     img.className = 'presentation-slide-image'
-    img.src = baseUrl + baseSlideName + parseSlideNumber(i, slideCount) + slideExt
+    img.src = baseUrl + baseSlideName + parseSlideNumber(i) + slideExt
     img.width = document.documentElement.clientWidth
     img.height = document.documentElement.clientHeight
     img.alt = ''
@@ -65,8 +59,6 @@ function createSlide(i) {
     return slide
 }
 
-let currentSlide = null
-
 // Add slides into presentation
 for (let i = 0; i < slideCount; i++) {
     const slide = createSlide(i)
@@ -76,32 +68,23 @@ for (let i = 0; i < slideCount; i++) {
 // Output presentation into DOM
 container.appendChild(presentation)
 
-/**
- * Move to previous slide
- */
-function previousSlide() {
+function previousSlide(): void {
+    if (currentSlide === null || currentSlide < 2) return
     slideImages[currentSlide - 2]?.scrollIntoView()
     if (slideImages[currentSlide - 3]) {
         currentSlide--
     }
 }
 
-/**
- * Move to next slide
- */
-function nextSlide() {
+function nextSlide(): void {
+    if (currentSlide === null || currentSlide >= slideImages.length) return
     slideImages[currentSlide]?.scrollIntoView()
     if (slideImages[currentSlide + 1]) {
         currentSlide++
     }
 }
 
-/**
- * Listen for keypresses
- * space, right arrow, down arrow = next slide
- * left arrow, up arrow = previous slide
- */
-window.addEventListener('keydown', (e) => {
+window.addEventListener('keydown', (e: KeyboardEvent) => {
     e.preventDefault()
     if (e.repeat) return
     if (e.keyCode === 39 || e.keyCode === 40 || e.keyCode === 32) {
@@ -111,22 +94,14 @@ window.addEventListener('keydown', (e) => {
     }
 })
 
-/**
- * Listen for left click presses
- * left click = next slide
- */
-presentation.addEventListener('mouseup', (e) => {
+presentation.addEventListener('mouseup', (e: MouseEvent) => {
     e.preventDefault()
     if (e.button === 0) {
         nextSlide()
     }
 })
 
-/**
- * Listen for right click presses
- * right click = previous slide
- */
-presentation.addEventListener('contextmenu', (e) => {
+presentation.addEventListener('contextmenu', (e: MouseEvent) => {
     e.preventDefault()
     previousSlide()
 })

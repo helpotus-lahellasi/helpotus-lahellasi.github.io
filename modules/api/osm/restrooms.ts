@@ -1,38 +1,26 @@
 import { RESTROOM_FETCH_DISTANCE } from '../../config'
 import { safeFetch, validateArray } from '../util'
+import { Coordinates, Restroom, Tag } from '../../types'
 
 const baseUrl = 'https://overpass-api.de/api/interpreter/'
 
-/**
- * @typedef {Object} Coordinates
- * @property {number} lat The latitude of the coordinates
- * @property {number} lon The longtitude of the coordinates
- */
+interface OverpassElement {
+    id: number
+    lat: number
+    lon: number
+    timestamp: string
+    tags?: Record<string, string>
+}
 
-/**
- * @typedef {Object} Tag
- * @property {string} heading
- * @property {string} text
- */
+interface OverpassResponse {
+    elements: OverpassElement[]
+}
 
-/**
- * @typedef {Object} Restroom
- * @property {number} id
- * @property {Date} timestamp
- * @property {Coordinates} location
- * @property {Tag[]} tags
- */
-
-/**
- *
- * @param {Coordinates} coordinates Coordinates to get the toilets around
- * @returns {Promise<Restroom[]>} List of restrooms bro
- */
-export async function getRestrooms(coordinates) {
+export async function getRestrooms(coordinates: Coordinates): Promise<Restroom[]> {
     const params = `[out:json];node["amenity"="toilets"](around:${RESTROOM_FETCH_DISTANCE},${coordinates.lat}, ${coordinates.lon}); out meta;`
     const url = `${baseUrl}?data=${encodeURIComponent(params)}`
 
-    const result = await safeFetch(url, {}, { apiName: 'Overpass API' })
+    const result = await safeFetch<OverpassResponse>(url, {}, { apiName: 'Overpass API' })
 
     if (!result.success || !result.data) {
         return []
@@ -57,22 +45,11 @@ export async function getRestrooms(coordinates) {
             .map((pair) => {
                 return getTranslation(pair)
             })
-            .filter(Boolean),
+            .filter((tag): tag is Tag => tag !== null),
     }))
 }
 
-/**
- * @typedef TranslatedTag
- * @property {string|null} heading
- * @property {string|null} text
- */
-
-/**
- * Translate restroom tags into Finnish
- * @param {[string,string]} keyValueTuple
- * @returns {TranslatedTag|null}
- */
-function getTranslation([originalKey, originalValue]) {
+function getTranslation([originalKey, originalValue]: [string, string]): Tag | null {
     if (!originalKey || !originalValue) return null
     const key = originalKey.toLowerCase()
     const value = originalValue.toLowerCase()

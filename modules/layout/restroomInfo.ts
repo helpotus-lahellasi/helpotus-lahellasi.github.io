@@ -1,25 +1,10 @@
 import { dateToFinnishLocale, createPart, clearElement } from '../util/index'
-/**
- * @typedef {Object} Tag
- * @property {string} heading
- * @property {string} text
- */
-
-/**
- * @typedef {Object} Restroom
- * @property {number} id
- * @property {Date} timestamp
- * @property {Coordinates} location
- * @property {Tag[]} tags
- */
+import { Restroom } from '../types'
 
 /**
  * Write into html element restroom info (name, address, publish date)
- * @param {HTMLElement} target
- * @param {Restroom} data
  */
-
-export async function setRestroomElement(target, data) {
+export async function setRestroomElement(target: HTMLElement, data: Restroom): Promise<void> {
     clearElement(target)
 
     const container = document.createElement('div')

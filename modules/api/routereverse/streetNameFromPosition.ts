@@ -1,15 +1,17 @@
 import { safeFetch, validateArray } from '../util'
 
-/**
- * Gets streetname from given location
- * @param {number} lat
- * @param {number} lon
- * @returns {Promise<string|null>} name of the street, or null if fetching fails
- */
-export async function getStreetName(lat, lon) {
+interface OpenCageResult {
+    formatted: string
+}
+
+interface OpenCageResponse {
+    results: OpenCageResult[]
+}
+
+export async function getStreetName(lat: number, lon: number): Promise<string | null> {
     const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat}%2C${lon}&key=f39175ee4fad4dfa952c4f207a3667ab&language=fi&pretty=1`
 
-    const result = await safeFetch(url, {}, { apiName: 'OpenCage Geocoding API' })
+    const result = await safeFetch<OpenCageResponse>(url, {}, { apiName: 'OpenCage Geocoding API' })
 
     if (!result.success || !result.data) {
         return null

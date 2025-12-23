@@ -1,14 +1,13 @@
 /**
  * Gets the current position as a promise
- * @returns {Promise<PositionCallback>} PositionCallback promise
  */
-function getCurrentLocation() {
+function getCurrentLocation(): Promise<GeolocationPosition> {
     console.info('trying to get the current location')
     return new Promise((resolve, reject) => {
-        function onSuccess(position) {
+        function onSuccess(position: GeolocationPosition): void {
             resolve(position)
         }
-        function onError(error) {
+        function onError(error: GeolocationPositionError): void {
             reject(error)
         }
 

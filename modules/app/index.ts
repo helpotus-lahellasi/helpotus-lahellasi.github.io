@@ -12,63 +12,43 @@ import { icons } from '../map/markers'
 import { clearElement } from '../util/index'
 import { LOCATION_EXPIRATION_TIME, RESTROOM_EXPIRATION_TIME, SEARCH_EXPIRATION_TIME } from '../config'
 import { getSearch } from '../api/osm/search'
+import { Coordinates, Restroom, AppOptions, Route, SearchResultWithQuery } from '../types'
 
-/**
- * @typedef {Object} Coordinates
- * @property {number} lat The latitude of the coordinates
- * @property {number} lon The longtitude of the coordinates
- */
-
-/**
- * @typedef {Object} Tag
- * @property {string} heading
- * @property {string} text
- */
-
-/**
- * @typedef {Object} Restroom
- * @property {number} id
- * @property {Date} timestamp
- * @property {Coordinates} location
- * @property {Tag[]} tags
- */
-
-/**
- * @typedef {Object} AppOptions
- * @property {Coordinates} location Location to initiate the app with
- * @property {Restroom} restroom Restroom from URL params
- */
+interface StoredRoute {
+    from: Coordinates
+    value: Route
+}
 
 // Class for combining app functionality
 export class App extends EventTarget {
-    /**
-     *
-     * @param {AppOptions} options
-     */
-    constructor(options) {
+    map: L.Map | null = null
+    locationMarker: L.Marker | null = null
+    selectedRestroom: Restroom | null = null
+    routePolyline: L.Polyline | null = null
+    restroomLayerGroup: L.LayerGroup
+    location: Coordinates
+
+    routes = new Map<number, StoredRoute>()
+    restrooms = new Map<number, Restroom>()
+    searches = new Map<string, SearchResultWithQuery>()
+
+    visible = false
+
+    constructor(options?: AppOptions) {
         super()
-        this.map = null
-        this.locationMarker = null
-        this.selectedRestroom = null
-        this.routePolyline = null
-        this.restroomLayerGroup = null
+        this.restroomLayerGroup = L.layerGroup()
 
-        this.routes = new Map()
-        this.restrooms = new Map()
-        this.searches = new Map()
-
-        this.visible = false
-
-        if (options && options.location) {
+        if (options?.location) {
             this.location = options.location
+        } else {
+            // Default location (will be overridden when location is fetched)
+            this.location = { lat: 0, lon: 0 }
         }
 
-        if (options && options.restroom) {
+        if (options?.restroom) {
             this.addRestrooms([options.restroom])
             this.selectRestroom(options.restroom)
         }
-
-        this.restroomLayerGroup = L.layerGroup()
     }
 
     /**
@@ -76,90 +56,55 @@ export class App extends EventTarget {
      *
      * This method has to be called before using any functionality that requires the leaflet map
      */
-    setVisible() {
+    setVisible(): void {
         this.visible = true
-        this.map = L.map('map').setView(this.location, 14)
+        this.map = L.map('map').setView([this.location.lat, this.location.lon], 14)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         }).addTo(this.map)
-        this.locationMarker = L.marker(this.location, { icon: icons.userMarker })
+        this.locationMarker = L.marker([this.location.lat, this.location.lon], { icon: icons.userMarker })
             .bindPopup(`Olet tässä`)
-            .openPopup(this.map)
+            .openPopup()
             .addTo(this.map)
 
         this.showAllCurrent()
     }
 
-    /**
-     *
-     * @param {Coordinates} a
-     * @param {Coordinates} b
-     * @returns {Coordinates} location between the two given coordinates
-     */
-    static pointBetween(a, b) {
+    static pointBetween(a: Coordinates, b: Coordinates): Coordinates {
         return {
             lat: (a.lat + b.lat) / 2,
             lon: (a.lon + b.lon) / 2,
         }
     }
 
-    /**
-     *
-     * @param {Coordinates} a
-     * @param {Coordinates} b
-     * @returns {number} distance between the coordinates
-     */
-    static distanceBetween(a, b) {
+    static distanceBetween(a: Coordinates, b: Coordinates): number {
         return Math.sqrt(Math.pow(b.lat - a.lat, 2) + Math.pow(b.lon - a.lon, 2))
     }
 
-    /**
-     * Check if locations equal
-     * @param {Coordinates} a
-     * @param {Coordinates} b
-     * @returns {boolean}
-     */
-    static locationsEqual(a, b) {
+    static locationsEqual(a: Coordinates, b: Coordinates): boolean {
         if (a.lat === b.lat && b.lon === a.lon) {
             return true
         }
         return false
     }
 
-    /**
-     * Fetches the current user location
-     * @returns {Promise<Coordinates>}
-     */
-    static async fetchLocation() {
+    static async fetchLocation(): Promise<Coordinates> {
         const locationObject = await getCurrentLocation()
-        return await {
+        return {
             lat: locationObject.coords.latitude,
             lon: locationObject.coords.longitude,
         }
     }
 
-    /**
-     * Fetches restrooms around location
-     * @param {Coordinates} location
-     * @returns {Promise<Restroom[]>}
-     */
-    static async fetchRestroomsFromLocation(location) {
-        return await getRestrooms(location)
+    static async fetchRestroomsFromLocation(location: Coordinates): Promise<Restroom[]> {
+        return getRestrooms(location)
     }
 
-    /**
-     * Store location into session storage
-     * @param {Coordinates} location
-     */
-    static setStoredLocation(location) {
+    static setStoredLocation(location: Coordinates): void {
         sessionStorage.setItem('restroom-app-location', JSON.stringify({ value: location, modified: Date.now() }))
     }
 
-    /**
-     * Set restrooms into session storage
-     * @param {Restrooms[]|Map<number,Restroom>} restrooms
-     */
-    static setStoredRestrooms(restrooms) {
+    static setStoredRestrooms(restrooms: Restroom[] | Map<number, Restroom>): void {
         if (Array.isArray(restrooms)) {
             sessionStorage.setItem('restroom-app-restrooms', JSON.stringify({ value: restrooms, modified: Date.now() }))
         } else {
@@ -170,20 +115,14 @@ export class App extends EventTarget {
         }
     }
 
-    /**
-     * Store location into session storage
-     * @param {Coordinates} location
-     */
-    static setStoredSearches(searches) {
+    static setStoredSearches(searches: SearchResultWithQuery[]): void {
         sessionStorage.setItem('restroom-app-searches', JSON.stringify({ value: searches, modified: Date.now() }))
     }
 
-    /**
-     *  Get location from session storage
-     * @returns {Coordinates} location
-     */
-    static getStoredLocation() {
-        const location = JSON.parse(sessionStorage.getItem('restroom-app-location'))
+    static getStoredLocation(): Coordinates | null {
+        const stored = sessionStorage.getItem('restroom-app-location')
+        if (!stored) return null
+        const location = JSON.parse(stored)
         const isInvalid =
             !location ||
             !location.value ||
@@ -196,26 +135,22 @@ export class App extends EventTarget {
         return location.value
     }
 
-    /**
-     * Get restrooms from session storage
-     * @returns {Restroom[]}
-     */
-    static getStoredRestrooms() {
-        const restrooms = JSON.parse(sessionStorage.getItem('restroom-app-restrooms'))
+    static getStoredRestrooms(): Restroom[] | null {
+        const stored = sessionStorage.getItem('restroom-app-restrooms')
+        if (!stored) return null
+        const restrooms = JSON.parse(stored)
         const isInvalid =
-            !restrooms || !Array.isArray(restrooms.value) || location.modified < Date.now() - RESTROOM_EXPIRATION_TIME
+            !restrooms || !Array.isArray(restrooms.value) || restrooms.modified < Date.now() - RESTROOM_EXPIRATION_TIME
 
         if (isInvalid) return null
 
         return restrooms.value
     }
 
-    /**
-     * Get restrooms from session storage
-     * @returns {Restroom[]}
-     */
-    static getStoredSearches() {
-        const searches = JSON.parse(sessionStorage.getItem('restroom-app-searches'))
+    static getStoredSearches(): SearchResultWithQuery[] | null {
+        const stored = sessionStorage.getItem('restroom-app-searches')
+        if (!stored) return null
+        const searches = JSON.parse(stored)
         const isInvalid =
             !searches || !Array.isArray(searches.value) || searches.modified < Date.now() - SEARCH_EXPIRATION_TIME
 
@@ -224,12 +159,7 @@ export class App extends EventTarget {
         return searches.value
     }
 
-    /**
-     * Update app
-     * updates location, restrooms, and visible map
-     * @returns {Promise<void>}
-     */
-    async updateApp() {
+    async updateApp(): Promise<void> {
         console.info('updating app')
         const location = await App.fetchLocation()
         const latDelta = Math.abs(location.lat - this.location.lat)
@@ -249,13 +179,7 @@ export class App extends EventTarget {
         this.dispatchEvent(new Event('informationChange'))
     }
 
-    /**
-     * Fetches a route between two locations
-     * @param {Coordinates} a
-     * @param {Coordinates} b
-     * @returns {Promise<HSLRoute|ORSRoute|null>}
-     */
-    static async getRouteBetweenLocations(a, b) {
+    static async getRouteBetweenLocations(a: Coordinates, b: Coordinates): Promise<Route | null> {
         if (!a || !b) return null
         return (
             (await getHSLRoute({
@@ -265,12 +189,7 @@ export class App extends EventTarget {
         )
     }
 
-    /**
-     * Get searchresults from string
-     * @param {string} text
-     * @returns {Promise<SearchResult[]|null>}
-     */
-    async getSearchResult(text) {
+    async getSearchResult(text: string): Promise<SearchResultWithQuery | null> {
         const query = text.toLowerCase()
         const storedSearch = this.searches.get(query)
         if (storedSearch) {
@@ -287,12 +206,7 @@ export class App extends EventTarget {
         return searchWithQuery
     }
 
-    /**
-     * Get and display route to given restroom
-     * @param {number} id
-     * @returns {Promise<HSLRoute|ORSRoute|null>}
-     */
-    async getRoute(id) {
+    async getRoute(id: number): Promise<Route | null> {
         const restroom = this.restrooms.get(id)
         if (!restroom) throw new Error('Restroom was not stored in memory')
         const storedRoute = this.routes.get(id)
@@ -307,7 +221,9 @@ export class App extends EventTarget {
             })) || (await getOrsRoute({ from: this.location, to: restroom.location }))
 
         if (!updatedRoute) {
-            this.map.removeLayer(this.routePolyline)
+            if (this.map && this.routePolyline) {
+                this.map.removeLayer(this.routePolyline)
+            }
             return null
         }
 
@@ -319,71 +235,72 @@ export class App extends EventTarget {
         return updatedRoute
     }
 
-    /**
-     * Display location on map
-     * @param {Coordinates} location
-     * @returns {void}
-     */
-    showLocation(location) {
-        if (!this.visible) return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')
+    showLocation(location: Coordinates): void {
+        if (!this.visible || !this.locationMarker)
+            return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')
         const newLatLng = new L.LatLng(location.lat, location.lon)
         this.locationMarker.setLatLng(newLatLng)
     }
 
-    /**
-     * Select restroom
-     * @param {Restroom} restroom
-     */
-    selectRestroom(restroom) {
+    selectRestroom(restroom: Restroom): void {
         this.selectedRestroom = restroom
         this.dispatchEvent(new Event('informationChange'))
     }
 
-    /**
-     * Show route to restroom
-     * @param {number} id
-     * @returns {Promise<HSLRoute|ORSRoute|void>}
-     */
-    async showRouteToRestroom(id) {
+    async showRouteToRestroom(id: number): Promise<Route | void> {
         if (!this.visible) return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')
 
         let restroom = this.restrooms.get(id)
+        if (!restroom) return
 
         if (!restroom.streetName) {
+            const streetName = await getStreetName(restroom.location.lat, restroom.location.lon)
             restroom = {
                 ...restroom,
-                streetName: await getStreetName(restroom.location.lat, restroom.location.lon),
+                streetName: streetName || undefined,
             }
             this.restrooms.set(id, restroom)
         }
 
         this.fitMapToLocations(this.location, restroom.location)
 
-        setRestroomElement(document.querySelector('.app-restroom-info'), restroom)
+        const restroomInfoEl = document.querySelector<HTMLElement>('.app-restroom-info')
+        const routeInfoEl = document.querySelector<HTMLElement>('.app-route-info')
+        if (restroomInfoEl) {
+            setRestroomElement(restroomInfoEl, restroom)
+        }
         const route = await this.getRoute(id)
 
         if (!route) {
-            clearElement(document.querySelector('.app-route-info'))
+            if (routeInfoEl) {
+                clearElement(routeInfoEl)
+            }
             this.selectRestroom(restroom)
             return
         }
 
-        setRouteInfoElement(document.querySelector('.app-route-info'), route)
+        if (routeInfoEl) {
+            setRouteInfoElement(routeInfoEl, route)
+        }
 
         this.selectRestroom(restroom)
 
-        if (this.routePolyline) {
+        if (this.routePolyline && this.map) {
             this.map.removeLayer(this.routePolyline)
         }
 
-        if (route.type === 'ors') {
-            const points = route.data.geometry.coordinates
+        if (!this.map) return route
 
-            this.routePolyline = L.polyline(points)
-                .setStyle({
-                    color: 'blue',
-                })
-                .addTo(this.map)
+        if (route.type === 'ors') {
+            const points = route.data.geometry.coordinates.map((coord) => [coord[1], coord[0]] as [number, number])
+
+            if (this.map) {
+                this.routePolyline = L.polyline(points)
+                    .setStyle({
+                        color: 'blue',
+                    })
+                    .addTo(this.map)
+            }
         } else if (route.type === 'hsl') {
             for (const leg of route.data.legs) {
                 const points = leg.legGeometry.points
@@ -399,25 +316,12 @@ export class App extends EventTarget {
         return route
     }
 
-    /**
-     * Display restroom on map
-     * @param {Map<number,Restroom>} restrooms
-     * @returns {void}
-     */
-    showRestrooms(restrooms) {
-        if (!this.visible) return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')
+    showRestrooms(restrooms: Map<number, Restroom>): void {
+        if (!this.visible || !this.map) return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')
 
         this.restroomLayerGroup.clearLayers()
         for (const restroom of restrooms.values()) {
             const fee = restroom.tags.find((tag) => tag.heading.toLowerCase() === 'maksu:')
-
-            if (!restrooms || restrooms.length === 0) {
-                const container = document.createElement('div')
-                container.className = 'info-container'
-                container.appendChild(createPart({ heading: 'Hakemaltasi alueelta ei löytynyt vessoja!' }))
-                resultsTarget.appendChild(container)
-                return
-            }
 
             let icon
 
@@ -431,7 +335,7 @@ export class App extends EventTarget {
                 icon = icons.unknownFeeRestroom
             }
 
-            const marker = L.marker(restroom.location, { icon })
+            const marker = L.marker([restroom.location.lat, restroom.location.lon], { icon })
                 .addTo(this.map)
                 .on('click', () => this.showRouteToRestroom(restroom.id))
             this.restroomLayerGroup.addLayer(marker)
@@ -439,11 +343,7 @@ export class App extends EventTarget {
         this.restroomLayerGroup.addTo(this.map)
     }
 
-    /**
-     * Display everything
-     * @returns {void}
-     */
-    showAllCurrent() {
+    showAllCurrent(): void {
         if (!this.visible) return console.error('Trying to use map commands when the APP IS NOT VISIBLE!')
         this.showRestrooms(this.restrooms)
         this.showLocation(this.location)
@@ -452,12 +352,7 @@ export class App extends EventTarget {
         }
     }
 
-    /**
-     * Add new restrooms to App
-     * @param {Restroom[]} restrooms
-     * @returns {void}
-     */
-    addRestrooms(restrooms) {
+    addRestrooms(restrooms: Restroom[]): void {
         for (const restroom of restrooms) {
             if (this.restrooms.has(restroom.id)) continue
             this.restrooms.set(restroom.id, {
@@ -474,12 +369,7 @@ export class App extends EventTarget {
         }
     }
 
-    /**
-     * Add new searchresults to App
-     * @param {SearchResult[]} restrooms
-     * @returns {void}
-     */
-    addSearches(searches) {
+    addSearches(searches: SearchResultWithQuery[]): void {
         for (const search of searches) {
             if (this.searches.has(search.query)) continue
             this.searches.set(search.query, search)
@@ -490,13 +380,12 @@ export class App extends EventTarget {
     /**
      * Get distance to restroom
      * !!! NOT IN METERS
-     * @param {number} id
      * @returns {number} as coordinate points
      */
-    getDistanceToRestroom(id) {
+    getDistanceToRestroom(id: number): number {
         const restroom = this.restrooms.get(id)
         if (!restroom) throw new Error('Restroom was not stored in memory')
-        if (App.locationsEqual(restroom.distance.from, this.location)) {
+        if (restroom.distance && App.locationsEqual(restroom.distance.from, this.location)) {
             return restroom.distance.value
         }
 
@@ -511,17 +400,13 @@ export class App extends EventTarget {
         return updatedRestroom.distance.value
     }
 
-    /**
-     * Get closest restroom from stored restrooms
-     * @returns {Restroom}
-     */
-    getClosestRestroom() {
-        let closestRestroom
-        let closestDistance
+    getClosestRestroom(): Restroom | undefined {
+        let closestRestroom: Restroom | undefined
+        let closestDistance: number | undefined
 
         this.restrooms.forEach((restroom) => {
             const restroomDistance = this.getDistanceToRestroom(restroom.id)
-            if (!closestRestroom || restroomDistance < closestDistance) {
+            if (!closestRestroom || closestDistance === undefined || restroomDistance < closestDistance) {
                 closestRestroom = restroom
                 closestDistance = restroomDistance
                 return
@@ -531,26 +416,17 @@ export class App extends EventTarget {
         return closestRestroom
     }
 
-    /**
-     * Focus map on user location
-     * @returns {void}
-     */
-    setViewUserLocation() {
-        this.map.setView(this.location, 14)
+    setViewUserLocation(): void {
+        if (!this.map) return
+        this.map.setView([this.location.lat, this.location.lon], 14)
     }
 
-    /**
-     * Focus map between two locations
-     * @param {Coordinates} a
-     * @param {Coordinates} b
-     * @returns {void}
-     */
-    fitMapToLocations(a, b) {
-        if (!a || !b) {
+    fitMapToLocations(a: Coordinates, b: Coordinates): void {
+        if (!a || !b || !this.map) {
             this.setViewUserLocation()
             return
         }
-        const bounds = L.latLngBounds(a, b)
+        const bounds = L.latLngBounds([a.lat, a.lon], [b.lat, b.lon])
         this.map.fitBounds(bounds)
     }
 }

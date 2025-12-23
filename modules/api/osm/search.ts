@@ -1,12 +1,13 @@
 import { safeFetch } from '../util'
+import { SearchResult } from '../../types'
 
 const baseUrl = 'https://nominatim.openstreetmap.org/search'
 
-export async function getSearch(searchString) {
+export async function getSearch(searchString: string): Promise<SearchResult[]> {
     const params = `format=json&addressdetails=1&limit=4`
     const url = `${baseUrl}?q=${encodeURIComponent(searchString)}&${params}`
 
-    const result = await safeFetch(url, {}, { apiName: 'Nominatim API' })
+    const result = await safeFetch<SearchResult[]>(url, {}, { apiName: 'Nominatim API' })
 
     if (!result.success || !result.data) {
         return []

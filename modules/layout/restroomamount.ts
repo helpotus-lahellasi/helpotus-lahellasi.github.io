@@ -1,12 +1,10 @@
 import { createPart } from '../util/index'
 import { RESTROOM_FETCH_DISTANCE } from '../config'
+
 /**
  * Write into html element how many toilets are displayed in selected area
- * @param {HTMLElement} target
- * @param {number} amount
  */
-
-export function setRestroomAmountElement(target, amount) {
+export function setRestroomAmountElement(target: HTMLElement, amount: number): void {
     const container = document.createElement('div')
     container.className = 'restroom-amount-container'
 

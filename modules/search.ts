@@ -2,16 +2,26 @@ import { App } from './app/index'
 import { setSearchResultsElement } from './layout/searchResults'
 import { setRestroomList } from './layout/searchRestroomlist'
 import { clearElement, createPart, arrayToChunks } from './util/index'
+import { SearchResult, Coordinates, Restroom, Route } from './types'
+
+interface RestroomWithRoute extends Omit<Restroom, 'distance'> {
+    route: Route
+    distance: number
+}
 
 // Functionality for the search page (haku.html)
 ;(async function () {
-    const searchBar = document.getElementById('searchbar')
-    const searchForm = document.getElementById('search-form')
-    const resultsTarget = document.querySelector('.search-results')
-    const restroomList = document.querySelector('.restroomlist')
-    const moreRestroomsButton = document.getElementById('more-restrooms')
+    const searchBar = document.getElementById('searchbar') as HTMLInputElement | null
+    const searchForm = document.getElementById('search-form') as HTMLFormElement | null
+    const resultsTarget = document.querySelector<HTMLElement>('.search-results')
+    const restroomList = document.querySelector<HTMLElement>('.restroomlist')
+    const moreRestroomsButton = document.getElementById('more-restrooms') as HTMLButtonElement | null
 
-    let oldSearch
+    if (!searchBar || !searchForm || !resultsTarget || !restroomList || !moreRestroomsButton) {
+        return
+    }
+
+    let oldSearch: string | undefined
     const app = new App()
 
     // Use cached searches to use fewer api calls when they are not required
@@ -21,32 +31,23 @@ import { clearElement, createPart, arrayToChunks } from './util/index'
         app.addSearches(cachedSearches)
     }
 
-    /**
-     * @typedef {Object} Restroom
-     * @property {number} id
-     * @property {Date} timestamp
-     * @property {Coordinates} location
-     * @property {Tag[]} tags
-     */
+    async function listRestrooms(_event: MouseEvent, data: SearchResult): Promise<void> {
+        const loadingSpinner = document.getElementById('loading-spinner') as HTMLElement | null
+        if (!loadingSpinner) return
 
-    /**
-     * List restrooms into DOM and do quite a bit of misc things
-     * @param {MouseEvent} _event
-     * @param {Restroom} data
-     * @returns {void}
-     */
-    async function listRestrooms(_event, data) {
-        const loadingSpinner = document.getElementById('loading-spinner')
-
-        const { lat, lon } = data
-        app.location = { lat, lon }
+        const lat = Number(data.lat)
+        const lon = Number(data.lon)
+        const location: Coordinates = { lat, lon }
+        app.location = location
         loadingSpinner.classList.toggle('hidden', false)
 
         // Fetch restrooms from given location
-        const restrooms = await App.fetchRestroomsFromLocation({ lat, lon })
+        const restrooms = await App.fetchRestroomsFromLocation(location)
 
         app.addRestrooms(restrooms)
-        clearElement(restroomList)
+        if (restroomList) {
+            clearElement(restroomList)
+        }
 
         // Compute distance into restrooms
         const restroomsWithDistance = restrooms.map((restroom) => ({
@@ -65,7 +66,9 @@ import { clearElement, createPart, arrayToChunks } from './util/index'
             container.className = 'search-results-container'
 
             container.appendChild(createPart({ heading: 'Hakemaltasi alueelta ei löytynyt vessoja!' }))
-            restroomList.appendChild(container)
+            if (restroomList) {
+                restroomList.appendChild(container)
+            }
             loadingSpinner.classList.toggle('hidden', true)
             return
         }
@@ -73,11 +76,17 @@ import { clearElement, createPart, arrayToChunks } from './util/index'
         let currentPage = 0
 
         // Fetch routes for first page of restrooms
-        const restroomsWithRoutes = await Promise.all(
-            restroomChunks[currentPage].map(async (restroom) => ({
-                ...restroom,
-                route: await app.getRoute(restroom.id),
-            }))
+        const restroomsWithRoutes: RestroomWithRoute[] = await Promise.all(
+            restroomChunks[currentPage].map(async (restroom) => {
+                const route = await app.getRoute(restroom.id)
+                if (!route) {
+                    throw new Error('Failed to get route for restroom')
+                }
+                return {
+                    ...restroom,
+                    route,
+                }
+            })
         )
 
         const heading = document.createElement('h3')
@@ -86,67 +95,88 @@ import { clearElement, createPart, arrayToChunks } from './util/index'
         desc.textContent = '(napauta käymälää etsiäksesi reitin)'
         desc.className = 'mb'
 
-        restroomList.appendChild(heading)
-        restroomList.appendChild(desc)
+        if (restroomList) {
+            restroomList.appendChild(heading)
+            restroomList.appendChild(desc)
 
-        // Push restrooms into DOM
-        await setRestroomList(restroomList, restroomsWithRoutes, { lat, lon })
+            // Push restrooms into DOM
+            await setRestroomList(restroomList, restroomsWithRoutes, location)
+        }
 
         // Show the "show more restrooms" button, if there are multiple pages of restrooms available
-        if (restroomChunks.length > 1) {
+        if (restroomChunks.length > 1 && moreRestroomsButton) {
             moreRestroomsButton.classList.toggle('hidden', false)
         }
 
         // Show more restrooms
-        moreRestroomsButton.addEventListener('click', async () => {
-            currentPage++
-            if (currentPage >= restroomChunks.length) {
-                moreRestroomsButton.classList.toggle('hidden', true)
-                return
-            }
-            if (currentPage + 1 >= restroomChunks.length) {
-                moreRestroomsButton.classList.toggle('hidden', true)
-            }
+        if (moreRestroomsButton) {
+            moreRestroomsButton.addEventListener('click', async () => {
+                currentPage++
+                if (currentPage >= restroomChunks.length) {
+                    moreRestroomsButton.classList.toggle('hidden', true)
+                    return
+                }
+                if (currentPage + 1 >= restroomChunks.length) {
+                    moreRestroomsButton.classList.toggle('hidden', true)
+                }
 
-            loadingSpinner.classList.toggle('hidden', false)
-            const restroomsWithRoutes = await Promise.all(
-                restroomChunks[currentPage].map(async (restroom) => ({
-                    ...restroom,
-                    route: await app.getRoute(restroom.id),
-                }))
-            )
-            await setRestroomList(restroomList, restroomsWithRoutes)
-            loadingSpinner.classList.toggle('hidden', true)
-        })
+                loadingSpinner.classList.toggle('hidden', false)
+                const restroomsWithRoutes: RestroomWithRoute[] = await Promise.all(
+                    restroomChunks[currentPage].map(async (restroom) => {
+                        const route = await app.getRoute(restroom.id)
+                        if (!route) {
+                            throw new Error('Failed to get route for restroom')
+                        }
+                        return {
+                            ...restroom,
+                            route,
+                        }
+                    })
+                )
+                if (restroomList) {
+                    await setRestroomList(restroomList, restroomsWithRoutes, location)
+                }
+                loadingSpinner.classList.toggle('hidden', true)
+            })
+        }
 
         loadingSpinner.classList.toggle('hidden', true)
     }
 
     // Handle location search event
-    async function onSearch(event) {
+    async function onSearch(event: Event): Promise<void> {
         event.preventDefault()
-        clearTimeout(timeout)
+        if (timeout) {
+            clearTimeout(timeout)
+        }
 
-        if (searchBar.value === oldSearch) return
+        if (!searchBar || searchBar.value === oldSearch) return
         oldSearch = searchBar.value
 
         const data = await app.getSearchResult(searchBar.value)
+        if (!data || !resultsTarget) return
 
         setSearchResultsElement(resultsTarget, data.results, listRestrooms)
     }
 
-    let timeout
+    let timeout: ReturnType<typeof setTimeout> | undefined
 
     // Debounced search for keyup events so that the search does not start too early
-    function debouncedOnSearch(event) {
+    function debouncedOnSearch(event: Event): void {
         event.preventDefault()
-        clearTimeout(timeout)
+        if (timeout) {
+            clearTimeout(timeout)
+        }
         timeout = setTimeout(async () => {
             await onSearch(event)
         }, 500)
     }
 
-    searchBar.addEventListener('change', debouncedOnSearch)
-    searchBar.addEventListener('keyup', debouncedOnSearch)
-    searchForm.addEventListener('submit', onSearch)
+    if (searchBar) {
+        searchBar.addEventListener('change', debouncedOnSearch)
+        searchBar.addEventListener('keyup', debouncedOnSearch)
+    }
+    if (searchForm) {
+        searchForm.addEventListener('submit', onSearch)
+    }
 })()

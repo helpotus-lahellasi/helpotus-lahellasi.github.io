@@ -1,12 +1,10 @@
 import { dateToFinnishLocale, createPart, clearElement } from '../util/index'
+import { Route } from '../types'
 
 /**
  * Write into html element route to restroom info (arrival time, distance, walking time)
- * @param {HTMLElement} target
- * @param {Route} route
  */
-
-export function setRouteInfoElement(target, route) {
+export function setRouteInfoElement(target: HTMLElement, route: Route): void {
     const data = route.data
     clearElement(target)
 

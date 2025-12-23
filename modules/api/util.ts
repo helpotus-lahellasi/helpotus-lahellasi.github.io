@@ -1,17 +1,17 @@
+import { SafeFetchResult, SafeFetchConfig } from '../types'
+
 /**
  * Shared utility functions for API error handling
  */
 
 /**
  * Safely fetch and parse JSON from an API endpoint
- * @param {string} url - The URL to fetch from
- * @param {RequestInit} [options] - Optional fetch options (method, headers, body, etc.)
- * @param {Object} [config] - Additional configuration
- * @param {boolean} [config.logErrors=true] - Whether to log errors to console
- * @param {string} [config.apiName] - Name of the API for error messages
- * @returns {Promise<{success: boolean, data: any, error: string|null}>}
  */
-export async function safeFetch(url, options = {}, config = {}) {
+export async function safeFetch<T = unknown>(
+    url: string,
+    options: RequestInit = {},
+    config: SafeFetchConfig = {}
+): Promise<SafeFetchResult<T>> {
     const { logErrors = true, apiName = 'API' } = config
 
     try {
@@ -63,10 +63,7 @@ export async function safeFetch(url, options = {}, config = {}) {
 
 /**
  * Validate that an array exists and has at least one element
- * @param {any} array - The array to validate
- * @param {number} [minLength=1] - Minimum required length
- * @returns {boolean}
  */
-export function validateArray(array, minLength = 1) {
+export function validateArray<T>(array: unknown, minLength = 1): array is Array<T> {
     return Array.isArray(array) && array.length >= minLength
 }

@@ -1,13 +1,14 @@
 import { createPart, clearElement } from '../util/index'
+import { SearchResult } from '../types'
 
 /**
  * Write into html element list of address search results
- * @param {HTMLElement} target
- * @param {SearchResult[]} data
- * @param {{()=>void} onClickHandler} onClickHandler
  */
-
-export async function setSearchResultsElement(target, data, onClickHandler) {
+export async function setSearchResultsElement(
+    target: HTMLElement,
+    data: SearchResult[],
+    onClickHandler: (event: MouseEvent, location: SearchResult) => void
+): Promise<void> {
     clearElement(target)
 
     const container = document.createElement('div')

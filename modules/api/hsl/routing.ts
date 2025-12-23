@@ -1,22 +1,15 @@
 // https://digitransit.fi/en/developers/apis/1-routing-api/
 
 import { safeFetch, validateArray } from '../util'
+import { Coordinates, HSLRoute } from '../../types'
 
 const baseUrl = 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql'
 
-/**
- * @typedef {Object} Coordinates
- * @property {number} lat The latitude of the coordinates
- * @property {number} lon The longtitude of the coordinates
- */
+interface GraphQLQueryBody {
+    query: string
+}
 
-/**
- *
- * @param {Coordinates} from Coordinates to get the routes from
- * @param {Coordinates} to Coordinates to get the routes to
- * @returns {Object} GraphQL data from hsl
- */
-function getGraphQLRouteQueryBody(from, to) {
+function getGraphQLRouteQueryBody(from: Coordinates, to: Coordinates): GraphQLQueryBody {
     return {
         query: `
 {
@@ -47,13 +40,16 @@ function getGraphQLRouteQueryBody(from, to) {
     }
 }
 
-/**
- * Intermediary function used for posting the request
- * @param {any} body
- * @returns {Promise<{success: boolean, data: any, error: string|null}>}
- */
-async function apiPost(body) {
-    const result = await safeFetch(
+interface HSLGraphQLResponse {
+    data: {
+        plan: {
+            itineraries: Array<HSLRoute['data']>
+        }
+    }
+}
+
+async function apiPost(body: GraphQLQueryBody) {
+    const result = await safeFetch<HSLGraphQLResponse>(
         baseUrl,
         {
             method: 'POST',
@@ -67,13 +63,7 @@ async function apiPost(body) {
     return result
 }
 
-/**
- *
- * @param {Coordinates} from Coordinates to get the routes from
- * @param {Coordinates} to Coordinates to get the routes to
- * @returns {Promise<Object>} GraphQL data from hsl
- */
-async function getHSLRoute({ from, to }) {
+async function getHSLRoute({ from, to }: { from: Coordinates; to: Coordinates }): Promise<HSLRoute | null> {
     const body = getGraphQLRouteQueryBody(from, to)
     const result = await apiPost(body)
 
