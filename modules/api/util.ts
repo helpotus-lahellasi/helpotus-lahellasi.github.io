@@ -70,4 +70,3 @@ export async function safeFetch(url, options = {}, config = {}) {
 export function validateArray(array, minLength = 1) {
     return Array.isArray(array) && array.length >= minLength
 }
-

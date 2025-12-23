@@ -1,4 +1,4 @@
-import { dateToFinnishLocale, createPart, clearElement } from '../util/index.js'
+import { dateToFinnishLocale, createPart, clearElement } from '../util/index'
 
 /**
  * Write into html element route to restroom info (arrival time, distance, walking time)

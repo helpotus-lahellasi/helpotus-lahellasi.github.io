@@ -1,5 +1,5 @@
-import { getStreetName } from '../api/routereverse/streetNameFromPosition.js'
-import { dateToFinnishLocale, createPart, createSearchUrl } from '../util/index.js'
+import { getStreetName } from '../api/routereverse/streetNameFromPosition'
+import { dateToFinnishLocale, createPart, createSearchUrl } from '../util/index'
 
 /**
  * @typedef {Object} Coordinates
@@ -49,8 +49,7 @@ export async function setRestroomList(target, data, from) {
         )
 
         // Loop through restroom tags
-        for (const { heading, text }
-            of restroom.tags) {
+        for (const { heading, text } of restroom.tags) {
             if (!heading && !text) continue
             restroomContainer.appendChild(createPart({ heading, text }))
         }

@@ -1,5 +1,4 @@
-import * as L from '../../vendor/leaflet/leaflet-src.esm.js'
-
+import * as L from 'leaflet'
 // Export icons used in the project
 
 const iconBase = {
@@ -7,7 +6,7 @@ const iconBase = {
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
     shadowSize: [41, 41],
-}
+} satisfies Partial<Record<string, [number, number]>>
 
 export const icons = {
     moneyRestroom: new L.Icon({

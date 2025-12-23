@@ -1,4 +1,4 @@
-import { dateToFinnishLocale, createPart, clearElement } from '../util/index.js'
+import { dateToFinnishLocale, createPart, clearElement } from '../util/index'
 /**
  * @typedef {Object} Tag
  * @property {string} heading
@@ -28,8 +28,7 @@ export async function setRestroomElement(target, data) {
     data.name && container.appendChild(createPart({ heading: data.name }))
     container.appendChild(createPart({ heading: 'Osoite:', text: data.streetName || 'Osoite ei saatavilla' }))
 
-    for (const { heading, text }
-        of data.tags) {
+    for (const { heading, text } of data.tags) {
         if (!heading && !text) continue
         container.appendChild(createPart({ heading, text }))
     }

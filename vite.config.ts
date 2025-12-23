@@ -10,6 +10,12 @@ export default defineConfig({
                 haku: resolve(__dirname, 'haku.html'),
                 esitys: resolve(__dirname, 'esitys.html'),
                 'media-vaatimukset': resolve(__dirname, 'media-vaatimukset.html'),
+                sw: resolve(__dirname, 'sw.ts'),
+            },
+            output: {
+                entryFileNames: (chunkInfo) => {
+                    return chunkInfo.name === 'sw' ? 'sw.js' : 'assets/[name]-[hash].js'
+                },
             },
         },
     },

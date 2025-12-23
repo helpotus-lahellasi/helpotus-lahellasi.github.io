@@ -1,4 +1,4 @@
-import { safeFetch, validateArray } from '../util.js'
+import { safeFetch, validateArray } from '../util'
 
 /**
  * Gets streetname from given location
@@ -8,9 +8,9 @@ import { safeFetch, validateArray } from '../util.js'
  */
 export async function getStreetName(lat, lon) {
     const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat}%2C${lon}&key=f39175ee4fad4dfa952c4f207a3667ab&language=fi&pretty=1`
-    
+
     const result = await safeFetch(url, {}, { apiName: 'OpenCage Geocoding API' })
-    
+
     if (!result.success || !result.data) {
         return null
     }
@@ -27,8 +27,8 @@ export async function getStreetName(lat, lon) {
         return null
     }
 
-    if (routename.startsWith("unnamed road,")) {
-        return routename.substring("unnamed road".length)
+    if (routename.startsWith('unnamed road,')) {
+        return routename.substring('unnamed road'.length)
     }
 
     return routename

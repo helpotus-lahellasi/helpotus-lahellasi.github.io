@@ -1,8 +1,8 @@
-import { App } from './app/index.js'
-import { createPart, readSearchParams } from './util/index.js'
-import { LOCATION_REFRESH_TIME } from './config.js'
-import { setRestroomAmountElement } from './layout/restroomamount.js'
-import { createSearchUrl } from './util/index.js'
+import { App } from './app/index'
+import { createPart, readSearchParams } from './util/index'
+import { LOCATION_REFRESH_TIME } from './config'
+import { setRestroomAmountElement } from './layout/restroomamount'
+import { createSearchUrl } from './util/index'
 
 // Functionality for the map (sovellus.html)
 ;(async function () {

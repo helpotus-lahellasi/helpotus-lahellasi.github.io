@@ -21,6 +21,6 @@
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true
     },
-    "include": ["modules/**/*", "src/**/*"],
+    "include": ["modules/**/*", "src/**/*", "sw.ts"],
     "references": [{ "path": "./tsconfig.node.json" }]
 }

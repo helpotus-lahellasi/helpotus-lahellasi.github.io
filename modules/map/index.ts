@@ -1,5 +1,4 @@
-import * as L from '../../vendor/leaflet/leaflet-src.esm.js'
-
+import * as L from 'leaflet
 /**
  * @typedef {Object} Coordinates
  * @property {number} lat The latitude of the coordinates
@@ -14,7 +13,7 @@ import * as L from '../../vendor/leaflet/leaflet-src.esm.js'
 export function getMap(coordinates) {
     const map = L.map('map').setView([coordinates.lat, coordinates.lon], 13)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map)
     return map
 }

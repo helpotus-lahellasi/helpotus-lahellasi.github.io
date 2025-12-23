@@ -1,5 +1,5 @@
-import { RESTROOM_FETCH_DISTANCE } from '../../config.js'
-import { safeFetch, validateArray } from '../util.js'
+import { RESTROOM_FETCH_DISTANCE } from '../../config'
+import { safeFetch, validateArray } from '../util'
 
 const baseUrl = 'https://overpass-api.de/api/interpreter/'
 
@@ -31,15 +31,15 @@ const baseUrl = 'https://overpass-api.de/api/interpreter/'
 export async function getRestrooms(coordinates) {
     const params = `[out:json];node["amenity"="toilets"](around:${RESTROOM_FETCH_DISTANCE},${coordinates.lat}, ${coordinates.lon}); out meta;`
     const url = `${baseUrl}?data=${encodeURIComponent(params)}`
-    
+
     const result = await safeFetch(url, {}, { apiName: 'Overpass API' })
-    
+
     if (!result.success || !result.data) {
         return []
     }
 
     const { data } = result
-    
+
     if (!validateArray(data.elements)) {
         return []
     }

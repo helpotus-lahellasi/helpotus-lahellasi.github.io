@@ -1,5 +1,5 @@
-import { createPart } from '../util/index.js'
-import { RESTROOM_FETCH_DISTANCE } from '../config.js'
+import { createPart } from '../util/index'
+import { RESTROOM_FETCH_DISTANCE } from '../config'
 /**
  * Write into html element how many toilets are displayed in selected area
  * @param {HTMLElement} target

@@ -1,4 +1,4 @@
-import { summonPopup } from './layout/popup.js'
+import { summonPopup } from './layout/popup'
 
 const acceptedHostnames = ['helpotus-lahellasi.github.io']
 
@@ -28,7 +28,7 @@ function promptOfUpdate() {
 
 async function work() {
     console.log('Working big time to make the service worker work')
-    navigator.serviceWorker.register('/sw.js')
+    navigator.serviceWorker.register('/sw')
 
     // If first time visiting the site, the controller will not be available
     const firstInstall = !navigator.serviceWorker.controller

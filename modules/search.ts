@@ -1,7 +1,7 @@
-import { App } from './app/index.js'
-import { setSearchResultsElement } from './layout/searchResults.js'
-import { setRestroomList } from './layout/searchRestroomlist.js'
-import { clearElement, createPart, arrayToChunks } from './util/index.js'
+import { App } from './app/index'
+import { setSearchResultsElement } from './layout/searchResults'
+import { setRestroomList } from './layout/searchRestroomlist'
+import { clearElement, createPart, arrayToChunks } from './util/index'
 
 // Functionality for the search page (haku.html)
 ;(async function () {

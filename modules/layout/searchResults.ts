@@ -1,4 +1,4 @@
-import { createPart, clearElement } from '../util/index.js'
+import { createPart, clearElement } from '../util/index'
 
 /**
  * Write into html element list of address search results

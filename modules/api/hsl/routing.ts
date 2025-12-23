@@ -1,6 +1,6 @@
 // https://digitransit.fi/en/developers/apis/1-routing-api/
 
-import { safeFetch, validateArray } from '../util.js'
+import { safeFetch, validateArray } from '../util'
 
 const baseUrl = 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql'
 
@@ -76,13 +76,12 @@ async function apiPost(body) {
 async function getHSLRoute({ from, to }) {
     const body = getGraphQLRouteQueryBody(from, to)
     const result = await apiPost(body)
-    
+
     if (!result.success || !result.data) {
         return null
     }
 
     const { data } = result
-    
 
     if (!validateArray(data.data.plan.itineraries)) {
         return null
